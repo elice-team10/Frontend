@@ -11,7 +11,7 @@ const HomeContainer = styled.div`
 const Home = () => {
   return (
     <HomeContainer>
-      <HomeSearchBar />
+      <HomeSearchBar></HomeSearchBar>
     </HomeContainer>
   );
 };
