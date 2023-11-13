@@ -9,6 +9,9 @@ import Register from './pages/Register.jsx';
 import Admin from './pages/Admin.jsx';
 import NotFound from './pages/NotFound.jsx';
 import FindPassword from './pages/FindPassword.jsx';
+import CommunityBoard from './components/Community/CommunityBoard.jsx';
+import CommunityDetail from './components/Community/CommunityDetail.jsx';
+import CommunityWrite from './components/Community/CommunityWrite.jsx';
 
 const router = createBrowserRouter([
   {
@@ -28,15 +31,15 @@ const router = createBrowserRouter([
       },
       {
         path: '/community/board',
-        // element: <CommunityBoard />,
+        element: <CommunityBoard />,
       },
       {
         path: '/community/detail',
-        // element: <CommunityDetail />,
+        element: <CommunityDetail />,
       },
       {
         path: '/community/write',
-        // element: <CommunityWrite />,
+        element: <CommunityWrite />,
       },
       { path: '/admin', element: <Admin /> },
       // ... 다른 컴포넌트들
