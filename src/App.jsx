@@ -1,14 +1,20 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import React, { useState } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
-import Community from './pages/Community';
+import Admin from './pages/Admin';
+
+const router = createBrowserRouter([
+  {
+    path: '/admin',
+    element: <Admin />,
+  },
+]);
 
 function App() {
   return (
-    <>
-        <Community/>
-    </>
+    <div>
+      <RouterProvider router={router} />
+    </div>
   );
 }
 
