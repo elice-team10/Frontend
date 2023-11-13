@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../config/theme';
+import AuthFormInput from '../components/Auth/AuthFormInput';
+import AuthFormButton from '../components/Auth/AuthFormButton';
 
 const LoginContainer = styled.section`
   display: flex;
@@ -23,57 +25,20 @@ const LoginForm = styled.form`
 `;
 
 const HeaderTitle = styled.h1`
-  font-size: ${theme.fontSizes.heading1};
+  align-self: center;
   margin-top: -4rem;
   margin-bottom: 6.4rem;
-  align-self: center;
+  font-size: ${theme.fontSizes.heading1};
 `;
 
 const FormLabel = styled.label`
   font-size: ${theme.fontSizes.medium};
 `;
 
-const Input = styled.input`
-  margin-bottom: 10px;
-  padding: 1.2rem 2.8rem;
-  width: 32rem;
-  height: 3.2rem;
-  font-size: ${theme.fontSizes.large};
-  color: ${theme.colors.text};
-  border: 1px solid ${theme.colors.border};
-  border-radius: 4px;
-
-  &:focus {
-    outline: none;
-    border-color: ${theme.colors.primary};
-  }
-
-  &::placeholder {
-    color: ${theme.colors.textLightgray};
-  }
-`;
-
-const Button = styled.button`
-  padding: 1.8rem 3.2rem;
-  margin: 4.8rem 0 2.4rem;
-  background-color: ${theme.colors.primary};
-  color: ${theme.colors.textWhite};
-  border: none;
-  border-radius: 8px;
-  font-size: ${theme.fontSizes.large};
-  cursor: pointer;
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: ${theme.colors.accent};
-  }
-`;
-
 const ErrorMessage = styled.span`
-  color: ${theme.colors.error};
-  font-size: ${theme.fontSizes.medium};
   padding-left: 0.8rem;
-  margin-bottom: 0.8rem;
+  font-size: ${theme.fontSizes.medium};
+  color: ${theme.colors.error};
 `;
 
 const Image = styled.img`
@@ -89,13 +54,14 @@ const AuthLinksContainer = styled.div`
   a {
     color: ${theme.colors.textLightgray};
     font-size: ${theme.fontSizes.small};
+
     transition: all 0.3s;
 
-    /* LVHA */
     &:link,
     &:visited {
       color: ${theme.colors.textLightgray};
     }
+
     &:hover,
     &:active {
       color: ${theme.colors.primary};
@@ -104,29 +70,56 @@ const AuthLinksContainer = styled.div`
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault();
+  const handleLogin = async (e) => {
+    console.log('click');
+    try {
+      e.preventDefault();
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError('유효한 이메일 주소를 입력하세요.');
-      return;
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        setError('유효한 이메일 주소를 입력하세요.');
+        return;
+      }
+
+      if (password.length < 6) {
+        setError('비밀번호는 최소 6자리 이상이어야 합니다.');
+        return;
+      }
+
+      // TODO: API 적용
+      const res = await fetch('API', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (res.ok) {
+        console.log('로그인 성공!');
+        // 로그인에 성공하면 Home 페이지로 이동
+        navigate('/');
+      } else {
+        console.error('로그인 실패');
+      }
+    } catch (error) {
+      console.error('로그인 중 오류 발생: ', error);
     }
+  };
 
-    if (password.length < 6) {
-      setError('비밀번호는 최소 6자리 이상이어야 합니다.');
-      return;
+  const handleInputChange = (id, value) => {
+    if (id === 'email') {
+      setEmail(value);
     }
-
-    // TODO: 로그인 로직 추가하기
-
-    // 로그인 성공하면 다음 페이지로 이동
-    navigate('/');
+    if (id === 'password') {
+      setPassword(value);
+    }
   };
 
   return (
@@ -135,23 +128,23 @@ const Login = () => {
         <HeaderTitle>로그인</HeaderTitle>
         <LoginForm>
           <FormLabel htmlFor="email">이메일</FormLabel>
-          <Input
+          <AuthFormInput
             id="email"
             type="text"
             placeholder="이메일"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onInputChange={handleInputChange}
           />
-          <FormLabel htmlFor="">비밀번호</FormLabel>
-          <Input
-            id="비밀번호"
+          <FormLabel htmlFor="password">비밀번호</FormLabel>
+          <AuthFormInput
+            id="password"
             type="password"
             placeholder="비밀번호"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onInputChange={handleInputChange}
           />
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          <Button onClick={handleLogin}>로그인</Button>
+          <AuthFormButton text="로그인" onButtonClick={handleLogin} />
           <AuthLinksContainer>
             <Link to="/register">회원가입</Link>
             <Link to="/findPassword">비밀번호 찾기</Link>
