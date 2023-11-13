@@ -1,12 +1,15 @@
 import styled from "styled-components";
-import Tab from "./Tab";
+import CommunityTab from "./CommunityTab";
 
+const CommunityContainer = styled.div`
+  width: 1200px;
+`;
 
 function CommunityBoard () {
   return (
-    <div>
-      <Tab></Tab>
-    </div>
+    <CommunityContainer>
+      <CommunityTab />
+    </CommunityContainer>
   );
 }
 

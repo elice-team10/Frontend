@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './App.css';
-import Admin from './pages/Admin';
+import Community from './pages/Community';
 
 const router = createBrowserRouter([
   {
-    path: '/admin',
-    element: <Admin />,
+    path: '/',
+    element: <Community />,
   },
 ]);
 
