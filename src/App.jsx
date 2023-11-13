@@ -1,21 +1,15 @@
-import React, { useState } from 'react';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './App.css';
-import Community from './pages/Community';
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Community />,
-  },
-]);
+// App.jsx
+import { Outlet } from 'react-router-dom';
+// import Header from './components/Header';
 
 function App() {
   return (
-    <div>
-      <RouterProvider router={router} />
-    </div>
+    <>
+      {/* <Header /> */}
+      <Outlet />
+    </>
   );
 }
 
+// App 컴포넌트를 내보냅니다.
 export default App;

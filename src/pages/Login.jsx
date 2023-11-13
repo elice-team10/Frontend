@@ -1,30 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../config/theme';
 
-const LoginFormContainer = styled.div`
+const LoginContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12rem;
   height: 100vh;
-  margin: 0 auto;
 `;
 
-const InputContainer = styled.div`
+const LoginFormContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const LoginForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+`;
 
-  h1 {
-    margin-top: -8rem;
-    margin-bottom: 4.8rem;
-    align-self: center;
-  }
+const HeaderTitle = styled.h1`
+  font-size: ${theme.fontSizes.heading1};
+  margin-top: -4rem;
+  margin-bottom: 6.4rem;
+  align-self: center;
+`;
 
-  label {
-    font-size: 1.6rem;
-  }
+const FormLabel = styled.label`
+  font-size: ${theme.fontSizes.medium};
 `;
 
 const Input = styled.input`
@@ -32,7 +38,8 @@ const Input = styled.input`
   padding: 1.2rem 2.8rem;
   width: 32rem;
   height: 3.2rem;
-  font-size: 1.8rem;
+  font-size: ${theme.fontSizes.large};
+  color: ${theme.colors.text};
   border: 1px solid ${theme.colors.border};
   border-radius: 4px;
 
@@ -53,13 +60,20 @@ const Button = styled.button`
   color: ${theme.colors.textWhite};
   border: none;
   border-radius: 8px;
-  font-size: 1.8rem;
+  font-size: ${theme.fontSizes.large};
   cursor: pointer;
   transition: all 0.3s;
 
   &:hover {
     background-color: ${theme.colors.accent};
   }
+`;
+
+const ErrorMessage = styled.span`
+  color: ${theme.colors.error};
+  font-size: ${theme.fontSizes.medium};
+  padding-left: 0.8rem;
+  margin-bottom: 0.8rem;
 `;
 
 const Image = styled.img`
@@ -74,7 +88,7 @@ const AuthLinksContainer = styled.div`
 
   a {
     color: ${theme.colors.textLightgray};
-    font-size: 1.2rem;
+    font-size: ${theme.fontSizes.small};
     transition: all 0.3s;
 
     /* LVHA */
@@ -90,25 +104,65 @@ const AuthLinksContainer = styled.div`
 `;
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('유효한 이메일 주소를 입력하세요.');
+      return;
+    }
+
+    if (password.length < 6) {
+      setError('비밀번호는 최소 6자리 이상이어야 합니다.');
+      return;
+    }
+
+    // TODO: 로그인 로직 추가하기
+
+    // 로그인 성공하면 다음 페이지로 이동
+    navigate('/');
+  };
+
   return (
-    <LoginFormContainer>
-      <InputContainer>
-        <h1>로그인</h1>
-        <label htmlFor="email">이메일</label>
-        <Input id="email" type="email" placeholder="이메일" />
-        <label htmlFor="">비밀번호</label>
-        <Input id="비밀번호" type="password" placeholder="비밀번호" />
-        <Button>로그인</Button>
-        <AuthLinksContainer>
-          <a href="#">회원가입</a>
-          <a href="#">비밀번호 찾기</a>
-        </AuthLinksContainer>
-      </InputContainer>
+    <LoginContainer>
+      <LoginFormContainer>
+        <HeaderTitle>로그인</HeaderTitle>
+        <LoginForm>
+          <FormLabel htmlFor="email">이메일</FormLabel>
+          <Input
+            id="email"
+            type="text"
+            placeholder="이메일"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <FormLabel htmlFor="">비밀번호</FormLabel>
+          <Input
+            id="비밀번호"
+            type="password"
+            placeholder="비밀번호"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+          <Button onClick={handleLogin}>로그인</Button>
+          <AuthLinksContainer>
+            <Link to="/register">회원가입</Link>
+            <Link to="/findPassword">비밀번호 찾기</Link>
+          </AuthLinksContainer>
+        </LoginForm>
+      </LoginFormContainer>
       <Image
         src="https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
         alt="분실물"
       />
-    </LoginFormContainer>
+    </LoginContainer>
   );
 };
 
