@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
+import theme from '../../config/theme';
 import EditIcon from '@mui/icons-material/Edit';
 import { StyledEngineProvider } from '@mui/styled-engine';
-import theme from '../../config/theme';
 import Button from '@mui/material/Button';
 
 const WriteButton = styled(Button)`
@@ -26,6 +26,8 @@ const Icon = styled(EditIcon)`
 const Container = styled.div`
   display: flex;
   width: 100%;
+  padding-bottom: 5rem;
+
 `;
 
 const EachTab = styled.p`
@@ -67,12 +69,12 @@ function CommunityTab({ currentTab, onClick }) {
           </EachTab>
         );
       })}
-      <StyledEngineProvider injectFirst>
+   
         <WriteButton variant="outlined" size="small">
           <Icon fontSize="large" />
           등록
         </WriteButton>
-      </StyledEngineProvider>
+      
     </Container>
   );
 }
