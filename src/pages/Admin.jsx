@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import AdminUser from '../components/Admin/AdminUser';
-import AdminNav from '../components/Admin/AdminNav';
+import theme from '../config/theme';
+import AdminTemplate from '../components/Admin/AdminTemplate';
 
 const AdminContainer = styled.div`
   display: flex;
@@ -9,11 +9,23 @@ const AdminContainer = styled.div`
   align-items: center;
 `;
 
+const AdminTitleBox = styled.div`
+  width: 1200px;
+  text-align: center;
+  margin: 30px 0;
+  font-weight: bold;
+  letter-spacing: 3px;
+  font-size: ${theme.fontSizes.heading1};
+  color: ${theme.colors.text};
+`;
+
 const Admin = () => {
   return (
     <AdminContainer>
-      <AdminNav />
-      <AdminUser />
+      <AdminTitleBox>
+        관리자 페이지
+      </AdminTitleBox>
+      <AdminTemplate />
     </AdminContainer>
   );
 };
