@@ -4,21 +4,33 @@ import theme from '../../config/theme';
 
 const Button = styled.button`
   padding: 1.8rem 3.2rem;
-  margin: 4.8rem 0 2.4rem;
-  border: none;
+  margin: ${(props) => (props.type === 'cancel' ? '0' : '4.8rem 0 2.4rem')};
+  border: ${(props) =>
+    props.type === 'cancel' ? `1px solid ${theme.colors.border}` : 'none'};
   border-radius: 8px;
   font-size: ${theme.fontSizes.large};
-  color: ${theme.colors.textWhite};
-  background-color: ${theme.colors.primary};
+  color: ${(props) =>
+    props.type === 'cancel' ? theme.colors.text : theme.colors.textWhite};
+  background-color: ${(props) =>
+    props.type === 'cancel' ? theme.colors.background : theme.colors.primary};
 
   cursor: pointer;
   transition: all 0.3s;
 
   &:hover {
-    background-color: ${theme.colors.accent};
+    background-color: ${(props) =>
+      props.type === 'cancel' ? '#e6e6e6' : theme.colors.accent};
   }
 `;
 
-export default function AuthFormButton({ text, onButtonClick }) {
-  return <Button onClick={onButtonClick}>{text}</Button>;
+AuthFormButton.defaultProps = {
+  type: '',
+};
+
+export default function AuthFormButton({ text, onButtonClick, type }) {
+  return (
+    <Button type={type} onClick={onButtonClick}>
+      {text}
+    </Button>
+  );
 }

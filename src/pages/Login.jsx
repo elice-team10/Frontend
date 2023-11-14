@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
+import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 
 const LoginContainer = styled.section`
   display: flex;
@@ -81,13 +82,12 @@ const Login = () => {
     try {
       e.preventDefault();
 
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
+      if (!EMAIL_REGEX.test(email)) {
         setError('유효한 이메일 주소를 입력하세요.');
         return;
       }
 
-      if (password.length < 6) {
+      if (!PWD_REGEX.test(password)) {
         setError('비밀번호는 최소 6자리 이상이어야 합니다.');
         return;
       }
@@ -147,7 +147,7 @@ const Login = () => {
           <AuthFormButton text="로그인" onButtonClick={handleLogin} />
           <AuthLinksContainer>
             <Link to="/register">회원가입</Link>
-            <Link to="/findPassword">비밀번호 찾기</Link>
+            <Link to="/forgotpassword">비밀번호 찾기</Link>
           </AuthLinksContainer>
         </LoginForm>
       </LoginFormContainer>

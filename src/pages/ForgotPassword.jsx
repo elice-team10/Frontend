@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
+import { EMAIL_REGEX } from '../config/regex';
 
-const FindPasswordContainer = styled.section`
+const ForgotPasswordContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,12 +13,12 @@ const FindPasswordContainer = styled.section`
   height: 100vh;
 `;
 
-const FindPasswordFormContainer = styled.div`
+const ForgotPasswordFormContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const FindPasswordForm = styled.form`
+const ForgotPasswordForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -41,24 +42,23 @@ const Message = styled.span`
     props.type === 'error' ? theme.colors.error : theme.colors.text};
 `;
 
-const FindPassword = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
 
-  const handleFindPassword = async (e) => {
+  const handleForgotPassword = async (e) => {
     try {
       e.preventDefault();
 
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
+      if (!EMAIL_REGEX.test(email)) {
         setIsError(true);
         setMessage('유효한 이메일 주소를 입력하세요.');
         return;
       }
 
       // TODO: API 적용
-      const res = await fetch('FINDPASSWORD_API', {
+      const res = await fetch('FORGOTPASSWORD_API', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,10 +85,10 @@ const FindPassword = () => {
   };
 
   return (
-    <FindPasswordContainer>
-      <FindPasswordFormContainer>
+    <ForgotPasswordContainer>
+      <ForgotPasswordFormContainer>
         <HeaderTitle>비밀번호 찾기</HeaderTitle>
-        <FindPasswordForm>
+        <ForgotPasswordForm>
           <FormLabel htmlFor="email">이메일</FormLabel>
           <AuthFormInput
             id="email"
@@ -104,12 +104,12 @@ const FindPassword = () => {
           )}
           <AuthFormButton
             text="비밀번호 찾기"
-            onButtonClick={handleFindPassword}
+            onButtonClick={handleForgotPassword}
           />
-        </FindPasswordForm>
-      </FindPasswordFormContainer>
-    </FindPasswordContainer>
+        </ForgotPasswordForm>
+      </ForgotPasswordFormContainer>
+    </ForgotPasswordContainer>
   );
 };
 
-export default FindPassword;
+export default ForgotPassword;
