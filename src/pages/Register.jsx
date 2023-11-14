@@ -6,6 +6,8 @@ import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { NICKNAME_REGEX, EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 
+const REGISTER_URL = '/register';
+
 const RegisterContainer = styled.section`
   display: flex;
   align-items: center;

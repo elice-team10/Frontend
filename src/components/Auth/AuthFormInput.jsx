@@ -34,6 +34,7 @@ export default function AuthFormInput({
     <Input
       type={type}
       id={id}
+      autoComplete="off"
       placeholder={placeholder}
       value={value}
       onChange={(e) => onInputChange(id, e.target.value)}
