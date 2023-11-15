@@ -3,9 +3,9 @@ import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
 
 const columns = [
-  { field: 'id', headerName: '회원 번호', width: 200 },
-  { field: 'firstName', headerName: '이메일', width: 320 },
-  { field: 'lastName', headerName: '닉네임', width: 250 },
+  { field: 'id', headerName: '회원 번호', width: 150 },
+  { field: 'firstName', headerName: '이메일', width: 318 },
+  { field: 'lastName', headerName: '닉네임', width: 230 },
   {
     field: 'age',
     headerName: '현재 상태',

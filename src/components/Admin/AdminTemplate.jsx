@@ -36,13 +36,14 @@ const Button = styled.button`
   background-color: ${theme.colors.primary};
   color: ${theme.colors.textWhite};
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   font-size: ${theme.fontSizes.medium};
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.2s;
 
   &:hover {
     background-color: ${theme.colors.accent};
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -71,16 +72,16 @@ const AdminSubMenu = styled.div`
   letter-spacing: 4px;
   color: ${(props) =>
     props.active ? theme.colors.text : theme.colors.textLightgray};
-  border: ${(props) => (props.active ? '2px' : '0.5px')} solid
+  border: ${(props) => (props.active ? '1.5px' : '0.5px')} solid
     ${(props) =>
       props.active ? theme.colors.text : theme.colors.textLightgray};
-  border-radius: 4px;
+  border-radius: 8px;
   font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
   cursor: pointer;
 `;
 
 const AdminFormContainer = styled.div`
-  height: 630px;
+  height: 631px;
   width: 1200px;
   background-color: #eee;
   border-radius: 4px;

@@ -3,18 +3,18 @@ import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
 
 const columns = [
-    { field: 'id', headerName: '댓글 번호', width: 170 },
-    { field: 'title', headerName: '제목', width: 350 },
-    { field: 'lastName', headerName: '닉네임', width: 250 },
+  { field: 'id', headerName: '댓글 번호', width: 150 },
+  { field: 'title', headerName: '제목', width: 350 },
+  { field: 'lastName', headerName: '닉네임', width: 250 },
   {
     field: 'age',
     headerName: '게시물 번호',
-    width: 250,
+    width: 230,
   },
   {
     field: 'date',
     headerName: '작성 시기',
-    width: 200,
+    width: 168,
   },
 ];
 
