@@ -10,12 +10,12 @@ const columns = [
     headerName: '종류',
     width: 170,
   },
-  { field: 'firstName', headerName: '이메일', width: 270 },
+  { field: 'firstName', headerName: '이메일', width: 250 },
   { field: 'lastName', headerName: '닉네임', width: 200 },
   {
     field: 'date',
     headerName: '작성 시기',
-    width: 150,
+    width: 148,
   },
 ];
 
