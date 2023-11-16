@@ -24,9 +24,9 @@ const AdminMenu = styled.div`
   text-align: center;
   font-size: ${theme.fontSizes.large};
   color: ${(props) =>
-    props.active ? theme.colors.text : theme.colors.textLightgray};
+    props.$active ? theme.colors.text : theme.colors.textLightgray};
   letter-spacing: 3px;
-  font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
+  font-weight: ${(props) => (props.$active ? 'bold' : 'normal')};
   cursor: pointer;
 `;
 
@@ -55,7 +55,7 @@ const AdminSubNavContainer = styled.div`
 `;
 
 const AdminSubNavBox = styled.div`
-  display: ${(props) => (props.show ? 'flex' : 'none')};
+  display: ${(props) => (props.$show ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
   width: ${(props) => props.width};
@@ -71,12 +71,12 @@ const AdminSubMenu = styled.div`
   font-size: ${theme.fontSizes.medium};
   letter-spacing: 4px;
   color: ${(props) =>
-    props.active ? theme.colors.text : theme.colors.textLightgray};
-  border: ${(props) => (props.active ? '1.5px' : '0.5px')} solid
+    props.$active ? theme.colors.text : theme.colors.textLightgray};
+  border: ${(props) => (props.$active ? '1.5px' : '0.5px')} solid
     ${(props) =>
-      props.active ? theme.colors.text : theme.colors.textLightgray};
+      props.$active ? theme.colors.text : theme.colors.textLightgray};
   border-radius: 8px;
-  font-weight: ${(props) => (props.active ? 'bold' : 'normal')};
+  font-weight: ${(props) => (props.$active ? 'bold' : 'normal')};
   cursor: pointer;
 `;
 
@@ -90,7 +90,6 @@ const AdminFormContainer = styled.div`
 `;
 
 const AdminTemplate = () => {
-  // 현재 선택된 메뉴와 서브메뉴
   const [activeMenu, setActiveMenu] = useState('회원정보');
   const [activeSubMenu, setActiveSubMenu] = useState('게시물');
 
@@ -117,7 +116,7 @@ const AdminTemplate = () => {
       <AdminNavContainer>
         <AdminMenuBox>
           <AdminMenu
-            active={activeMenu === '회원정보'}
+            $active={activeMenu === '회원정보'}
             onClick={() => {
               setActiveMenu('회원정보');
               setActiveSubMenu('게시물');
@@ -126,7 +125,7 @@ const AdminTemplate = () => {
             회원정보
           </AdminMenu>
           <AdminMenu
-            active={activeMenu === '찾아요'}
+            $active={activeMenu === '찾아요'}
             onClick={() => {
               setActiveMenu('찾아요');
               setActiveSubMenu('게시물');
@@ -135,7 +134,7 @@ const AdminTemplate = () => {
             찾아요
           </AdminMenu>
           <AdminMenu
-            active={activeMenu === '주웠어요'}
+            $active={activeMenu === '주웠어요'}
             onClick={() => {
               setActiveMenu('주웠어요');
               setActiveSubMenu('게시물');
@@ -148,7 +147,7 @@ const AdminTemplate = () => {
       </AdminNavContainer>
       <AdminSubNavContainer>
         <AdminSubNavBox
-          show={activeMenu === '찾아요' || activeMenu === '주웠어요'}
+          $show={activeMenu === '찾아요' || activeMenu === '주웠어요'}
           width={
             activeMenu === '찾아요'
               ? '450px'
@@ -158,20 +157,20 @@ const AdminTemplate = () => {
           }
         >
           <AdminSubMenu
-            active={activeSubMenu === '게시물'}
+            $active={activeSubMenu === '게시물'}
             onClick={() => setActiveSubMenu('게시물')}
           >
             게시물
           </AdminSubMenu>
           <AdminSubMenu
-            active={activeSubMenu === '댓글'}
+            $active={activeSubMenu === '댓글'}
             onClick={() => setActiveSubMenu('댓글')}
           >
             댓글
           </AdminSubMenu>
         </AdminSubNavBox>
       </AdminSubNavContainer>
-      <AdminFormContainer>{table}</AdminFormContainer>;
+      <AdminFormContainer>{table}</AdminFormContainer>
     </>
   );
 };
