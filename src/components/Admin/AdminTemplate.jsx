@@ -42,8 +42,7 @@ const Button = styled.button`
   transition: all 0.2s;
 
   &:hover {
-    background-color: ${theme.colors.accent};
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    filter: brightness(1.15);
   }
 `;
 
