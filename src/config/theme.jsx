@@ -21,7 +21,8 @@ const theme = {
     small: '1.2rem', // 작은 텍스트 크기
     medium: '1.6rem', // 중간 텍스트 크기
     large: '1.8rem', // 큰 텍스트 크기
-    heading1: '2.4rem', // h1 크기
+    title: '3.6rem',
+    subtitle: '2.4rem',
   },
   // 기타 스타일 정보 추가
 };

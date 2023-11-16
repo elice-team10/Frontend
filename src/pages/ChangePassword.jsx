@@ -29,7 +29,7 @@ const HeaderTitle = styled.h1`
   align-self: center;
   margin-top: -4rem;
   margin-bottom: 6.4rem;
-  font-size: ${theme.fontSizes.heading1};
+  font-size: ${theme.fontSizes.subtitle};
 `;
 
 const ErrorMessage = styled.span`
@@ -39,6 +39,8 @@ const ErrorMessage = styled.span`
 `;
 
 const ChangePassword = () => {
+  const navigate = useNavigate();
+
   const [password, setPassword] = useState('');
   const [validPassword, setValidPassword] = useState(false);
 
@@ -115,6 +117,7 @@ const ChangePassword = () => {
   const handleCancelChangePassword = () => {
     // 비밀번호 변경 취소
     // 마이 페이지로 이동
+    navigate('/mypage');
   };
 
   return (

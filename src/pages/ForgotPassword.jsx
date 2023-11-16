@@ -28,7 +28,7 @@ const HeaderTitle = styled.h1`
   align-self: center;
   margin-top: -12rem;
   margin-bottom: 9.6rem;
-  font-size: ${theme.fontSizes.heading1};
+  font-size: ${theme.fontSizes.subtitle};
 `;
 
 const FormLabel = styled.label`
@@ -47,7 +47,7 @@ const ForgotPassword = () => {
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
 
-  const handleForgotPassword = async (e) => {
+  const handleSubmit = async (e) => {
     try {
       e.preventDefault();
 
@@ -88,7 +88,7 @@ const ForgotPassword = () => {
     <ForgotPasswordContainer>
       <ForgotPasswordFormContainer>
         <HeaderTitle>비밀번호 찾기</HeaderTitle>
-        <ForgotPasswordForm>
+        <ForgotPasswordForm onSubmit={handleSubmit}>
           <FormLabel htmlFor="email">이메일</FormLabel>
           <AuthFormInput
             id="email"
@@ -102,10 +102,7 @@ const ForgotPassword = () => {
           ) : (
             <Message type="success">{message}</Message>
           )}
-          <AuthFormButton
-            text="비밀번호 찾기"
-            onButtonClick={handleForgotPassword}
-          />
+          <AuthFormButton text="비밀번호 찾기" />
         </ForgotPasswordForm>
       </ForgotPasswordFormContainer>
     </ForgotPasswordContainer>

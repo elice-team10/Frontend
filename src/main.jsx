@@ -10,6 +10,7 @@ import Admin from './pages/Admin.jsx';
 import NotFound from './pages/NotFound.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import ChangePassword from './pages/ChangePassword.jsx';
+import MyPage from './pages/MyPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
         path: '/forgotpassword',
         element: <ForgotPassword />,
       },
+      { path: '/mypage', element: <MyPage /> },
       {
         path: '/changepassword',
         element: <ChangePassword />,

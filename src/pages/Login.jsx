@@ -29,7 +29,7 @@ const HeaderTitle = styled.h1`
   align-self: center;
   margin-top: -4rem;
   margin-bottom: 6.4rem;
-  font-size: ${theme.fontSizes.heading1};
+  font-size: ${theme.fontSizes.subtitle};
 `;
 
 const FormLabel = styled.label`
@@ -77,11 +77,9 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = async (e) => {
-    console.log('click');
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-
       if (!EMAIL_REGEX.test(email)) {
         setError('유효한 이메일 주소를 입력하세요.');
         return;
@@ -126,7 +124,7 @@ const Login = () => {
     <LoginContainer>
       <LoginFormContainer>
         <HeaderTitle>로그인</HeaderTitle>
-        <LoginForm>
+        <LoginForm onSubmit={handleSubmit}>
           <FormLabel htmlFor="email">이메일</FormLabel>
           <AuthFormInput
             id="email"
@@ -144,7 +142,7 @@ const Login = () => {
             onInputChange={handleInputChange}
           />
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          <AuthFormButton text="로그인" onButtonClick={handleLogin} />
+          <AuthFormButton text="로그인" />
           <AuthLinksContainer>
             <Link to="/register">회원가입</Link>
             <Link to="/forgotpassword">비밀번호 찾기</Link>

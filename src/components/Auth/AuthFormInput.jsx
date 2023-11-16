@@ -8,7 +8,7 @@ const Input = styled.input`
   padding: 1.2rem 2.8rem 1.2rem 1.2rem;
   margin-bottom: 10px;
   border: 1px solid ${theme.colors.border};
-  border-radius: 4px;
+  border-radius: 12px;
   font-size: ${theme.fontSizes.large};
   color: ${theme.colors.text};
 

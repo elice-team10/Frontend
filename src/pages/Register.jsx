@@ -31,7 +31,7 @@ const HeaderTitle = styled.h1`
   align-self: center;
   margin-top: -4rem;
   margin-bottom: 6.4rem;
-  font-size: ${theme.fontSizes.heading1};
+  font-size: ${theme.fontSizes.subtitle};
 `;
 
 const FormLabel = styled.label`
@@ -52,10 +52,9 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleRegister = async (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      e.preventDefault();
-
       if (nickname.length < 2 || nickname.length > 10) {
         setError('닉네임은 2~10자의 한글, 영문, 숫자만 사용할 수 있습니다.');
         return;
@@ -116,7 +115,7 @@ const Register = () => {
     <RegisterContainer>
       <RegisterFormContainer>
         <HeaderTitle>회원가입</HeaderTitle>
-        <RegisterForm>
+        <RegisterForm onSubmit={handleSubmit}>
           <FormLabel htmlFor="nickname">닉네임</FormLabel>
           <AuthFormInput
             id="nickname"
@@ -142,7 +141,7 @@ const Register = () => {
             onInputChange={handleInputChange}
           />
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          <AuthFormButton text="회원가입" onButtonClick={handleRegister} />
+          <AuthFormButton text="회원가입" />
         </RegisterForm>
       </RegisterFormContainer>
     </RegisterContainer>
