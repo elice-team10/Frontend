@@ -9,6 +9,7 @@ import Register from './pages/Register.jsx';
 import Admin from './pages/Admin.jsx';
 import NotFound from './pages/NotFound.jsx';
 import FindPassword from './pages/FindPassword.jsx';
+import SearchResult from './pages/SearchResult.jsx';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, path: '/', element: <Home /> },
+      {
+        path: '/search/result',
+        element: <SearchResult />,
+      },
       { path: '/login', element: <Login /> },
       {
         path: '/register',
