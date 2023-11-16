@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import theme from '../config/theme';
+import UserPostTable from '../components/MyPage/UserPostTable';
+import UserCommentTable from '../components/MyPage/UserCommentTable';
 
 const MyPageContainer = styled.div`
   display: flex;
-  padding: 8rem 9.6rem;
+  padding: 8rem 9.6rem 0 9.6rem;
 `;
 
 const NavAside = styled.aside`
-  width: 20rem;
+  width: 22rem;
   padding: 2.4rem;
 `;
 
@@ -259,8 +261,8 @@ const MyPage = () => {
           </ActionLinksContainer>
         </UserInfoPanel>
       )}
-      {currTab === '나의 게시물' && <div>나의 게시물</div>}
-      {currTab === '나의 댓글' && <div>나의 댓글</div>}
+      {currTab === '나의 게시물' && <UserPostTable />}
+      {currTab === '나의 댓글' && <UserCommentTable />}
     </MyPageContainer>
   );
 };
