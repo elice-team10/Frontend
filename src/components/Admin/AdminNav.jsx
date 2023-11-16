@@ -21,14 +21,14 @@ const AdminSubNavContainer = styled.div`
 `;
 const AdminSubMenu = styled.div`
   width: 85px;
-  height : 25px;
+  height: 25px;
   padding-top: 6px;
   text-align: center;
   font-size: 16px;
   letter-spacing: 4px;
   color: #888b8c;
   border: 0.5px solid #888b8c;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
 `;
 
