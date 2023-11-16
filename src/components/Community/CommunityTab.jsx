@@ -1,24 +1,26 @@
 import styled, { css } from 'styled-components';
 import theme from '../../config/theme';
 import EditIcon from '@mui/icons-material/Edit';
-import { StyledEngineProvider } from '@mui/styled-engine';
-import Button from '@mui/material/Button';
+import { Link } from 'react-router-dom';
 
-const WriteButton = styled(Button)`
-  && {
-    font-size: ${theme.fontSizes.medium};
-    line-height: 22px;
-    color: ${theme.colors.text}; /* 원래 색상 */
-    padding: 0.8rem;
-    margin: 19px 0 19px auto;
-    background-color: ${theme.colors.textWhite};
-    border: 1px solid ${theme.colors.text};
-    font-weight: bold;
+const WriteButton = styled.button`
+  font-size: ${theme.fontSizes.medium};
+  line-height: 22px;
+  color: ${theme.colors.textWhite};
+  padding: 0.8rem;
+  margin: 19px 0 19px 903px;
+  background-color: ${theme.colors.primary};
+  border: 1px solid ${theme.colors.primary};
+  font-weight: bold;
+  border-radius: 12px;
+  &:hover {
+    filter: brightness(0.8);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   }
 `;
 
 const Icon = styled(EditIcon)`
-  color: ${theme.colors.primary};
+  color: ${theme.colors.textWhite};
   font-size: 'large';
   margin-right: 0.5rem;
 `;
@@ -27,11 +29,10 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   padding-bottom: 5rem;
-
 `;
 
 const EachTab = styled.p`
-  font-size: ${theme.fontSizes.large};
+  font-size: ${theme.fontSizes.subtitle};
   line-height: 22px;
   color: ${theme.colors.text};
   padding: 0.8rem;
@@ -69,12 +70,13 @@ function CommunityTab({ currentTab, onClick }) {
           </EachTab>
         );
       })}
-   
-        <WriteButton variant="outlined" size="small">
+
+      <Link to="/community/write">
+        <WriteButton>
           <Icon fontSize="large" />
           등록
         </WriteButton>
-      
+      </Link>
     </Container>
   );
 }
