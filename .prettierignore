@@ -1,0 +1,16 @@
+# node_modules 폴더와 그 내부의 모든 파일
+node_modules/*
+
+# 빌드된 파일
+dist/*
+build/*
+
+# 환경 설정 파일
+.env
+.env.local
+.env.development
+.env.production
+
+# 기타
+public/*
+*.log
