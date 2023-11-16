@@ -30,7 +30,7 @@ const Card = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  border: 1px solid #393d3f;
   border-radius: 12px;
   flex: none;
   font-size: ${theme.fontSizes.medium};
@@ -41,13 +41,12 @@ const Card = styled.div`
 `;
 
 const cardsData = [
-  { image: '/path/to/earbud_headphones.svg', label: '이어폰' },
-  { image: '/path/to/earbud_headphones.svg', label: '지갑' },
-  { image: '/path/to/earbud_headphones.svg', label: '휴대폰' },
-  { image: '/path/to/earbud_headphones.svg', label: '시계' },
-  { image: '/path/to/earbud_headphones.svg', label: '카드' },
-  { image: '/path/to/earbud_headphones.svg', label: '가방' },
-  { image: '/path/to/earbud_headphones.svg', label: '현금' },
+  { image: '../../assets/airpods.jpg', label: '이어폰' },
+  { image: '../../assets/airpods.jpg', label: '지갑' },
+  { image: '../../assets/airpods.jpg', label: '휴대폰' },
+  { image: '../../assets/airpods.jpg', label: '시계' },
+  { image: '../../assets/airpods.jpg', label: '카드' },
+  { image: '../../assets/airpods.jpg', label: '가방' },
 ];
 
 const CardCarousel = () => {
@@ -86,6 +85,7 @@ const CardCarousel = () => {
           {extendedCards.map((card, index) => (
             <Card key={index} elevation={4}>
               {card.label}
+              <img src={card.image} />
             </Card>
           ))}
         </CarouselSlide>

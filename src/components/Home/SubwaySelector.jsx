@@ -19,7 +19,10 @@ const StyledSelect = styled(Select)`
     border-radius: 20px;
   }
   && .MuiOutlinedInput-notchedOutline {
-    border-radius: 20px; // 아웃라인에도 같은 border-radius 값을 적용합니다.
+    border-radius: 20px; // 아웃라인에도 같은 border-radius 값을 적용시킴
+  }
+  && .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline {
+    outline: #ff6700; // Replace with your desired color
   }
 `;
 
@@ -47,6 +50,12 @@ const LabelText = styled('span')`
   margin-left: 1rem;
   font-size: ${theme.fontSizes.medium};
   font-family: 'Noto Sans KR', sans-serif; /* 폰트 적용 */
+`;
+
+const StyledMenuItem = styled(MenuItem)`
+  font-family: 'Noto Sans KR';
+  font-size: ${theme.fontSizes.medium};
+  background-color: #393d3f;
 `;
 
 const subwayLines = [
@@ -78,6 +87,23 @@ const SubwaySelector = () => {
         onChange={handleChange}
         displayEmpty
         inputProps={{ id: 'subway-line-select' }}
+        MenuProps={{
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'left',
+          },
+          transformOrigin: {
+            vertical: 'top',
+            horizontal: 'left',
+          },
+          getContentAnchorEl: null, // This will make it expand downwards only
+          PaperProps: {
+            style: {
+              maxHeight: 150,
+              width: 100,
+            },
+          },
+        }}
         renderValue={(selected) => {
           if (!selected) {
             // 아무것도 선택되지 않았을 때
@@ -99,10 +125,10 @@ const SubwaySelector = () => {
         }}
       >
         {subwayLines.map((line) => (
-          <MenuItem key={line.color} value={line.color}>
+          <StyledMenuItem key={line.color} value={line.color}>
             <ColorCircle color={line.color} />
             {line.name}
-          </MenuItem>
+          </StyledMenuItem>
         ))}
       </StyledSelect>
     </StyledFormControl>

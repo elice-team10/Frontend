@@ -55,6 +55,23 @@ const DistrictSelector = () => {
         onChange={handleChange}
         displayEmpty
         inputProps={{ id: 'district-select' }}
+        MenuProps={{
+          anchorOrigin: {
+            vertical: 'bottom',
+            horizontal: 'left',
+          },
+          transformOrigin: {
+            vertical: 'top',
+            horizontal: 'left',
+          },
+          getContentAnchorEl: null, // This will make it expand downwards only
+          PaperProps: {
+            style: {
+              maxHeight: 150,
+              width: 100,
+            },
+          },
+        }}
         renderValue={(selected) => {
           if (!selected) {
             // 아무것도 선택되지 않았을 때
