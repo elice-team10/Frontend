@@ -6,12 +6,20 @@ export default function Calander() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
+      label="날짜 선택"
         slotProps={{
           textField: {
             size: 'small',
+            focused: false,
           },
         }}
         format="YYYY / MM / DD"
+        sx={{
+          // some styles
+          ":hover": {
+            // border: "1px solid red", 
+          }
+        }}
       />
     </LocalizationProvider>
   );

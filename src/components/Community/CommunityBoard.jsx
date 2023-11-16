@@ -18,7 +18,7 @@ const LostContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 29.6rem);
   grid-column-gap: 1.9rem;
-  grid-row-gap: 2.4rem;
+  grid-row-gap: 4rem;
 `;
 
 const FoundContainer = styled.div`

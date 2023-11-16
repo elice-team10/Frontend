@@ -15,6 +15,14 @@ const Card = styled.div`
   box-sizing: border-box;
   padding: 2.8rem 2.4rem 0;
   position: relative;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  top: 0;
+  transition: all .1s ease-in;
+
+  &:hover {
+    top: -2px;
+    box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+  }
 `;
 
 const PhotoContainer = styled.div`

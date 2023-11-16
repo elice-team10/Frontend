@@ -80,13 +80,12 @@ const SubmitButton = styled.button`
   padding: 0.5rem;
   background-color: ${(props) =>
     props.backgroundColor || `${theme.colors.primary}`};
-  border: 1px solid ${theme.colors.primary};
+  border: 1px solid ${(props) => props.color || `${theme.colors.primary}`};
   font-weight: bold;
   border-radius: 12px;
   &:hover {
-    filter: brightness(1.15);
-    background-color: ${(props) => props.backgroundColor === 'white' ? `#ddd` : ''
-    }
+    filter: ${(props) => props.backgroundColor === 'white' ? `` : 'brightness(1.15)'};
+    background-color: ${(props) => props.backgroundColor === 'white' ? `#ddd` : ''}
   }
 `;
 
@@ -102,9 +101,13 @@ const StyledSelect = styled.select`
   font-size: 1rem;
   line-height: 1.4375em;
   letter-spacing: 0.00938em;
-  color: rgba(0, 0, 0, 0.87);
+  color: ${theme.colors.text};
   box-sizing: border-box;
   margin: 12px;
+  outline: none;
+  &:hover {
+    border: 1px solid ${theme.colors.text}
+  }
 `;
 
 function CommunityWrite() {
@@ -117,7 +120,7 @@ function CommunityWrite() {
       <ToolbarContainer>
         <StyledSelect>
           <option disabled hidden selected>
-            <PlaceIcon /> {`${(<PlaceIcon />)} 지역 선택`}
+            <PlaceIcon /> 지역 선택
           </option>
           {[
             '강남구',
@@ -166,7 +169,7 @@ function CommunityWrite() {
       <ButtonContainer>
         <SubmitButton>등록</SubmitButton>
         <BoardLink to="/community/board">
-          <SubmitButton backgroundColor="white" color="#FF6F0F">
+          <SubmitButton backgroundColor="white" color="#7C9299">
             취소
           </SubmitButton>
         </BoardLink>

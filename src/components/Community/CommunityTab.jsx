@@ -4,18 +4,18 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Link } from 'react-router-dom';
 
 const WriteButton = styled.button`
+  width: 10rem;
   font-size: ${theme.fontSizes.medium};
   line-height: 22px;
   color: ${theme.colors.textWhite};
   padding: 0.8rem;
-  margin: 19px 0 19px 903px;
+  margin: 19px 0 19px 897px;
   background-color: ${theme.colors.primary};
   border: 1px solid ${theme.colors.primary};
   font-weight: bold;
   border-radius: 12px;
   &:hover {
-    filter: brightness(0.8);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    filter: brightness(1.15);
   }
 `;
 
@@ -73,8 +73,7 @@ function CommunityTab({ currentTab, onClick }) {
 
       <Link to="/community/write">
         <WriteButton>
-          <Icon fontSize="large" />
-          등록
+          글 작성
         </WriteButton>
       </Link>
     </Container>
