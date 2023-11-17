@@ -5,18 +5,22 @@ import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
+import background from '../assets/background.webp';
 
 const LoginContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12rem;
   height: 100vh;
+  background: url(${background});
 `;
 
 const LoginFormContainer = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  border-radius: 12px;
+  background-color: #fff;
 `;
 
 const LoginForm = styled.form`
@@ -27,8 +31,7 @@ const LoginForm = styled.form`
 
 const HeaderTitle = styled.h1`
   align-self: center;
-  margin-top: -4rem;
-  margin-bottom: 6.4rem;
+  margin-bottom: 4.8rem;
   font-size: ${theme.fontSizes.subtitle};
 `;
 
@@ -40,12 +43,6 @@ const ErrorMessage = styled.span`
   padding-left: 0.8rem;
   font-size: ${theme.fontSizes.medium};
   color: ${theme.colors.error};
-`;
-
-const Image = styled.img`
-  width: 48rem;
-  height: 64rem;
-  border-radius: 32px;
 `;
 
 const AuthLinksContainer = styled.div`
@@ -149,10 +146,6 @@ const Login = () => {
           </AuthLinksContainer>
         </LoginForm>
       </LoginFormContainer>
-      <Image
-        src="https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="분실물"
-      />
     </LoginContainer>
   );
 };

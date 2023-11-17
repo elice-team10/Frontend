@@ -4,18 +4,22 @@ import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX } from '../config/regex';
+import background from '../assets/background.webp';
 
 const ForgotPasswordContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12rem;
   height: 100vh;
+  background: url(${background});
 `;
 
 const ForgotPasswordFormContainer = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  border-radius: 12px;
+  background-color: #fff;
 `;
 
 const ForgotPasswordForm = styled.form`
@@ -26,8 +30,7 @@ const ForgotPasswordForm = styled.form`
 
 const HeaderTitle = styled.h1`
   align-self: center;
-  margin-top: -12rem;
-  margin-bottom: 9.6rem;
+  margin-bottom: 4.8rem;
   font-size: ${theme.fontSizes.subtitle};
 `;
 
