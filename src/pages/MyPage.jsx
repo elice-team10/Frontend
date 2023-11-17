@@ -7,6 +7,7 @@ import UserCommentTable from '../components/MyPage/UserCommentTable';
 import UserNicknameInfoComponent from '../components/MyPage/UserNicknameInfoComponent';
 import UserEmailInfoComponent from '../components/MyPage/UserEmailInfoComponent';
 import Header from '../components/UI/Header';
+import ChangePassword from './ChangePassword';
 
 const MyPageContainer = styled.div`
   display: flex;
@@ -95,6 +96,7 @@ const MyPage = () => {
   const [previousEmail, setPreviousEmail] = useState('user@email.com');
   const [isNicknameEditMode, setIsNicknameEditMode] = useState(false);
   const [isEmailEditMode, setIsEmailEditMode] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setIsNicknameEditMode(false);
@@ -144,6 +146,11 @@ const MyPage = () => {
     setEmail(previousEmail);
     setIsEmailEditMode(false);
   };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
   return (
     <>
       <Header />
@@ -162,6 +169,12 @@ const MyPage = () => {
             ))}
           </NavigationList>
         </NavAside>
+        {isModalOpen && (
+          <ChangePassword
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+          />
+        )}
 
         {currTab === '회원 정보수정/탈퇴' && (
           <UserInfoPanel>
@@ -188,7 +201,7 @@ const MyPage = () => {
               />
             </UserInfoCard>
             <ActionLinksContainer>
-              <StyledChangePasswordLink to="/changepassword">
+              <StyledChangePasswordLink onClick={openModal}>
                 비밀번호 변경
               </StyledChangePasswordLink>
               <StyledDeactivateLink>회원 탈퇴</StyledDeactivateLink>

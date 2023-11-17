@@ -51,7 +51,6 @@ export default function UserEmailInfoComponent({
   onCancelClick,
   onChange,
 }) {
-  console.log(isEditMode);
   return (
     <UserInfoContainer>
       <UserInfoBox>

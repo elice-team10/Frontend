@@ -47,7 +47,6 @@ export default function UserNicknameComponent({
   onCancelClick,
   onChange,
 }) {
-  console.log(isEditMode);
   return (
     <UserInfoContainer>
       <UserNicknameBox>

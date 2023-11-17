@@ -27,11 +27,17 @@ const Button = styled.button`
 AuthFormButton.defaultProps = {
   type: '',
   onButtonClick: () => {},
+  className: '',
 };
 
-export default function AuthFormButton({ text, onButtonClick, type }) {
+export default function AuthFormButton({
+  text,
+  onButtonClick,
+  type,
+  className,
+}) {
   return (
-    <Button type={type} onClick={onButtonClick}>
+    <Button className={className} type={type} onClick={onButtonClick}>
       {text}
     </Button>
   );

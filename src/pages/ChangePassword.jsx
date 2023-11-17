@@ -5,17 +5,20 @@ import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { PWD_REGEX } from '../config/regex';
-import background from '../assets/background.webp';
 
-const ChangePasswordContainer = styled.section`
-  display: flex;
+const ChangePasswordModalWrapper = styled.section`
+  display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  background: url(${background});
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
 `;
 
-const ChangePasswordFormContainer = styled.div`
+const ChangePasswordModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 3.2rem 4.8rem 4.8rem 4.8rem;
@@ -41,7 +44,7 @@ const ErrorMessage = styled.span`
   color: ${theme.colors.error};
 `;
 
-const ChangePassword = () => {
+const ChangePassword = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
 
   const [password, setPassword] = useState('');
@@ -71,6 +74,16 @@ const ChangePassword = () => {
 
   const handleSubmitChangePassword = async (e) => {
     e.preventDefault();
+    // TODO:
+    /**
+     * fetch가 아닌 axios로 api 요청하기
+     * 유효성 검사
+     * 현재 비밀번호가 동일한 지, 서버에 요청해서 확인
+     * 각 단계마다 문제가 있으면, 에러 메시지 업데이트, return
+     * 서버에 새 비밀번호로 업데이트 요청
+     * alert 메시지 '로그인 페이지로 이동합니다'를 띄우고,
+     * 로그인 페이지로 이동하도록 유도
+     */
 
     if (!validNewPassword) {
       setErrMessage('비밀번호는 최소 6자리 이상이어야 합니다.');
@@ -80,8 +93,6 @@ const ChangePassword = () => {
       return;
     }
 
-    // TODO: 로컬 스토리지에 저장 된 비밀번호와 현재 비밀번호가 같은 지 비교?
-    // 일치하면
     setValidPassword(true);
 
     if (!validPassword) {
@@ -102,7 +113,8 @@ const ChangePassword = () => {
       if (res.ok) {
         // 비밀번호 변경 성공
         // 알림 메시지
-        // 마이 페이지로 이동
+        // 로그인 페이지로 이동
+        navigate('/login');
       } else {
         console.error('비밀번호 변경 실패');
       }
@@ -117,15 +129,23 @@ const ChangePassword = () => {
     if (id === 'confirm_new_password') setMatchPassword(value);
   };
 
-  const handleCancelChangePassword = () => {
-    // 비밀번호 변경 취소
-    // 마이 페이지로 이동
-    navigate('/mypage');
+  const handleModalClick = (e) => {
+    e.preventDefault();
+    if (
+      e.target.className.split(' ')[2] === 'modal-container' ||
+      e.target.className.split(' ')[2] === 'cancel'
+    ) {
+      setIsModalOpen(false);
+    }
   };
 
   return (
-    <ChangePasswordContainer>
-      <ChangePasswordFormContainer>
+    <ChangePasswordModalWrapper
+      className="modal-container"
+      $isOpen={isModalOpen}
+      onClick={handleModalClick}
+    >
+      <ChangePasswordModalContainer>
         <HeaderTitle>비밀번호 변경</HeaderTitle>
         <ChangePasswordForm>
           <AuthFormInput
@@ -158,13 +178,14 @@ const ChangePassword = () => {
             onButtonClick={handleSubmitChangePassword}
           />
           <AuthFormButton
+            className="cancel"
             text="취소"
             type="cancel"
-            onButtonClick={handleCancelChangePassword}
+            onButtonClick={handleModalClick}
           />
         </ChangePasswordForm>
-      </ChangePasswordFormContainer>
-    </ChangePasswordContainer>
+      </ChangePasswordModalContainer>
+    </ChangePasswordModalWrapper>
   );
 };
 
