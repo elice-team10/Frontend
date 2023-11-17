@@ -149,6 +149,7 @@ const ChangePassword = () => {
           {(!validPassword || !validNewPassword || !validMatch) && (
             <ErrorMessage>{errMessage}</ErrorMessage>
           )}
+
           <AuthFormButton
             text="확인"
             onButtonClick={handleSubmitChangePassword}

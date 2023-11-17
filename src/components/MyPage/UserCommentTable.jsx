@@ -134,8 +134,6 @@ const rows = fake_data.map(({ commentId, commentDate, commentContent }) =>
 );
 
 const MyTablePagination = styled(TablePagination)`
-  width: 90rem;
-
   div,
   p,
   svg {
@@ -145,7 +143,7 @@ const MyTablePagination = styled(TablePagination)`
 
 export default function UserCommentTable() {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -162,12 +160,12 @@ export default function UserCommentTable() {
         boxShadow: 'none',
         borderRadius: 0,
         flexGrow: '1',
-        padding: '11.2rem 0 0 8rem',
+        padding: '6rem 0 0 8rem',
         overflow: 'hidden',
       }}
     >
       <TableContainer sx={{ maxHeight: 680 }}>
-        <Table stickyHeader aria-label="sticky table" sx={{ width: '90rem' }}>
+        <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
               {columns.map((column) => (
@@ -228,14 +226,13 @@ export default function UserCommentTable() {
       </TableContainer>
       <StyledEngineProvider>
         <MyTablePagination
-          rowsPerPageOptions={[5, 10]}
+          rowsPerPageOptions={[]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage={'페이지 당 게시글 수'}
         />
       </StyledEngineProvider>
     </Paper>

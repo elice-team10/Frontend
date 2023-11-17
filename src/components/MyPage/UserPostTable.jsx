@@ -141,8 +141,8 @@ const fake_data = [
 ];
 
 const columns = [
-  { id: 'postId', label: '게시물 번호', minWidth: 90, align: 'center' },
-  { id: 'postDate', label: '게시일', minWidth: 100, align: 'center' },
+  { id: 'postId', label: '게시물 번호', minWidth: '9rem', align: 'center' },
+  { id: 'postDate', label: '게시일', minWidth: '9rem', align: 'center' },
   {
     id: 'postTitle',
     label: '제목',
@@ -185,7 +185,7 @@ const MyTablePagination = styled(TablePagination)`
 
 export default function UserPostTable() {
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -202,7 +202,7 @@ export default function UserPostTable() {
         boxShadow: 'none',
         borderRadius: 0,
         flexGrow: '1',
-        padding: '11.2rem 0 0 8rem',
+        padding: '6rem 0 0 8rem',
         overflow: 'hidden',
       }}
     >
@@ -268,14 +268,13 @@ export default function UserPostTable() {
       </TableContainer>
       <StyledEngineProvider>
         <MyTablePagination
-          rowsPerPageOptions={[5, 10]}
+          rowsPerPageOptions={[]}
           component="div"
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage={'페이지 당 게시글 수'}
         />
       </StyledEngineProvider>
     </Paper>

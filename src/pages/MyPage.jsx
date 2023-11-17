@@ -6,10 +6,11 @@ import UserPostTable from '../components/MyPage/UserPostTable';
 import UserCommentTable from '../components/MyPage/UserCommentTable';
 import UserNicknameInfoComponent from '../components/MyPage/UserNicknameInfoComponent';
 import UserEmailInfoComponent from '../components/MyPage/UserEmailInfoComponent';
+import Header from '../components/UI/Header';
 
 const MyPageContainer = styled.div`
   display: flex;
-  padding: 8rem 9.6rem 0 9.6rem;
+  padding: 1.2rem 9.6rem 0 9.6rem;
 `;
 
 const NavAside = styled.aside`
@@ -24,7 +25,7 @@ const NavTitle = styled.h1`
 
 const UserInfoPanel = styled.div`
   flex-grow: 1;
-  padding: 11.2rem 12.8rem 11.2rem 8rem;
+  padding: 4.8rem 12.8rem 11.2rem 8rem;
 `;
 
 const NavigationList = styled.ul`
@@ -61,13 +62,9 @@ const UserInfoCard = styled.div`
 `;
 
 const Label = styled.label`
+  color: ${theme.colors.text};
+  font-weight: bold;
   font-size: ${theme.fontSizes.large};
-`;
-
-const UserInfoBox = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 `;
 
 const ActionLinksContainer = styled.div`
@@ -148,57 +145,60 @@ const MyPage = () => {
     setIsEmailEditMode(false);
   };
   return (
-    <MyPageContainer>
-      <NavAside>
-        <NavTitle>마이 페이지</NavTitle>
-        <NavigationList>
-          {tabs.map((tab, i) => (
-            <NavigationItem
-              key={`${tab}-${i}`}
-              $active={currTab === tab}
-              onClick={() => handleClickTab(tab)}
-            >
-              {tab}
-            </NavigationItem>
-          ))}
-        </NavigationList>
-      </NavAside>
+    <>
+      <Header />
+      <MyPageContainer>
+        <NavAside>
+          <NavTitle>마이 페이지</NavTitle>
+          <NavigationList>
+            {tabs.map((tab, i) => (
+              <NavigationItem
+                key={`${tab}-${i}`}
+                $active={currTab === tab}
+                onClick={() => handleClickTab(tab)}
+              >
+                {tab}
+              </NavigationItem>
+            ))}
+          </NavigationList>
+        </NavAside>
 
-      {currTab === '회원 정보수정/탈퇴' && (
-        <UserInfoPanel>
-          <UserInfoCard>
-            <Label htmlFor="nickname">닉네임</Label>
-            <UserNicknameInfoComponent
-              nickname={nickname}
-              isEditMode={isNicknameEditMode}
-              onEditMode={handleClickEditNickname}
-              onConfirmClick={handleNicknameConfirm}
-              onCancelClick={handleNicknameCancel}
-              onChange={handleNicknameChange}
-            />
-          </UserInfoCard>
-          <UserInfoCard>
-            <Label htmlFor="email">이메일</Label>
-            <UserEmailInfoComponent
-              email={email}
-              isEditMode={isEmailEditMode}
-              onEditMode={handleClickEditEmail}
-              onConfirmClick={handleEmailConfirm}
-              onCancelClick={handleEmailCancel}
-              onChange={handleEmailChange}
-            />
-          </UserInfoCard>
-          <ActionLinksContainer>
-            <StyledChangePasswordLink to="/changepassword">
-              비밀번호 변경
-            </StyledChangePasswordLink>
-            <StyledDeactivateLink>회원 탈퇴</StyledDeactivateLink>
-          </ActionLinksContainer>
-        </UserInfoPanel>
-      )}
-      {currTab === '나의 게시물' && <UserPostTable />}
-      {currTab === '나의 댓글' && <UserCommentTable />}
-    </MyPageContainer>
+        {currTab === '회원 정보수정/탈퇴' && (
+          <UserInfoPanel>
+            <UserInfoCard>
+              <Label htmlFor="nickname">닉네임</Label>
+              <UserNicknameInfoComponent
+                nickname={nickname}
+                isEditMode={isNicknameEditMode}
+                onEditMode={handleClickEditNickname}
+                onConfirmClick={handleNicknameConfirm}
+                onCancelClick={handleNicknameCancel}
+                onChange={handleNicknameChange}
+              />
+            </UserInfoCard>
+            <UserInfoCard>
+              <Label htmlFor="email">이메일</Label>
+              <UserEmailInfoComponent
+                email={email}
+                isEditMode={isEmailEditMode}
+                onEditMode={handleClickEditEmail}
+                onConfirmClick={handleEmailConfirm}
+                onCancelClick={handleEmailCancel}
+                onChange={handleEmailChange}
+              />
+            </UserInfoCard>
+            <ActionLinksContainer>
+              <StyledChangePasswordLink to="/changepassword">
+                비밀번호 변경
+              </StyledChangePasswordLink>
+              <StyledDeactivateLink>회원 탈퇴</StyledDeactivateLink>
+            </ActionLinksContainer>
+          </UserInfoPanel>
+        )}
+        {currTab === '나의 게시물' && <UserPostTable />}
+        {currTab === '나의 댓글' && <UserCommentTable />}
+      </MyPageContainer>
+    </>
   );
 };
 
