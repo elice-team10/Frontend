@@ -8,6 +8,7 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Admin from './pages/Admin.jsx';
 import NotFound from './pages/NotFound.jsx';
+import SearchResult from './pages/SearchResult.jsx';
 import { Provider } from "react-redux";
 import store from './store';
 import ForgotPassword from './pages/ForgotPassword.jsx';
