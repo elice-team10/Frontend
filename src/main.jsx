@@ -23,8 +23,13 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: '/findPassword',
-        element: <FindPassword />,
+        path: '/forgotpassword',
+        element: <ForgotPassword />,
+      },
+      { path: '/mypage', element: <MyPage /> },
+      {
+        path: '/changepassword',
+        element: <ChangePassword />,
       },
       {
         path: '/community/board',
