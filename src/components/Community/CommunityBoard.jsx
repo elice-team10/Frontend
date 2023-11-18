@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import CommunityTab from './CommunityTab';
 import { useState } from 'react';
 import CommunityCard from './CommunityCard';
+import Header from '../UI/Header';
 
 const CommunityContainer = styled.div`
   width: 1200px;
@@ -35,6 +36,8 @@ function CommunityBoard() {
   };
 
   return (
+    <>
+    <Header />
     <CommunityContainer>
       <CommunityTab currentTab={currentTab} onClick={clickTabHandle} />
       {currentTab === '찾아요' ? (
@@ -59,6 +62,7 @@ function CommunityBoard() {
         </FoundContainer>
       )}
     </CommunityContainer>
+    </>
   );
 }
 

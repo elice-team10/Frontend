@@ -5,6 +5,7 @@ import PlaceIcon from '@mui/icons-material/Place';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
+import { useNavigate } from 'react-router-dom';
 
 const Card = styled.div`
   background-color: ${theme.colors.background};
@@ -140,9 +141,11 @@ CommunityCard.defaultProps = {
 };
 
 function CommunityCard({ title, complete, content, location, date, nickname, replyCount }) {
+  let navigate = useNavigate();
+  
   return (
     <CardContainer>
-      <Card>
+      <Card onClick={() => navigate('/community/detail')}>
         <PhotoContainer>
           <WallpaperOutlinedIcon fontSize="large" />
         </PhotoContainer>

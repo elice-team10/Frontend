@@ -6,10 +6,12 @@ import Calander from '../UI/DatePicker';
 import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 import { Link } from 'react-router-dom';
 import Editor from '../UI/Editor';
+import CustomizedSwitches from '../UI/SwitchButton';
+import Header from '../UI/Header';
 
-const PostContainer = styled.div`
+export const PostContainer = styled.div`
   width: 56rem;
-  height: 60rem;
+  height: 100vh;
   display: flex;
   position: relative;
   flex-direction: column;
@@ -18,6 +20,7 @@ const PostContainer = styled.div`
   padding: 5rem 3rem;
   border: 1px solid #7c9299;
   border-radius: 1.2rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
 const TitleContainer = styled.div`
   align-items: center;
@@ -84,8 +87,10 @@ const SubmitButton = styled.button`
   font-weight: bold;
   border-radius: 12px;
   &:hover {
-    filter: ${(props) => props.backgroundColor === 'white' ? `` : 'brightness(1.15)'};
-    background-color: ${(props) => props.backgroundColor === 'white' ? `#ddd` : ''}
+    filter: ${(props) =>
+      props.backgroundColor === 'white' ? `` : 'brightness(1.15)'};
+    background-color: ${(props) =>
+      props.backgroundColor === 'white' ? `#ddd` : ''};
   }
 `;
 
@@ -106,12 +111,14 @@ const StyledSelect = styled.select`
   margin: 12px;
   outline: none;
   &:hover {
-    border: 1px solid ${theme.colors.text}
+    border: 1px solid ${theme.colors.text};
   }
 `;
 
 function CommunityWrite() {
   return (
+    <>
+    <Header />
     <PostContainer>
       <TitleContainer>
         <Title type="text" placeholder="제목을 입력해주세요." />
@@ -155,6 +162,7 @@ function CommunityWrite() {
           ))}
         </StyledSelect>
         <Calander />
+        <CustomizedSwitches />
       </ToolbarContainer>
       {/* <DividerLine style={{ top: '15rem' }} /> */}
       <ContentContainer>
@@ -175,6 +183,7 @@ function CommunityWrite() {
         </BoardLink>
       </ButtonContainer>
     </PostContainer>
+    </>
   );
 }
 

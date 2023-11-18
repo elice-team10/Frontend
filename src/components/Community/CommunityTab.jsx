@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Link } from 'react-router-dom';
 
 const WriteButton = styled.button`
-  width: 10rem;
+    width: 10rem;
   font-size: ${theme.fontSizes.medium};
   line-height: 22px;
   color: ${theme.colors.textWhite};
@@ -71,11 +71,11 @@ function CommunityTab({ currentTab, onClick }) {
         );
       })}
 
-      <Link to="/community/write">
         <WriteButton>
+      <Link to="/community/write" style={{ textDecoration: 'none', color: 'white' }}>
           글 작성
-        </WriteButton>
       </Link>
+        </WriteButton>
     </Container>
   );
 }
