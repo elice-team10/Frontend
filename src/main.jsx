@@ -8,7 +8,9 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Admin from './pages/Admin.jsx';
 import NotFound from './pages/NotFound.jsx';
-import FindPassword from './pages/FindPassword.jsx';
+import ForgotPassword from './pages/ForgotPassword.jsx';
+import MyPage from './pages/MyPage.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -23,8 +25,13 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: '/findPassword',
-        element: <FindPassword />,
+        path: '/forgotpassword',
+        element: <ForgotPassword />,
+      },
+      { path: '/mypage', element: <MyPage /> },
+      {
+        path: '/changepassword',
+        element: <ChangePassword />,
       },
       {
         path: '/community/board',
