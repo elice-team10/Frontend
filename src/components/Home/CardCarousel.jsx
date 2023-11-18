@@ -3,10 +3,27 @@ import styled from 'styled-components';
 import IconButton from '@mui/material/IconButton';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import theme from '../../config/theme';
+import airpods from '../../assets/airpods.jpg';
+import watch from '../../assets/watch.jpg';
+import card from '../../assets/card.jpg';
+import wallet from '../../assets/wallet.jpg';
+import phone from '../../assets/iphone.jpg';
+import bag from '../../assets/bag.jpg';
+import jewerly from '../../assets/jewerly.jpg';
+import clothes from '../../assets/clothes.jpg';
+import laptop from '../../assets/laptop.jpg';
+
+const CarouselText = styled.span`
+  margin-top: 5rem;
+  margin-bottom: 0.5rem;
+  margin-left: 27%;
+  align-self: flex-start;
+  display: block;
+  font-size: 1.2rem;
+  color: #7c9299;
+`;
 
 const CarouselContainer = styled.div`
-  margin-top: 5rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,7 +31,7 @@ const CarouselContainer = styled.div`
 
 const CarouselWrapper = styled.div`
   overflow: hidden;
-  max-width: 70rem; // 캐러셀의 최대 너비를 설정하세요
+  max-width: 70rem;
 `;
 
 const CarouselSlide = styled.div`
@@ -22,78 +39,111 @@ const CarouselSlide = styled.div`
   scroll-snap-type: x mandatory;
 `;
 
-const Card = styled.div`
-  width: 15.5rem;
-  height: 15.5rem;
-  margin: 1rem 1rem;
-  scroll-snap-align: start;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #393d3f;
-  border-radius: 12px;
-  flex: none;
-  font-size: ${theme.fontSizes.medium};
+const CardContainer = styled.div`
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+  position: relative;
+
   &:hover {
-    box-shadow: 0 2px 0.5rem rgba(0, 0, 0, 0.3); /* 호버 시 그림자 효과 */
-    border: 2px solid #ff6700;
+    transform: scale(1.05);
+    div {
+      display: block;
+    }
   }
 `;
 
+const CardImage = styled.img`
+  margin: 1rem 1rem;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 8px;
+  width: 15.5rem;
+  height: 15.5rem;
+`;
+
+const CardText = styled.div`
+  display: none;
+  position: absolute;
+  bottom: 1rem;
+  left: 7rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem;
+  border-radius: 5px;
+`;
+
 const cardsData = [
-  { image: '../../assets/airpods.jpg', label: '이어폰' },
-  { image: '../../assets/airpods.jpg', label: '지갑' },
-  { image: '../../assets/airpods.jpg', label: '휴대폰' },
-  { image: '../../assets/airpods.jpg', label: '시계' },
-  { image: '../../assets/airpods.jpg', label: '카드' },
-  { image: '../../assets/airpods.jpg', label: '가방' },
+  { image: airpods, label: '이어폰' },
+  { image: wallet, label: '지갑' },
+  { image: phone, label: '휴대폰' },
+  { image: card, label: '카드' },
+  { image: bag, label: '가방' },
+  { image: jewerly, label: '귀금속' },
+  { image: clothes, label: '의류' },
+  { image: laptop, label: '노트북' },
+  { image: watch, label: '시계' },
 ];
 
 const CardCarousel = () => {
-  // 카드 데이터를 확장합니다. 마지막 카드 다음에 첫 번째 카드를 추가합니다.
-  const extendedCards = [...cardsData, ...cardsData];
-
   // 초기 인덱스를 0으로 설정합니다.
   const [activeStep, setActiveStep] = useState(0);
   const [carouselTransition, setCarouselTransition] = useState(
-    'transform 500ms ease-in-out',
+    'transform 0.3s ease-in-out',
   );
 
   const handleNext = () => {
-    setActiveStep((prevActiveStep) =>
-      prevActiveStep === cardsData.length - 1 ? 0 : prevActiveStep + 1,
-    );
+    // 애니메이션 효과를 비활성화하는 조건을 체크합니다.
+    if (activeStep === cardsData.length - 4) {
+      setCarouselTransition('none'); // 애니메이션 효과 제거
+      setActiveStep(0);
+    } else {
+      setCarouselTransition('transform 0.3s ease-out'); // 기본 애니메이션 복구
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
 
   const handleBack = () => {
-    setActiveStep((prevActiveStep) =>
-      prevActiveStep === 0 ? cardsData.length - 1 : prevActiveStep - 1,
-    );
+    // 애니메이션 효과를 비활성화하는 조건을 체크합니다.
+    if (activeStep === 0) {
+      setCarouselTransition('none'); // 애니메이션 효과 제거
+      setActiveStep(cardsData.length - 4);
+    } else {
+      setCarouselTransition('transform 0.3s ease-out'); // 기본 애니메이션 복구
+      setActiveStep((prevActiveStep) => prevActiveStep - 1);
+    }
   };
 
   return (
-    <CarouselContainer>
-      <IconButton onClick={handleBack}>
-        <ArrowBackIosIcon style={{ color: '#ff6700', fontSize: '2rem' }} />
-      </IconButton>
-      <CarouselWrapper>
-        <CarouselSlide
-          style={{
-            transform: `translateX(-${activeStep * 25.25}%)`,
-          }}
-        >
-          {extendedCards.map((card, index) => (
-            <Card key={index} elevation={4}>
-              {card.label}
-              <img src={card.image} />
-            </Card>
-          ))}
-        </CarouselSlide>
-      </CarouselWrapper>
-      <IconButton onClick={handleNext}>
-        <ArrowForwardIosIcon style={{ color: '#ff6700', fontSize: '2rem' }} />
-      </IconButton>
-    </CarouselContainer>
+    <>
+      <CarouselText> 자주 잃어버리는 물건들</CarouselText>
+      <CarouselContainer>
+        <IconButton onClick={handleBack}>
+          <ArrowBackIosIcon style={{ color: '#ff6700', fontSize: '2rem' }} />
+        </IconButton>
+        <CarouselWrapper>
+          <CarouselSlide
+            style={{
+              transition: `${carouselTransition}`,
+              transform: `translateX(-${activeStep * 25}%)`,
+            }}
+          >
+            {cardsData.map((card, index) => (
+              <CardContainer>
+                <CardImage src={card.image} key={index} />
+                <CardText>{card.label}</CardText>
+              </CardContainer>
+            ))}
+          </CarouselSlide>
+        </CarouselWrapper>
+        <IconButton onClick={handleNext}>
+          <ArrowForwardIosIcon style={{ color: '#ff6700', fontSize: '2rem' }} />
+        </IconButton>
+      </CarouselContainer>
+    </>
   );
 };
 

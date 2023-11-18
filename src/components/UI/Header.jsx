@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import logoImage from '../../assets/로고10.png'; // 로고 이미지 경로를 정확히 설정하세요.
+import logoImage from '../../assets/로고10.png';
 
 const HeaderContainer = styled.header`
   background-color: #000000;

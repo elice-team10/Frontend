@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import lafLogo from '../../assets/laf_logo.png';
 import SearchIcon from '@mui/icons-material/Search';
 import { useNavigate } from 'react-router-dom';
-import Header from '../UI/Header';
 
 const HomeContainer = styled.div`
   width: 1200px;
@@ -26,7 +25,7 @@ const HomeSearchBarContainer = styled.div`
 const SearchBox = styled.div`
   display: flex;
   align-items: center;
-  width: 700px;
+  width: 70rem;
   height: 50px;
   border-radius: 32px;
   border: 2.5px solid #ff6700;
@@ -56,9 +55,9 @@ const SearchInput = styled.input`
   border: none;
   color: #393d3f;
   outline: none;
-  width: 700px;
+  width: 70rem;
   margin: auto 30px auto 30px;
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-family: 'Noto Sans KR', sans-serif; /* 폰트 적용 */
   // transition: color 0.3s;
   // ::placeholder {
@@ -68,24 +67,20 @@ const SearchInput = styled.input`
 
 const HomeSearchBar = () => {
   return (
-    <>
-      <Header />
-      <HomeContainer>
-        <Image
-          src={lafLogo}
-          onClick={() => {
-            window.location.href = '/';
-          }}
-        />
-        <HomeSearchBarContainer>
-          <SearchBox>
-            <SearchInput type="text" placeholder="무엇을 잃어버렸나요?" />
-            <StyledIcon />
-          </SearchBox>
-          {/* <SubmitButton>검색</SubmitButton> */}
-        </HomeSearchBarContainer>
-      </HomeContainer>
-    </>
+    <HomeContainer>
+      <Image
+        src={lafLogo}
+        onClick={() => {
+          window.location.href = '/';
+        }}
+      />
+      <HomeSearchBarContainer>
+        <SearchBox>
+          <SearchInput type="text" placeholder="무엇을 잃어버렸나요?" />
+          <StyledIcon />
+        </SearchBox>
+      </HomeSearchBarContainer>
+    </HomeContainer>
   );
 };
 

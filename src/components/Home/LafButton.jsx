@@ -16,7 +16,7 @@ const StyledButton = styled.button`
   transition: box-shadow 0.2s; /* 그림자 효과를 위한 전환 */
 
   &:hover {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* 호버 시 그림자 효과 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* 호버 시 그림자 효과 */
   }
 `;
 

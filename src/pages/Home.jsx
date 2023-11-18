@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import HomeSearchBar from '../components/Home/HomeSearchBar';
 import HomeButtons from '../components/Home/HomeButtons';
 import CardCarousel from '../components/Home/CardCarousel';
+import Header from '../components/UI/Header';
 
 const HomeContainer = styled.div`
   display: flex;
@@ -13,7 +14,8 @@ const HomeContainer = styled.div`
 const Home = () => {
   return (
     <HomeContainer>
-      <HomeSearchBar></HomeSearchBar>
+      <Header />
+      <HomeSearchBar />
       <HomeButtons />
       <CardCarousel />
     </HomeContainer>

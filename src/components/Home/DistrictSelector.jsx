@@ -39,6 +39,12 @@ const LabelText = styled('span')`
   font-family: 'Noto Sans KR', sans-serif; /* 폰트 적용 */
 `;
 
+const StyledMenuItem = styled(MenuItem)`
+  font-family: 'Noto Sans KR';
+  font-size: ${theme.fontSizes.medium};
+  background-color: #393d3f;
+`;
+
 // 컴포넌트
 const DistrictSelector = () => {
   const [district, setDistrict] = React.useState('');
@@ -118,9 +124,9 @@ const DistrictSelector = () => {
           '중구',
           '중랑구',
         ].map((area) => (
-          <MenuItem key={area} value={area}>
+          <StyledMenuItem key={area} value={area}>
             {area}
-          </MenuItem>
+          </StyledMenuItem>
         ))}
       </StyledSelect>
     </StyledFormControl>
