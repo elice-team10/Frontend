@@ -2,18 +2,25 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../config/theme';
+import AuthFormInput from '../components/Auth/AuthFormInput';
+import AuthFormButton from '../components/Auth/AuthFormButton';
+import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
+import background from '../assets/background.webp';
 
 const LoginContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12rem;
   height: 100vh;
+  background: url(${background});
 `;
 
 const LoginFormContainer = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  border-radius: 12px;
+  background-color: #fff;
 `;
 
 const LoginForm = styled.form`
@@ -23,63 +30,19 @@ const LoginForm = styled.form`
 `;
 
 const HeaderTitle = styled.h1`
-  font-size: ${theme.fontSizes.heading1};
-  margin-top: -4rem;
-  margin-bottom: 6.4rem;
   align-self: center;
+  margin-bottom: 4.8rem;
+  font-size: ${theme.fontSizes.subtitle};
 `;
 
 const FormLabel = styled.label`
   font-size: ${theme.fontSizes.medium};
 `;
 
-const Input = styled.input`
-  margin-bottom: 10px;
-  padding: 1.2rem 2.8rem;
-  width: 32rem;
-  height: 3.2rem;
-  font-size: ${theme.fontSizes.large};
-  color: ${theme.colors.text};
-  border: 1px solid ${theme.colors.border};
-  border-radius: 4px;
-
-  &:focus {
-    outline: none;
-    border-color: ${theme.colors.primary};
-  }
-
-  &::placeholder {
-    color: ${theme.colors.textLightgray};
-  }
-`;
-
-const Button = styled.button`
-  padding: 1.8rem 3.2rem;
-  margin: 4.8rem 0 2.4rem;
-  background-color: ${theme.colors.primary};
-  color: ${theme.colors.textWhite};
-  border: none;
-  border-radius: 8px;
-  font-size: ${theme.fontSizes.large};
-  cursor: pointer;
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: ${theme.colors.accent};
-  }
-`;
-
 const ErrorMessage = styled.span`
-  color: ${theme.colors.error};
-  font-size: ${theme.fontSizes.medium};
   padding-left: 0.8rem;
-  margin-bottom: 0.8rem;
-`;
-
-const Image = styled.img`
-  width: 48rem;
-  height: 64rem;
-  border-radius: 32px;
+  font-size: ${theme.fontSizes.medium};
+  color: ${theme.colors.error};
 `;
 
 const AuthLinksContainer = styled.div`
@@ -89,13 +52,14 @@ const AuthLinksContainer = styled.div`
   a {
     color: ${theme.colors.textLightgray};
     font-size: ${theme.fontSizes.small};
+
     transition: all 0.3s;
 
-    /* LVHA */
     &:link,
     &:visited {
       color: ${theme.colors.textLightgray};
     }
+
     &:hover,
     &:active {
       color: ${theme.colors.primary};
@@ -104,64 +68,84 @@ const AuthLinksContainer = styled.div`
 `;
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      if (!EMAIL_REGEX.test(email)) {
+        setError('유효한 이메일 주소를 입력하세요.');
+        return;
+      }
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      setError('유효한 이메일 주소를 입력하세요.');
-      return;
+      if (!PWD_REGEX.test(password)) {
+        setError('비밀번호는 최소 6자리 이상이어야 합니다.');
+        return;
+      }
+
+      // TODO: API 적용
+      const res = await fetch('API', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      if (res.ok) {
+        console.log('로그인 성공!');
+        // 로그인에 성공하면 Home 페이지로 이동
+        navigate('/');
+      } else {
+        console.error('로그인 실패');
+      }
+    } catch (error) {
+      console.error('로그인 중 오류 발생: ', error);
     }
+  };
 
-    if (password.length < 6) {
-      setError('비밀번호는 최소 6자리 이상이어야 합니다.');
-      return;
+  const handleInputChange = (id, value) => {
+    if (id === 'email') {
+      setEmail(value);
     }
-
-    // TODO: 로그인 로직 추가하기
-
-    // 로그인 성공하면 다음 페이지로 이동
-    navigate('/');
+    if (id === 'password') {
+      setPassword(value);
+    }
   };
 
   return (
     <LoginContainer>
       <LoginFormContainer>
         <HeaderTitle>로그인</HeaderTitle>
-        <LoginForm>
+        <LoginForm onSubmit={handleSubmit}>
           <FormLabel htmlFor="email">이메일</FormLabel>
-          <Input
+          <AuthFormInput
             id="email"
             type="text"
             placeholder="이메일"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onInputChange={handleInputChange}
           />
-          <FormLabel htmlFor="">비밀번호</FormLabel>
-          <Input
-            id="비밀번호"
+          <FormLabel htmlFor="password">비밀번호</FormLabel>
+          <AuthFormInput
+            id="password"
             type="password"
             placeholder="비밀번호"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onInputChange={handleInputChange}
           />
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          <Button onClick={handleLogin}>로그인</Button>
+          <AuthFormButton text="로그인" />
           <AuthLinksContainer>
             <Link to="/register">회원가입</Link>
-            <Link to="/findPassword">비밀번호 찾기</Link>
+            <Link to="/forgotpassword">비밀번호 찾기</Link>
           </AuthLinksContainer>
         </LoginForm>
       </LoginFormContainer>
-      <Image
-        src="https://images.unsplash.com/photo-1606841837239-c5a1a4a07af7?q=80&w=1074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-        alt="분실물"
-      />
     </LoginContainer>
   );
 };

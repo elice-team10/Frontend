@@ -8,8 +8,11 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Admin from './pages/Admin.jsx';
 import NotFound from './pages/NotFound.jsx';
-import FindPassword from './pages/FindPassword.jsx';
-import SearchResult from './pages/SearchResult.jsx';
+import { Provider } from "react-redux";
+import store from './store';
+import ForgotPassword from './pages/ForgotPassword.jsx';
+import ChangePassword from './pages/ChangePassword.jsx';
+import MyPage from './pages/MyPage.jsx';
 
 const router = createBrowserRouter([
   {
@@ -28,8 +31,13 @@ const router = createBrowserRouter([
         element: <Register />,
       },
       {
-        path: '/findPassword',
-        element: <FindPassword />,
+        path: '/forgotpassword',
+        element: <ForgotPassword />,
+      },
+      { path: '/mypage', element: <MyPage /> },
+      {
+        path: '/changepassword',
+        element: <ChangePassword />,
       },
       {
         path: '/community/board',
@@ -50,5 +58,7 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />,
+ <Provider store={store}>
+    <RouterProvider router={router} />
+  </Provider>
 );
