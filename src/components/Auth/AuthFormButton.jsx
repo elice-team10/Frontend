@@ -4,7 +4,7 @@ import theme from '../../config/theme';
 
 const Button = styled.button`
   padding: 1.8rem 3.2rem;
-  margin: ${(props) => (props.type === 'cancel' ? '0' : '4.8rem 0 0.8rem')};
+  margin: ${(props) => (props.type === 'cancel' ? '0' : '1.6rem 0')};
   border: ${(props) =>
     props.type === 'cancel' ? `1px solid ${theme.colors.border}` : 'none'};
   border-radius: 12px;
@@ -27,11 +27,17 @@ const Button = styled.button`
 AuthFormButton.defaultProps = {
   type: '',
   onButtonClick: () => {},
+  className: '',
 };
 
-export default function AuthFormButton({ text, onButtonClick, type }) {
+export default function AuthFormButton({
+  text,
+  onButtonClick,
+  type,
+  className,
+}) {
   return (
-    <Button type={type} onClick={onButtonClick}>
+    <Button className={className} type={type} onClick={onButtonClick}>
       {text}
     </Button>
   );

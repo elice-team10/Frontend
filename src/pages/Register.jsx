@@ -5,6 +5,7 @@ import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { NICKNAME_REGEX, EMAIL_REGEX, PWD_REGEX } from '../config/regex';
+import background from '../assets/background.webp';
 
 const REGISTER_URL = '/register';
 
@@ -12,13 +13,16 @@ const RegisterContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12rem;
   height: 100vh;
+  background: url(${background});
 `;
 
 const RegisterFormContainer = styled.div`
   display: flex;
   flex-direction: column;
+  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  border-radius: 12px;
+  background-color: #fff;
 `;
 
 const RegisterForm = styled.form`
@@ -29,8 +33,7 @@ const RegisterForm = styled.form`
 
 const HeaderTitle = styled.h1`
   align-self: center;
-  margin-top: -4rem;
-  margin-bottom: 6.4rem;
+  margin-bottom: 4.8rem;
   font-size: ${theme.fontSizes.subtitle};
 `;
 
