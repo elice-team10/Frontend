@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
 
@@ -39,9 +39,32 @@ const rows = [
 ];
 
 export default function AdminFoundBoard() {
+  /*
+  const [rows, setRows] = useState([]); // 서버로부터 받은 데이터를 저장할 상태
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // 서버로부터 board_category가 0인 게시물만 가져옴
+        const response = await axios.get('/api/posts', { params: { board_category: 0 } });
+        setRows(response.data); // 서버로부터 받은 데이터로 rows 상태를 업데이트
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    };
+    fetchData();
+  }, []);
+  */
+
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
+        /*
+        onSelectionModelChange={(newSelection) => {
+        onSelectionChange(newSelection); // 선택된 행 상태를 상위 컴포넌트로 전달
+        }}
+        */
+
         rows={rows}
         columns={columns}
         pageSizeOptions={[10]}

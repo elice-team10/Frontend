@@ -15,9 +15,9 @@ const AdminTitleBox = styled.div`
   margin: 30px 0;
   font-weight: bold;
   letter-spacing: 3px;
-  font-size: 3.6rem;
+  font-size: ${theme.fontSizes.title};
   @media (max-width: 1200px) {
-    font-size: ${theme.fontSizes.heading1};
+    font-size: ${theme.fontSizes.subtitle};
   }
   color: ${theme.colors.text};
 `;

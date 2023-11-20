@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
 
@@ -26,7 +26,7 @@ const rows = [
     timestamps: '2023/11/14',
   },
   {
-    id: 2,
+    id: 2, 
     nickname: 'Snow',
     content: '찾아주셔서 감사합니다!!!!!!!!!!!!!!!!!!!!!!!!!!!',
     postId: '1',
@@ -38,6 +38,12 @@ export default function AdminFoundComment() {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
+        /*
+        onSelectionModelChange={(newSelection) => {
+        onSelectionChange(newSelection); // 선택된 행 상태를 상위 컴포넌트로 전달
+        }}
+        */
+
         rows={rows}
         columns={columns}
         pageSizeOptions={[10]}

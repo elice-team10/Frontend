@@ -4,16 +4,16 @@ import theme from '../../config/theme';
 
 const columns = [
   { field: 'id', headerName: '회원 번호', width: 230 },
-  { field: 'email', headerName: '이메일', width: 230 },
+  { field: 'email', headerName: '아이디(이메일)', width: 230 },
   { field: 'nickname', headerName: '닉네임', width: 230 },
   {
     field: 'status',
-    headerName: '현재 상태',
+    headerName: '회원 상태',
     width: 230,
   },
   {
     field: 'date',
-    headerName: '가입 시기',
+    headerName: '회원 가입일',
     width: 228,
   },
 ];

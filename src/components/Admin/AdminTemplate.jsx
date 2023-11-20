@@ -26,7 +26,7 @@ const AdminMenuBox = styled.div`
 const AdminMenu = styled.div`
   width: 150px;
   text-align: center;
-  font-size: ${theme.fontSizes.heading1};
+  font-size: ${theme.fontSizes.subtitle};
   @media (max-width: 1200px) {
     font-size: ${theme.fontSizes.large};
   }
@@ -68,7 +68,7 @@ const AdminSubNavBox = styled.div`
   justify-content: center;
   align-items: center;
   width: ${(props) => props.$width};
-  height: 35px;
+  height: 40px;
   gap: 1.5rem;
   @media (max-width: 1200px) {
     width: ${(props) =>
@@ -80,20 +80,16 @@ const AdminSubNavBox = styled.div`
 `;
 
 const AdminSubMenu = styled.div`
-  width: 80px;
+  width: 76px;
   @media (max-width: 1200px) {
     width: 60px;
   }
   height: 20px;
   @media (max-width: 1200px) {
-    height: 15px;
+    height: 18px;
   }
-  padding-top: 1px;
   text-align: center;
-  font-size: ${theme.fontSizes.medium};
-  @media (max-width: 1200px) {
-    font-size: ${theme.fontSizes.small};
-  }
+  font-size: ${theme.fontSizes.small};
   letter-spacing: 4px;
   color: ${(props) =>
     props.$active ? theme.colors.text : theme.colors.textLightgray};
@@ -125,11 +121,39 @@ const AdminTemplate = () => {
   const handleDeleteUsers = async () => {
     try {
       await axios.post('/api/delete-users', { userIds: selectedRows });
-      // 성공적으로 삭제 후 추가 로직?
+      // 성공적으로 삭제 후 추가 처리
     } catch (error) {
       console.error('Error deleting users: ', error);
     }
   };
+
+  const handleDeletePost = async () => {
+    try {
+      // 선택된 게시물을 삭제하는 로직
+      await axios.post('/api/delete-Post', { PostIds: selectedRows });
+      // 성공 후 추가 처리
+    } catch (error) {
+      console.error('Error deleting Post: ', error);
+    }
+  };
+
+  const handleDeleteComment = async () => {
+    try {
+      // 선택된 댓글을 삭제하는 로직
+      await axios.post('/api/delete-comments', { commentIds: selectedRows });
+      // 성공 후 추가 처리, 예를 들어 상태 업데이트나 사용자에게 알림 등
+    } catch (error) {
+      console.error('Error deleting comments: ', error);
+    }
+  };
+
+  const showDeleteUserBtn = activeMenu === '회원정보';
+  const showDeletePostBtn =
+    (activeMenu === '찾아요' || activeMenu === '주웠어요') &&
+    activeSubMenu === '게시물';
+  const showDeleteCommentBtn =
+    (activeMenu === '찾아요' || activeMenu === '주웠어요') &&
+    activeSubMenu === '댓글';
 
   let table;
 
@@ -137,16 +161,16 @@ const AdminTemplate = () => {
     table = <AdminUser onSelectionChange={setSelectedRows} />;
   }
   if (activeMenu === '찾아요' && activeSubMenu === '게시물') {
-    table = <AdminLostBorad />;
+    table = <AdminLostBorad onSelectionChange={setSelectedRows} />;
   }
   if (activeMenu === '찾아요' && activeSubMenu === '댓글') {
-    table = <AdminLostComment />;
+    table = <AdminLostComment onSelectionChange={setSelectedRows} />;
   }
   if (activeMenu === '주웠어요' && activeSubMenu === '게시물') {
-    table = <AdminFoundBoard />;
+    table = <AdminFoundBoard onSelectionChange={setSelectedRows} />;
   }
   if (activeMenu === '주웠어요' && activeSubMenu === '댓글') {
-    table = <AdminFoundComment />;
+    table = <AdminFoundComment onSelectionChange={setSelectedRows} />;
   }
 
   return (
@@ -181,7 +205,15 @@ const AdminTemplate = () => {
             주웠어요
           </AdminMenu>
         </AdminMenuBox>
-        <Button onClick={handleDeleteUsers}>관리자 권한으로 탈퇴</Button>
+        {showDeleteUserBtn && (
+          <Button onClick={handleDeleteUsers}>관리자 권한으로 탈퇴</Button>
+        )}
+        {showDeletePostBtn && (
+          <Button onClick={handleDeletePost}>관리자 권한으로 삭제</Button>
+        )}
+        {showDeleteCommentBtn && (
+          <Button onClick={handleDeleteComment}>관리자 권한으로 삭제</Button>
+        )}
       </AdminNavContainer>
       <AdminSubNavContainer>
         <AdminSubNavBox
