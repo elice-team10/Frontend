@@ -50,7 +50,7 @@ const Header = () => {
       <ContentContainer>
         <Logo src={logoImage} alt="LAF Logo" onClick={() => navigate('/')} />
         <Navigation>
-          <NavLink onClick={() => navigate('/board')}>게시판</NavLink>
+          <NavLink onClick={() => navigate('/community/board')}>게시판</NavLink>
           <NavLink onClick={() => navigate('/mypage')}>마이 페이지</NavLink>
           <NavLink onClick={() => navigate('/logout')}>로그아웃</NavLink>
         </Navigation>

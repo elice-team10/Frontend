@@ -8,7 +8,10 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Admin from './pages/Admin.jsx';
 import NotFound from './pages/NotFound.jsx';
-import { Provider } from 'react-redux';
+import CommunityBoard from './components/Community/CommunityBoard.jsx';
+import CommunityDetail from './components/Community/CommunityDetail.jsx';
+import CommunityWrite from './components/Community/CommunityWrite.jsx';
+import { Provider } from "react-redux";
 import store from './store';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
@@ -32,15 +35,15 @@ const router = createBrowserRouter([
       { path: '/mypage', element: <MyPage /> },
       {
         path: '/community/board',
-        // element: <CommunityBoard />,
+        element: <CommunityBoard />,
       },
       {
         path: '/community/detail',
-        // element: <CommunityDetail />,
+        element: <CommunityDetail />,
       },
       {
         path: '/community/write',
-        // element: <CommunityWrite />,
+        element: <CommunityWrite />,
       },
       { path: '/admin', element: <Admin /> },
       // ... 다른 컴포넌트들
