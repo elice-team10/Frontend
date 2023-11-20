@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import theme from "../../config/theme";
+import styled from 'styled-components';
+import theme from '../../config/theme';
 
 const ReplyContainer = styled.div`
   width: 56rem;
@@ -10,6 +10,7 @@ const ReplyContainer = styled.div`
     padding: 1.3rem;
     border: 1px solid #ccc;
     border-radius: 12px;
+    // box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   }
 
   & li {
@@ -88,14 +89,18 @@ const ReplyButton = styled.div`
   display: flex;
   justify-content: inherit;
   color: ${theme.colors.textLightgray};
+  
+  & div {
+    padding-left: 8px;
+  }
 
   & div:hover {
     color: ${theme.colors.primary};
   }
+
 `;
 
 function Comment() {
-
   return (
     <>
       <ReplyContainer>
@@ -112,7 +117,7 @@ function Comment() {
               </div>
               <ReplyButton>
                 <div>수정</div>
-                <div style={{ paddingLeft: `8px` }}>삭제</div>
+                <div>삭제</div>
               </ReplyButton>
             </ReplyBoard>
             <p>그거 제가 주웠어요!</p>

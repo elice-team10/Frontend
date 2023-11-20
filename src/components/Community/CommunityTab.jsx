@@ -1,10 +1,9 @@
 import styled, { css } from 'styled-components';
 import theme from '../../config/theme';
-import EditIcon from '@mui/icons-material/Edit';
 import { Link } from 'react-router-dom';
 
 const WriteButton = styled.button`
-    width: 10rem;
+  width: 10rem;
   font-size: ${theme.fontSizes.medium};
   line-height: 22px;
   color: ${theme.colors.textWhite};
@@ -17,12 +16,6 @@ const WriteButton = styled.button`
   &:hover {
     filter: brightness(1.15);
   }
-`;
-
-const Icon = styled(EditIcon)`
-  color: ${theme.colors.textWhite};
-  font-size: 'large';
-  margin-right: 0.5rem;
 `;
 
 const Container = styled.div`
@@ -70,12 +63,14 @@ function CommunityTab({ currentTab, onClick }) {
           </EachTab>
         );
       })}
-
-        <WriteButton>
-      <Link to="/community/write" style={{ textDecoration: 'none', color: 'white' }}>
+      <WriteButton>
+        <Link
+          to="/community/write"
+          style={{ textDecoration: 'none', color: 'white' }}
+        >
           글 작성
-      </Link>
-        </WriteButton>
+        </Link>
+      </WriteButton>
     </Container>
   );
 }

@@ -8,14 +8,14 @@ import { Link } from 'react-router-dom';
 import Editor from '../UI/Editor';
 import CustomizedSwitches from '../UI/SwitchButton';
 import Header from '../UI/Header';
+import { LOCATION_CATEGORY } from '../../config/constants';
 
 export const PostContainer = styled.div`
   width: 56rem;
-  height: 100vh;
+  height: 100%;
   display: flex;
   position: relative;
   flex-direction: column;
-  justify-content: center;
   margin: 5rem auto;
   padding: 3rem;
   border: 1px solid #7c9299;
@@ -53,22 +53,34 @@ const ToolbarContainer = styled.div`
   display: flex;
   height: 7rem;
   align-items: center;
-  padding-top: 1.8rem;
 `;
 const Location = styled.p``;
 
 const ContentContainer = styled.div`
   display: flex;
-  height: 58rem;
-  align-items: center;
-  margin: 0 1.2rem 7rem;
+  flex-direction: column;
+  height: 29rem;
+  margin: 0.4rem 1.2rem 1.2rem;
 `;
-const Content = styled.input`
+const Content = styled.textarea`
   margin: auto;
-  width: 62rem;
-  height: 48rem;
-  border: none;
+  padding: 2rem;
+  width: 49rem;
+  height: 24rem;
+  border: 1px solid #ccc;
+  border-radius: 1.2rem;
   outline: none;
+  overflow: hidden;
+  resize: none;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: ${theme.fontSizes.medium};
+  color: ${theme.colors.text};
+
+  &::placeholder {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: ${theme.fontSizes.medium};
+    color: ${theme.colors.textLightgray};
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -115,74 +127,76 @@ const StyledSelect = styled.select`
   }
 `;
 
+const ImgFile = styled.input`
+  &::file-selector-button {
+    width: 83.2px;
+    padding-bottom: 15px;
+    padding: 8px;
+    background: ${theme.colors.textWhite};
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.4375em;
+    letter-spacing: 0.00938em;
+    color: ${theme.colors.text};
+    box-sizing: border-box;
+    margin: 12px;
+    outline: none;
+    &:hover {
+      border: 1px solid ${theme.colors.text};
+    }
+  }
+`;
+
 function CommunityWrite() {
   return (
     <>
-    <Header />
-    <PostContainer>
-      <TitleContainer>
-        <Title type="text" placeholder="제목을 입력해주세요." />
-        {/* <DividerLine style={{ top: '9rem' }} /> */}
-      </TitleContainer>
-      <ToolbarContainer>
-        <StyledSelect>
-          <option disabled hidden selected>
-            <PlaceIcon /> 지역 선택
-          </option>
-          {[
-            '강남구',
-            '강동구',
-            '강북구',
-            '강서구',
-            '관악구',
-            '광진구',
-            '구로구',
-            '금천구',
-            '노원구',
-            '도봉구',
-            '동대문구',
-            '동작구',
-            '마포구',
-            '서대문구',
-            '서초구',
-            '성동구',
-            '성북구',
-            '송파구',
-            '양천구',
-            '영등포구',
-            '용산구',
-            '은평구',
-            '종로구',
-            '중구',
-            '중랑구',
-          ].map((area) => (
-            <option key={area} value={area}>
-              {area}
+      <Header />
+      <PostContainer>
+        <TitleContainer>
+          <Title type="text" placeholder="제목을 입력해주세요." />
+          {/* <DividerLine style={{ top: '9rem' }} /> */}
+        </TitleContainer>
+        <ToolbarContainer>
+          <StyledSelect>
+            <option disabled hidden selected>
+              <PlaceIcon /> 지역 선택
             </option>
-          ))}
-        </StyledSelect>
-        <Calander />
+            {LOCATION_CATEGORY.map((area) => (
+              <option key={area} value={area}>
+                {area}
+              </option>
+            ))}
+          </StyledSelect>
+          <Calander />
+          <ImgFile
+            type="file"
+            id="imgFile"
+            name="imgFile"
+            accept="image/png, image/jpeg"
+          />
+        </ToolbarContainer>
+        {/* <DividerLine style={{ top: '15rem' }} /> */}
         <CustomizedSwitches />
-      </ToolbarContainer>
-      {/* <DividerLine style={{ top: '15rem' }} /> */}
-      <ContentContainer>
-        {/* <Content
-          cols="50"
-          rows="10"
-          placeholder="찾는(은) 물건의 위치, 장소와 날짜를 상세하게 적을 수록 찾을 수 있는 확률이 높아져요!"
-        ></Content> */}
-        <Editor />
-      </ContentContainer>
-      {/* <DividerLine style={{ top: '64rem' }} /> */}
-      <ButtonContainer>
-        <SubmitButton>등록</SubmitButton>
-        <BoardLink to="/community/board">
-          <SubmitButton backgroundColor="white" color="#7C9299">
-            취소
-          </SubmitButton>
-        </BoardLink>
-      </ButtonContainer>
-    </PostContainer>
+        <ContentContainer>
+          <Content
+            cols="50"
+            rows="10"
+            placeholder="찾는(은) 물건의 위치, 장소와 날짜를 상세하게 적을 수록 찾을 수 있는 확률이 높아져요!"
+          ></Content>
+          {/* <Editor /> */}
+        </ContentContainer>
+        {/* <DividerLine style={{ top: '64rem' }} /> */}
+        <ButtonContainer>
+          <SubmitButton>등록</SubmitButton>
+          <BoardLink to="/community/board">
+            <SubmitButton backgroundColor="white" color="#7C9299">
+              취소
+            </SubmitButton>
+          </BoardLink>
+        </ButtonContainer>
+      </PostContainer>
     </>
   );
 }

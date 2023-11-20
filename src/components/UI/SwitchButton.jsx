@@ -67,7 +67,7 @@ export default function CustomizedSwitches() {
       <FormControlLabel
         control={<IOSSwitch sx={{ m: 1 }} checked={completed} onChange={switchChangeHandle} />}
         label={completed ? '완료' : '미완료'}
-        style={{ marginLeft: '17rem' }}
+        style={{ marginLeft: '1rem' }}
       />
     </FormGroup>
   );
