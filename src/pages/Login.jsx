@@ -88,13 +88,18 @@ const Login = () => {
       }
 
       // TODO: API 적용
-      const res = await fetch('API', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await fetch(
+        'http://kdt-sw-6-team10.elicecoding.com/api/user/login',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({ email, password }),
         },
-        body: JSON.stringify({ email, password }),
-      });
+      );
+      console.log(res);
 
       if (res.ok) {
         console.log('로그인 성공!');
