@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import theme from '../config/theme';
 import Header from '../components/UI/Header';
 import MyPageUserPostTable from '../components/MyPage/MyPagePostTable';
 import MyPageCommentTable from '../components/MyPage/MyPageCommentTable';
-import MyPageNicknameInfoComponent from '../components/MyPage/MyPageNicknameInfoComponent';
-import MyPageEmailInfoComponent from '../components/MyPage/MyPageEmailInfoComponent';
 import MyPageChangePassword from '../components/MyPage/MyPageChangePassword';
+import { NICKNAME_REGEX, EMAIL_REGEX } from '../config/regex';
 
 const MyPageContainer = styled.div`
   display: flex;
@@ -90,65 +89,97 @@ const tabs = ['회원 정보수정/탈퇴', '나의 게시물', '나의 댓글']
 
 const MyPage = () => {
   const [currTab, setCurrTab] = useState('회원 정보수정/탈퇴');
-  const [nickname, setNickname] = useState('유저 이름');
-  const [previousNickname, setPreviousNickname] = useState('유저 이름');
+  const [nickname, setNickname] = useState('유저이름');
   const [email, setEmail] = useState('user@email.com');
-  const [previousEmail, setPreviousEmail] = useState('user@email.com');
+  const [tempNickname, setTempNickname] = useState('');
+  const [tempEmail, setTempEmail] = useState('');
   const [isNicknameEditMode, setIsNicknameEditMode] = useState(false);
   const [isEmailEditMode, setIsEmailEditMode] = useState(false);
+  const [errorMsgNickname, setErrorMsgNickname] = useState('');
+  const [errorMsgEmail, setErrorMsgEmail] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  useEffect(() => {
-    setIsNicknameEditMode(false);
-    setIsEmailEditMode(false);
-    setNickname(previousNickname);
-    setEmail(previousEmail);
-  }, [currTab, previousEmail, previousNickname]);
 
   const handleClickTab = (tab) => {
     setCurrTab(tab);
   };
 
-  const handleClickEditNickname = () => {
-    setIsNicknameEditMode((prev) => !prev);
-  };
-
-  const handleClickEditEmail = () => {
-    setIsEmailEditMode((prev) => !prev);
-  };
-
-  const handleNicknameChange = (e) => {
-    setNickname(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
   const handleNicknameConfirm = () => {
     // 닉네임 데이터 업데이트 요청
-    // 닉네임 유효성 검사 필요
-    setIsNicknameEditMode(false);
-  };
+    // 닉네임 유효성 검사
+    if (tempNickname.length < 2 || tempNickname.length > 10) {
+      setErrorMsgNickname(
+        '닉네임은 2~10자의 한글, 영문, 숫자만 사용할 수 있습니다.',
+      );
+      return;
+    }
 
-  const handleNicknameCancel = () => {
-    setNickname(previousNickname);
+    if (!NICKNAME_REGEX.test(tempNickname)) {
+      setErrorMsgNickname(
+        '닉네임은 2~10자의 한글, 영문, 숫자만 사용할 수 있습니다.',
+      );
+      return;
+    }
+
+    // TODO: axios 닉네임 변경 Post 요청
+
+    // 닉네임 유효성 검사 통과 -> 상태 업데이트
+    setNickname(tempNickname);
+    setErrorMsgNickname('');
     setIsNicknameEditMode(false);
   };
 
   const handleEmailConfirm = () => {
-    // 닉네임 데이터 업데이트 요청
-    // 닉네임 유효성 검사 필요
+    // 이메일 데이터 업데이트 요청
+    // 이메일 유효성 검사 필요
+    if (!EMAIL_REGEX.test(tempEmail)) {
+      setErrorMsgEmail('유효한 이메일 주소를 입력하세요.');
+      return;
+    }
+
+    // TODO: axios 이메일 변경 Post 요청
+
+    // 이메일 유효성 검사 통과 -> 상태 업데이트
+    setEmail(tempEmail);
+    setErrorMsgEmail('');
     setIsEmailEditMode(false);
   };
 
+  const handleClickEditNickname = () => {
+    setTempNickname(nickname);
+    setIsNicknameEditMode((prev) => !prev);
+  };
+
+  const handleClickEditEmail = () => {
+    setTempEmail(email);
+    setIsEmailEditMode((prev) => !prev);
+  };
+
+  const handleNicknameChange = (e) => {
+    setTempNickname(e.target.value);
+  };
+
+  const handleEmailChange = (e) => {
+    setTempEmail(e.target.value);
+  };
+
+  const handleNicknameCancel = () => {
+    setTempNickname('');
+    setErrorMsgNickname('');
+    setIsNicknameEditMode(false);
+  };
+
   const handleEmailCancel = () => {
-    setEmail(previousEmail);
+    setTempEmail('');
+    setErrorMsgEmail('');
     setIsEmailEditMode(false);
   };
 
   const openModal = () => {
     setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   return (
@@ -172,7 +203,7 @@ const MyPage = () => {
         {isModalOpen && (
           <MyPageChangePassword
             isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
+            onCloseModal={closeModal}
           />
         )}
 
@@ -180,24 +211,28 @@ const MyPage = () => {
           <UserInfoPanel>
             <UserInfoCard>
               <Label htmlFor="nickname">닉네임</Label>
-              <MyPageNicknameInfoComponent
+              <MyPageNickname
                 nickname={nickname}
+                tempNickname={tempNickname}
                 isEditMode={isNicknameEditMode}
                 onEditMode={handleClickEditNickname}
                 onConfirmClick={handleNicknameConfirm}
                 onCancelClick={handleNicknameCancel}
                 onChange={handleNicknameChange}
+                errorMsg={errorMsgNickname}
               />
             </UserInfoCard>
             <UserInfoCard>
               <Label htmlFor="email">이메일</Label>
-              <MyPageEmailInfoComponent
+              <MyPageEmail
                 email={email}
+                tempEmail={tempEmail}
                 isEditMode={isEmailEditMode}
                 onEditMode={handleClickEditEmail}
                 onConfirmClick={handleEmailConfirm}
                 onCancelClick={handleEmailCancel}
                 onChange={handleEmailChange}
+                errorMsg={errorMsgEmail}
               />
             </UserInfoCard>
             <ActionLinksContainer>
@@ -216,3 +251,143 @@ const MyPage = () => {
 };
 
 export default MyPage;
+
+/**
+ * MyPageNickname
+ */
+const UserInfoContainer = styled.div`
+  border-bottom: 1px solid ${theme.colors.textLightgray};
+`;
+
+const UserInfoBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const UserNicknameBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const UserNickname = styled.p`
+  font-size: ${theme.fontSizes.medium};
+`;
+
+const EditInput = styled.input`
+  width: 100%;
+  padding: 1.6rem 0;
+  font-size: ${theme.fontSizes.medium};
+  outline: none;
+  border: none;
+`;
+
+const EditButton = styled.button`
+  width: 4.6rem;
+  height: 2.6rem;
+  border: 1px solid ${theme.colors.textLightgray};
+  background-color: transparent;
+  border-radius: 12px;
+  font-size: ${theme.fontSizes.small};
+  color: #252525;
+  flex-shrink: 0;
+  cursor: pointer;
+  & + button {
+    margin-left: 0.8rem;
+  }
+`;
+
+const ErrorMessage = styled.span`
+  padding-left: 0.8rem;
+  font-size: ${theme.fontSizes.small};
+  color: ${theme.colors.error};
+`;
+
+function MyPageNickname({
+  nickname,
+  tempNickname,
+  isEditMode,
+  onEditMode,
+  onConfirmClick,
+  onCancelClick,
+  onChange,
+  errorMsg,
+}) {
+  return (
+    <>
+      <UserInfoContainer>
+        <UserNicknameBox>
+          {!isEditMode && (
+            <>
+              <UserNickname>{nickname}</UserNickname>
+              <EditButton onClick={onEditMode}>수정</EditButton>
+            </>
+          )}
+          {isEditMode && (
+            <>
+              <EditInput
+                type="text"
+                id="nickname"
+                value={tempNickname}
+                onChange={onChange}
+                maxLength="24"
+              />
+              <EditButton onClick={onConfirmClick}>확인</EditButton>
+              <EditButton onClick={onCancelClick}>취소</EditButton>
+            </>
+          )}
+        </UserNicknameBox>
+      </UserInfoContainer>
+      {errorMsg && <ErrorMessage>{errorMsg}</ErrorMessage>}
+    </>
+  );
+}
+
+/**
+ * MyPageEmail
+ */
+
+const UserEmail = styled.p`
+  font-size: ${theme.fontSizes.medium};
+`;
+
+function MyPageEmail({
+  email,
+  tempEmail,
+  isEditMode,
+  onEditMode,
+  onConfirmClick,
+  onCancelClick,
+  onChange,
+  errorMsg,
+}) {
+  return (
+    <>
+      <UserInfoContainer>
+        <UserInfoBox>
+          {!isEditMode && (
+            <>
+              <UserEmail>{email}</UserEmail>
+              <EditButton onClick={onEditMode}>수정</EditButton>
+            </>
+          )}
+          {isEditMode && (
+            <>
+              <EditInput
+                type="text"
+                id="email"
+                value={tempEmail}
+                onChange={onChange}
+                maxLength="24"
+              />
+              <EditButton onClick={onConfirmClick}>확인</EditButton>
+              <EditButton onClick={onCancelClick}>취소</EditButton>
+            </>
+          )}
+        </UserInfoBox>
+      </UserInfoContainer>
+      {errorMsg && <ErrorMessage>{errorMsg}</ErrorMessage>}
+    </>
+  );
+}

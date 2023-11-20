@@ -44,10 +44,10 @@ const ErrorMessage = styled.span`
   color: ${theme.colors.error};
 `;
 
-const MyPageChangePassword = ({ isModalOpen, setIsModalOpen }) => {
+const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
   const navigate = useNavigate();
 
-  const [password, setPassword] = useState('');
+  const [currentPassword, setCurrentPassword] = useState('');
   const [validPassword, setValidPassword] = useState(false);
 
   const [newPassword, setNewPassword] = useState('');
@@ -60,17 +60,15 @@ const MyPageChangePassword = ({ isModalOpen, setIsModalOpen }) => {
 
   useEffect(() => {
     const result = PWD_REGEX.test(newPassword);
-    console.log(result);
-    console.log(newPassword);
     setValidNewPassword(result);
     const match = newPassword === matchPassword;
     setValidMatch(match);
   }, [newPassword, matchPassword]);
 
   useEffect(() => {
-    if (!validMatch) setErrMessage('비밀번호가 다릅니다.');
+    if (!validMatch) setErrMessage('새 비밀번호와 확인이 일치하지 않습니다.');
     else setErrMessage('');
-  }, [newPassword, matchPassword, validMatch]);
+  }, [validMatch]);
 
   const handleSubmitChangePassword = async (e) => {
     e.preventDefault();
@@ -78,9 +76,9 @@ const MyPageChangePassword = ({ isModalOpen, setIsModalOpen }) => {
     /**
      * fetch가 아닌 axios로 api 요청하기
      * 유효성 검사
-     * 현재 비밀번호가 동일한 지, 서버에 요청해서 확인
      * 각 단계마다 문제가 있으면, 에러 메시지 업데이트, return
      * 서버에 새 비밀번호로 업데이트 요청
+     * 현재 비밀번호가 동일한 지, 서버에 요청해서 확인
      * alert 메시지 '로그인 페이지로 이동합니다'를 띄우고,
      * 로그인 페이지로 이동하도록 유도
      */
@@ -89,42 +87,33 @@ const MyPageChangePassword = ({ isModalOpen, setIsModalOpen }) => {
       setErrMessage('비밀번호는 최소 6자리 이상이어야 합니다.');
       return;
     } else if (!validMatch) {
-      setErrMessage('비밀번호가 다릅니다.');
-      return;
-    }
-
-    setValidPassword(true);
-
-    if (!validPassword) {
-      setErrMessage('현재 비밀번호가 다릅니다.');
+      setErrMessage('새 비밀번호와 확인이 일치하지 않습니다.');
       return;
     }
 
     try {
-      // TODO: API 적용
-      const res = await fetch('CHANGEPASSWORD_API', {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ newPassword }),
-      });
-
-      if (res.ok) {
-        // 비밀번호 변경 성공
-        // 알림 메시지
-        // 로그인 페이지로 이동
-        navigate('/login');
-      } else {
-        console.error('비밀번호 변경 실패');
-      }
+      // TODO: API 요청 적용
+      //
+      //
+      // TODO: 성공 코드 적용
+      // if (성공코드) {
+      //   // 비밀번호 변경 성공
+      //    setValidPassword(true);
+      //   // 알림 메시지
+      //   alert('비밀번호가 변경되어, 로그인 페이지로 이동합니다.');
+      //   // 로그인 페이지로 이동
+      //   navigate('/login');
+      // } else {
+      //    setErrMessage('현재 비밀번호가 다릅니다.');
+      //   console.error('비밀번호 변경 실패');
+      // }
     } catch (error) {
       console.error('비밀번호 변경 중 오류 발생: ', error);
     }
   };
 
   const handleInputChange = (id, value) => {
-    if (id === 'current_password') setPassword(value);
+    if (id === 'current_password') setCurrentPassword(value);
     if (id === 'new_password') setNewPassword(value);
     if (id === 'confirm_new_password') setMatchPassword(value);
   };
@@ -135,7 +124,7 @@ const MyPageChangePassword = ({ isModalOpen, setIsModalOpen }) => {
       e.target.className.split(' ')[2] === 'modal-container' ||
       e.target.className.split(' ')[2] === 'cancel'
     ) {
-      setIsModalOpen(false);
+      onCloseModal();
     }
   };
 
@@ -152,7 +141,7 @@ const MyPageChangePassword = ({ isModalOpen, setIsModalOpen }) => {
             id="current_password"
             type="password"
             placeholder="현재 비밀번호"
-            value={password}
+            value={currentPassword}
             onInputChange={handleInputChange}
           />
           <AuthFormInput
