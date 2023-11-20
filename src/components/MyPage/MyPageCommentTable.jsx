@@ -141,7 +141,7 @@ const MyTablePagination = styled(TablePagination)`
   }
 `;
 
-export default function UserCommentTable() {
+export default function MyPageCommentTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 

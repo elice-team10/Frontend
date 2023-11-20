@@ -30,20 +30,16 @@ const router = createBrowserRouter([
       },
       { path: '/mypage', element: <MyPage /> },
       {
-        path: '/changepassword',
-        element: <ChangePassword />,
-      },
-      {
         path: '/community/board',
-        // element: <CommunityBoard />,
+        element: <CommunityBoard />,
       },
       {
         path: '/community/detail',
-        // element: <CommunityDetail />,
+        element: <CommunityDetail />,
       },
       {
         path: '/community/write',
-        // element: <CommunityWrite />,
+        element: <CommunityWrite />,
       },
       { path: '/admin', element: <Admin /> },
       // ... 다른 컴포넌트들
