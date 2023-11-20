@@ -43,7 +43,7 @@ const EditButton = styled.button`
   }
 `;
 
-export default function UserEmailInfoComponent({
+export default function MyPageEmailInfoComponent({
   email,
   isEditMode,
   onEditMode,

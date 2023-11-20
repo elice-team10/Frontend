@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import theme from '../config/theme';
-import AuthFormInput from '../components/Auth/AuthFormInput';
-import AuthFormButton from '../components/Auth/AuthFormButton';
-import { PWD_REGEX } from '../config/regex';
+import theme from '../../config/theme';
+import AuthFormInput from '../Auth/AuthFormInput';
+import AuthFormButton from '../Auth/AuthFormButton';
+import { PWD_REGEX } from '../../config/regex';
 
 const ChangePasswordModalWrapper = styled.section`
   display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
@@ -44,7 +44,7 @@ const ErrorMessage = styled.span`
   color: ${theme.colors.error};
 `;
 
-const ChangePassword = ({ isModalOpen, setIsModalOpen }) => {
+const MyPageChangePassword = ({ isModalOpen, setIsModalOpen }) => {
   const navigate = useNavigate();
 
   const [password, setPassword] = useState('');
@@ -189,4 +189,4 @@ const ChangePassword = ({ isModalOpen, setIsModalOpen }) => {
   );
 };
 
-export default ChangePassword;
+export default MyPageChangePassword;

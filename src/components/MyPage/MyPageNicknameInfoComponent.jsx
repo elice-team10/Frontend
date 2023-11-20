@@ -39,7 +39,7 @@ const EditButton = styled.button`
   }
 `;
 
-export default function UserNicknameComponent({
+export default function MyPageNicknameComponent({
   nickname,
   isEditMode,
   onEditMode,

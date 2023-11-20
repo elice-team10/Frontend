@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import theme from '../config/theme';
-import UserPostTable from '../components/MyPage/UserPostTable';
-import UserCommentTable from '../components/MyPage/UserCommentTable';
-import UserNicknameInfoComponent from '../components/MyPage/UserNicknameInfoComponent';
-import UserEmailInfoComponent from '../components/MyPage/UserEmailInfoComponent';
 import Header from '../components/UI/Header';
-import ChangePassword from './ChangePassword';
+import MyPageUserPostTable from '../components/MyPage/MyPagePostTable';
+import MyPageCommentTable from '../components/MyPage/MyPageCommentTable';
+import MyPageNicknameInfoComponent from '../components/MyPage/MyPageNicknameInfoComponent';
+import MyPageEmailInfoComponent from '../components/MyPage/MyPageEmailInfoComponent';
+import MyPageChangePassword from '../components/MyPage/MyPageChangePassword';
 
 const MyPageContainer = styled.div`
   display: flex;
@@ -170,7 +170,7 @@ const MyPage = () => {
           </NavigationList>
         </NavAside>
         {isModalOpen && (
-          <ChangePassword
+          <MyPageChangePassword
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}
           />
@@ -180,7 +180,7 @@ const MyPage = () => {
           <UserInfoPanel>
             <UserInfoCard>
               <Label htmlFor="nickname">닉네임</Label>
-              <UserNicknameInfoComponent
+              <MyPageNicknameInfoComponent
                 nickname={nickname}
                 isEditMode={isNicknameEditMode}
                 onEditMode={handleClickEditNickname}
@@ -191,7 +191,7 @@ const MyPage = () => {
             </UserInfoCard>
             <UserInfoCard>
               <Label htmlFor="email">이메일</Label>
-              <UserEmailInfoComponent
+              <MyPageEmailInfoComponent
                 email={email}
                 isEditMode={isEmailEditMode}
                 onEditMode={handleClickEditEmail}
@@ -208,8 +208,8 @@ const MyPage = () => {
             </ActionLinksContainer>
           </UserInfoPanel>
         )}
-        {currTab === '나의 게시물' && <UserPostTable />}
-        {currTab === '나의 댓글' && <UserCommentTable />}
+        {currTab === '나의 게시물' && <MyPageUserPostTable />}
+        {currTab === '나의 댓글' && <MyPageCommentTable />}
       </MyPageContainer>
     </>
   );
