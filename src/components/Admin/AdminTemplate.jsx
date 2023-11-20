@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
 import theme from '../../config/theme';
 import AdminUser from './AdminUser';
@@ -12,6 +13,9 @@ const AdminNavContainer = styled.div`
   align-items: flex-start;
   justify-content: space-between;
   width: 1200px;
+  @media (max-width: 1200px) {
+    width: 768px;
+  }
   height: 30px;
 `;
 
@@ -22,7 +26,10 @@ const AdminMenuBox = styled.div`
 const AdminMenu = styled.div`
   width: 150px;
   text-align: center;
-  font-size: ${theme.fontSizes.large};
+  font-size: ${theme.fontSizes.heading1};
+  @media (max-width: 1200px) {
+    font-size: ${theme.fontSizes.large};
+  }
   color: ${(props) =>
     props.$active ? theme.colors.text : theme.colors.textLightgray};
   letter-spacing: 3px;
@@ -38,12 +45,14 @@ const Button = styled.button`
   border: none;
   border-radius: 12px;
   font-size: ${theme.fontSizes.medium};
+  @media (max-width: 1200px) {
+    font-size: ${theme.fontSizes.small};
+  }
   cursor: pointer;
   transition: all 0.2s;
 
   &:hover {
-    background-color: ${theme.colors.accent};
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    filter: brightness(1.15);
   }
 `;
 
@@ -58,17 +67,33 @@ const AdminSubNavBox = styled.div`
   display: ${(props) => (props.$show ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
-  width: ${(props) => props.width};
+  width: ${(props) => props.$width};
   height: 35px;
   gap: 1.5rem;
+  @media (max-width: 1200px) {
+    width: ${(props) =>
+      props.$activeMenu === '찾아요'
+        ? '880px'
+        : props.$activeMenu === '주웠어요'
+        ? '1170px'
+        : '0px'};
 `;
 
 const AdminSubMenu = styled.div`
   width: 80px;
+  @media (max-width: 1200px) {
+    width: 60px;
+  }
   height: 20px;
+  @media (max-width: 1200px) {
+    height: 15px;
+  }
   padding-top: 1px;
   text-align: center;
   font-size: ${theme.fontSizes.medium};
+  @media (max-width: 1200px) {
+    font-size: ${theme.fontSizes.small};
+  }
   letter-spacing: 4px;
   color: ${(props) =>
     props.$active ? theme.colors.text : theme.colors.textLightgray};
@@ -83,6 +108,9 @@ const AdminSubMenu = styled.div`
 const AdminFormContainer = styled.div`
   height: 631px;
   width: 1200px;
+  @media (max-width: 1200px) {
+    width: 768px;
+  }
   background-color: #eee;
   border-radius: 4px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
@@ -92,11 +120,21 @@ const AdminFormContainer = styled.div`
 const AdminTemplate = () => {
   const [activeMenu, setActiveMenu] = useState('회원정보');
   const [activeSubMenu, setActiveSubMenu] = useState('게시물');
+  const [selectedRows, setSelectedRows] = useState([]);
+
+  const handleDeleteUsers = async () => {
+    try {
+      await axios.post('/api/delete-users', { userIds: selectedRows });
+      // 성공적으로 삭제 후 추가 로직?
+    } catch (error) {
+      console.error('Error deleting users: ', error);
+    }
+  };
 
   let table;
 
   if (activeMenu === '회원정보') {
-    table = <AdminUser />;
+    table = <AdminUser onSelectionChange={setSelectedRows} />;
   }
   if (activeMenu === '찾아요' && activeSubMenu === '게시물') {
     table = <AdminLostBorad />;
@@ -143,18 +181,19 @@ const AdminTemplate = () => {
             주웠어요
           </AdminMenu>
         </AdminMenuBox>
-        <Button>관리자 권한으로 탈퇴</Button>
+        <Button onClick={handleDeleteUsers}>관리자 권한으로 탈퇴</Button>
       </AdminNavContainer>
       <AdminSubNavContainer>
         <AdminSubNavBox
           $show={activeMenu === '찾아요' || activeMenu === '주웠어요'}
-          width={
+          $width={
             activeMenu === '찾아요'
               ? '450px'
               : activeMenu === '주웠어요'
               ? '750px'
               : '0px'
           }
+          $activeMenu={activeMenu}
         >
           <AdminSubMenu
             $active={activeSubMenu === '게시물'}
