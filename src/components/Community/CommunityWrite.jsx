@@ -1,24 +1,28 @@
 import styled from 'styled-components';
 import theme from '../../config/theme';
 import PlaceIcon from '@mui/icons-material/Place';
-
 import Calander from '../UI/DatePicker';
 import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 import { Link } from 'react-router-dom';
-import Editor from '../UI/Editor';
 import CustomizedSwitches from '../UI/SwitchButton';
 import Header from '../UI/Header';
 import { LOCATION_CATEGORY } from '../../config/constants';
 
+const Background = styled.div`
+  background-color: #eee;
+  height: 100%;
+padding-bottom: 3px;
+`;
+
 export const PostContainer = styled.div`
   width: 56rem;
-  height: 100%;
+  height: 70%;
   display: flex;
   position: relative;
   flex-direction: column;
   margin: 5rem auto;
   padding: 3rem;
-  border: 1px solid #7c9299;
+  background-color: white;
   border-radius: 1.2rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 `;
@@ -34,7 +38,7 @@ const Title = styled.input`
   height: 7rem;
   width: 53rem;
   margin-left: 1rem;
-  border-bottom: 1px solid ${theme.colors.border};
+  // border-bottom: 1px solid ${theme.colors.border};
   &::placeholder {
     color: ${theme.colors.textLightgray}
     font-size: ${theme.fontSizes.title};
@@ -149,14 +153,22 @@ const ImgFile = styled.input`
   }
 `;
 
+const GradationBox = styled.div`
+  width: 54rem;
+  height: 0.4rem;
+  background: linear-gradient(135deg, #ffa500, #ff7f50, #ff6700);
+  margin-left: 0.8rem;
+  border-radius: 12px;
+`;
+
 function CommunityWrite() {
   return (
-    <>
+    <Background>
       <Header />
       <PostContainer>
         <TitleContainer>
           <Title type="text" placeholder="제목을 입력해주세요." />
-          {/* <DividerLine style={{ top: '9rem' }} /> */}
+          <GradationBox />
         </TitleContainer>
         <ToolbarContainer>
           <StyledSelect>
@@ -177,7 +189,6 @@ function CommunityWrite() {
             accept="image/png, image/jpeg"
           />
         </ToolbarContainer>
-        {/* <DividerLine style={{ top: '15rem' }} /> */}
         <CustomizedSwitches />
         <ContentContainer>
           <Content
@@ -187,7 +198,6 @@ function CommunityWrite() {
           ></Content>
           {/* <Editor /> */}
         </ContentContainer>
-        {/* <DividerLine style={{ top: '64rem' }} /> */}
         <ButtonContainer>
           <SubmitButton>등록</SubmitButton>
           <BoardLink to="/community/board">
@@ -197,7 +207,7 @@ function CommunityWrite() {
           </BoardLink>
         </ButtonContainer>
       </PostContainer>
-    </>
+    </Background>
   );
 }
 

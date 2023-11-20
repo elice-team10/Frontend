@@ -8,6 +8,12 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import Header from '../UI/Header';
 import Comment from './Comment';
 
+const Background = styled.div`
+background-color: #eee;
+height: 100%;
+padding-bottom: 3px;
+`;
+
 const StyledArrowIcon = styled(ArrowBackIosIcon)`
   margin: 0 auto 1rem 0;
   font-size: xx-large;
@@ -160,7 +166,7 @@ function CommunityDetail({
   replyCount,
 }) {
   return (
-    <>
+    <Background>
       <Header />
       <PostContainer style={{ height: '100%' }}>
         <ButtonContainer>
@@ -192,7 +198,7 @@ function CommunityDetail({
         <ReplyCount>댓글 {replyCount}</ReplyCount>
         <Comment />
       </PostContainer>
-    </>
+    </Background>
   );
 }
 

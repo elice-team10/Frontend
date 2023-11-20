@@ -4,8 +4,13 @@ import { useState } from 'react';
 import CommunityCard from './CommunityCard';
 import Header from '../UI/Header';
 
+const Background = styled.div`
+  background-color: #eee;
+`;
+
 const CommunityContainer = styled.div`
   width: 1200px;
+  height: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -36,7 +41,7 @@ function CommunityBoard() {
   };
 
   return (
-    <>
+    <Background>
     <Header />
     <CommunityContainer>
       <CommunityTab currentTab={currentTab} onClick={clickTabHandle} />
@@ -62,7 +67,7 @@ function CommunityBoard() {
         </FoundContainer>
       )}
     </CommunityContainer>
-    </>
+    </Background>
   );
 }
 

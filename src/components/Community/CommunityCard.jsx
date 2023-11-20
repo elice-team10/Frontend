@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 const Card = styled.div`
   background-color: ${theme.colors.background};
-  border: 0.1rem solid ${theme.colors.border};
+  // border: 0.1rem solid ${theme.colors.border};
   border-radius: 12px;
   width: 29.6rem;
   height: 40.7rem;
@@ -95,7 +95,7 @@ const PositionContainer = styled.div`
 const DividerLine = styled.div`
   width: 29.5rem;
   height: 0.009rem;
-  background-color: ${theme.colors.border};
+  background-color: #ccc;
   position: absolute;
   left: 0;
 `;
