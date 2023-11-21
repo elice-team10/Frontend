@@ -42,18 +42,17 @@ function CommunityBoard() {
     console.log('Tab clicked:', tab);
     setCurrentTab(tab);
   };
+  
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    const fetchPost = async () => {
+      const { data } = await axios.get('/post/detail/', { withCredentials: true });
+      setPosts(data);
+    };
+    fetchPost();
+  }, []);
 
-  // const [lostPosts, setLostPosts] = useState([]);
-  // const [foundPosts, setFoundPosts] = useState([]);
-  // useEffect(() => {
-  //   const fetchPost = async () => {
-  //     const { data } = await axios.get('/user', { withCredentials: true });
-  //     setPosts(data);
-  //   };
-  //   fetchPost();
-  // }, []);
-
-  // console.log(posts);
+  console.log(posts);
 
   return (
     <Background>

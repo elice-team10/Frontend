@@ -7,6 +7,7 @@ import CustomizedSwitches from '../UI/SwitchButton';
 import Header from '../UI/Header';
 import { LOCATION_CATEGORY } from '../../config/constants';
 import ImageInput from '../UI/ImageInput';
+import { useState } from 'react';
 
 const Background = styled.div`
   background-color: #eee;
@@ -97,15 +98,15 @@ const SubmitButton = styled.button`
   color: ${(props) => props.color || `${theme.colors.textWhite}`};
   padding: 0.5rem;
   background-color: ${(props) =>
-    props.backgroundColor || `${theme.colors.primary}`};
+    props.$background || `${theme.colors.primary}`};
   border: 1px solid ${(props) => props.color || `${theme.colors.primary}`};
   font-weight: bold;
   border-radius: 12px;
   &:hover {
     filter: ${(props) =>
-      props.backgroundColor === 'white' ? `` : 'brightness(1.15)'};
+      props.$background === 'white' ? `` : 'brightness(1.15)'};
     background-color: ${(props) =>
-      props.backgroundColor === 'white' ? `#ddd` : ''};
+      props.$background === 'white' ? `#ddd` : ''};
   }
 `;
 
@@ -139,6 +140,8 @@ const GradationBox = styled.div`
 `;
 
 function CommunityWrite() {
+  const [location, setLocation] = useState('');
+  console.log(location);
   return (
     <Background>
       <Header />
@@ -148,10 +151,7 @@ function CommunityWrite() {
           <GradationBox />
         </TitleContainer>
         <ToolbarContainer>
-          <StyledSelect>
-            <option disabled hidden selected>
-              <PlaceIcon /> 지역 선택
-            </option>
+          <StyledSelect  onChange={(event) => setLocation(event.target.value)}>
             {LOCATION_CATEGORY.map((area) => (
               <option key={area} value={area}>
                 {area}
@@ -173,7 +173,7 @@ function CommunityWrite() {
         <ButtonContainer>
           <SubmitButton>등록</SubmitButton>
           <BoardLink to="/community">
-            <SubmitButton backgroundColor="white" color="#7C9299">
+            <SubmitButton $background="white" color="#7C9299">
               취소
             </SubmitButton>
           </BoardLink>
