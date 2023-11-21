@@ -5,6 +5,9 @@ import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
+import axios from '../api/axios';
+
+const RESET_PASSWORD_URL = '/user/reset-password';
 
 const ForgotPasswordContainer = styled.section`
   display: flex;
@@ -51,35 +54,38 @@ const ForgotPassword = () => {
   const [isError, setIsError] = useState(false);
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!EMAIL_REGEX.test(email)) {
+      setIsError(true);
+      setMessage('유효한 이메일 주소를 입력하세요.');
+      return;
+    }
+
     try {
-      e.preventDefault();
-
-      if (!EMAIL_REGEX.test(email)) {
-        setIsError(true);
-        setMessage('유효한 이메일 주소를 입력하세요.');
-        return;
-      }
-
-      // TODO: API 적용
-      const res = await fetch('FORGOTPASSWORD_API', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await axios.post(
+        RESET_PASSWORD_URL,
+        JSON.stringify({ email }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
         },
-        body: JSON.stringify({ email }),
-      });
+      );
 
+      // TODO: 비밀번호 찾기 마무리
       if (res.ok) {
         setIsError(false);
         console.log('임시 비밀번호를 이메일로 전송했습니다.');
-        setMessage('임시 비밀번호를 이메일로 전송했습니다.');
+        // setMessage('임시 비밀번호를 이메일로 전송했습니다.');
+        setMessage(res.data.message);
       } else {
         setIsError(true);
-        setMessage('임시 비밀번호 전송 실패');
         console.error('임시 비밀번호 전송 실패');
+        setMessage('임시 비밀번호 전송 실패');
       }
     } catch (error) {
       console.error(' 오류 발생: ', error);
+      setMessage('이메일 전송 중 오류가 발생했습니다.');
     }
   };
 

@@ -6,6 +6,9 @@ import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
+import axios from '../api/axios';
+
+const LOGIN_URL = '/user/login';
 
 const LoginContainer = styled.section`
   display: flex;
@@ -72,44 +75,52 @@ const Login = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errMsg, setErrMsg] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!EMAIL_REGEX.test(email)) {
+      setErrMsg('유효한 이메일 주소를 입력하세요.');
+      return;
+    }
+
+    if (!PWD_REGEX.test(password)) {
+      setErrMsg('비밀번호는 최소 6자리 이상이어야 합니다.');
+      return;
+    }
+
     try {
-      if (!EMAIL_REGEX.test(email)) {
-        setError('유효한 이메일 주소를 입력하세요.');
-        return;
-      }
-
-      if (!PWD_REGEX.test(password)) {
-        setError('비밀번호는 최소 6자리 이상이어야 합니다.');
-        return;
-      }
-
-      // TODO: API 적용
-      const res = await fetch(
-        'http://kdt-sw-6-team10.elicecoding.com/api/user/login',
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify({ email, password }),
         {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({ email, password }),
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
         },
       );
-      console.log(res);
 
-      if (res.ok) {
-        console.log('로그인 성공!');
-        // 로그인에 성공하면 Home 페이지로 이동
-        navigate('/');
+      console.log('로그인 성공!');
+      console.log(response);
+      console.log(JSON.stringify(response?.data));
+
+      const accessToken = response?.data?.accessToken;
+      const roles = response?.data?.roles;
+
+      setEmail('');
+      setPassword('');
+
+      navigate('/');
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg('서버에서 응답이 없습니다.');
+      } else if (err.response?.status === 400) {
+        setErrMsg('이메일 또는 비밀번호를 잘못 입력했습니다.');
+      } else if (err.response?.status === 401) {
+        setErrMsg('인증 실패하였습니다.');
       } else {
-        console.error('로그인 실패');
+        setErrMsg('로그인에 실패였습니다.');
       }
-    } catch (error) {
-      console.error('로그인 중 오류 발생: ', error);
     }
   };
 
@@ -143,7 +154,7 @@ const Login = () => {
             value={password}
             onInputChange={handleInputChange}
           />
-          {error && <ErrorMessage>{error}</ErrorMessage>}
+          {errMsg && <ErrorMessage>{errMsg}</ErrorMessage>}
           <AuthFormButton text="로그인" />
           <AuthLinksContainer>
             <Link to="/register">회원가입</Link>

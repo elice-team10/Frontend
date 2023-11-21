@@ -5,6 +5,9 @@ import theme from '../../config/theme';
 import AuthFormInput from '../Auth/AuthFormInput';
 import AuthFormButton from '../Auth/AuthFormButton';
 import { PWD_REGEX } from '../../config/regex';
+import axios from '../../api/axios';
+
+const CHANGE_PASSWORD_URL = '/user/change-password';
 
 const ChangePasswordModalWrapper = styled.section`
   display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
@@ -92,21 +95,29 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
     }
 
     try {
-      // TODO: API 요청 적용
-      //
-      //
-      // TODO: 성공 코드 적용
-      // if (성공코드) {
-      //   // 비밀번호 변경 성공
-      //    setValidPassword(true);
-      //   // 알림 메시지
-      //   alert('비밀번호가 변경되어, 로그인 페이지로 이동합니다.');
-      //   // 로그인 페이지로 이동
-      //   navigate('/login');
-      // } else {
-      //    setErrMessage('현재 비밀번호가 다릅니다.');
-      //   console.error('비밀번호 변경 실패');
-      // }
+      const res = await axios.post(
+        CHANGE_PASSWORD_URL,
+        JSON.stringify({ currentPassword, newPassword }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        },
+      );
+
+      console.log(res);
+
+      // TODO: 비밀번호 변경 마무리
+      if (res.ok) {
+        // 비밀번호 변경 성공
+        setValidPassword(true);
+        // 알림 메시지
+        alert('비밀번호가 변경되어, 로그인 페이지로 이동합니다.');
+        // 로그인 페이지로 이동
+        navigate('/login');
+      } else {
+        setErrMessage('현재 비밀번호가 다릅니다.');
+        console.error('비밀번호 변경 실패');
+      }
     } catch (error) {
       console.error('비밀번호 변경 중 오류 발생: ', error);
     }

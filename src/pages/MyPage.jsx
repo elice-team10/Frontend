@@ -16,6 +16,7 @@ const MyPageContainer = styled.div`
 const NavAside = styled.aside`
   width: 22rem;
   padding: 2.4rem;
+  flex-shrink: 0;
 `;
 
 const NavTitle = styled.h1`
