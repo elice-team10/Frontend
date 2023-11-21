@@ -3,26 +3,29 @@ import styled from 'styled-components';
 import theme from '../../config/theme';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import SendIcon from '@mui/icons-material/Send';
 
 const ChatRoomcontainer = styled.div`
   display: flex;
   justify-content: center;
+  background-color: #eee;
 `;
 const Chatbox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin: 20px 0;
   width: 800px;
-  height: 101rem;
-  background-color: #eee;
-  border-left: 0.5px solid ${theme.colors.border};
-  border-right: 0.5px solid ${theme.colors.border};
+  height: 85vh;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
 `;
-const Chatheader = styled.div`
+const ChatHeader = styled.div`
   display: flex;
   align-items: center;
-  height: 50px;
-  border-bottom: 0.5px solid ${theme.colors.border};
+  height: 60px;
+  border-bottom: 0.5px solid #ddd;
 `;
 const StyledArrowBackIosIcon = styled(ArrowBackIosIcon)`
   margin: 0 20px;
@@ -33,13 +36,13 @@ const StyledArrowBackIosIcon = styled(ArrowBackIosIcon)`
   }
 `;
 const StyledAccountCircleIcon = styled(AccountCircleIcon)`
-margin-right: 10px;
-  color: ${theme.colors.textLightgray};
+  margin-right: 10px;
+  color: #ccc;
 `;
 const HeaderNickname = styled.p`
-font-size: ${theme.fontSizes.medium};
-color: ${theme.colors.text};
-`
+  font-size: ${theme.fontSizes.medium};
+  color: ${theme.colors.text};
+`;
 
 const MessageList = styled.div`
   flex-grow: 1;
@@ -57,15 +60,15 @@ const Message = styled.div`
 
 const MessageInput = styled.div`
   display: flex;
-  height: 48px;
+  height: 52px;
   padding: 10px;
-  border-top: 0.5px solid ${theme.colors.border};
+  border-top: 0.5px solid #ddd;
 `;
 
 const Input = styled.input`
   flex-grow: 1;
   padding: 10px;
-  border: 1px solid #ccc;
+  border: 1.7px solid ${theme.colors.border};
   border-radius: 8px;
   font-size: ${theme.fontSizes.medium};
   color: ${theme.colors.text};
@@ -74,15 +77,13 @@ const Input = styled.input`
   }
 `;
 
-const Button = styled.button`
-  width: 80px;
+const StyledSendIcon = styled(SendIcon)`
   padding: 10px 15px;
   margin-left: 10px;
   background-color: ${theme.colors.primary};
-  font-size: ${theme.fontSizes.medium};
   color: ${theme.colors.textWhite};
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s;
   outline: none;
@@ -106,11 +107,11 @@ const ChatRoom = () => {
   return (
     <ChatRoomcontainer>
       <Chatbox>
-        <Chatheader>
-          <StyledArrowBackIosIcon sx={{ fontSize: 32 }}/>
-          <StyledAccountCircleIcon sx={{ fontSize: 36 }}/>
+        <ChatHeader>
+          <StyledArrowBackIosIcon sx={{ fontSize: 32 }} />
+          <StyledAccountCircleIcon sx={{ fontSize: 36 }} />
           <HeaderNickname>인생은 모른디</HeaderNickname>
-        </Chatheader>
+        </ChatHeader>
         <MessageList>
           {messages.map((message, index) => (
             <Message key={index} mine={message.sender === 'me'}>
@@ -125,7 +126,7 @@ const ChatRoom = () => {
             value={newMessage}
             onChange={handleMessageChange}
           />
-          <Button onClick={handleSendMessage}>전송</Button>
+          <StyledSendIcon sx={{ fontSize: 31 }} onClick={handleSendMessage} />
         </MessageInput>
       </Chatbox>
     </ChatRoomcontainer>

@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
+import axios from 'axios';
 
 const columns = [
-  { field: 'id', headerName: '회원 번호', width: 230 },
+  { field: '_id', headerName: '회원 번호', width: 230 },
   { field: 'email', headerName: '아이디(이메일)', width: 230 },
   { field: 'nickname', headerName: '닉네임', width: 230 },
   {
@@ -12,37 +13,20 @@ const columns = [
     width: 230,
   },
   {
-    field: 'date',
+    field: 'createdAt',
     headerName: '회원 가입일',
     width: 228,
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    email: 'Jon@gmail.com',
-    nickname: 'Snow',
-    status: '일반회원',
-    date: '2023/11/14',
-  },
-  {
-    id: 2,
-    email: 'Cersei@gmail.com',
-    nickname: 'Snow',
-    status: '일반회원',
-    date: '2023/11/14',
-  },
-];
-
 export default function AdminUser({ onSelectionChange }) {
-  /*
+
   const [rows, setRows] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('/api/users');
+        const response = await axios.get('http://kdt-sw-6-team10.elicecoding.com/api/user');
         setRows(response.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
@@ -51,19 +35,20 @@ export default function AdminUser({ onSelectionChange }) {
 
     fetchData();
   }, []);
-  */
+
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
-        /*
+        
         onSelectionModelChange={(newSelection) => {
         onSelectionChange(newSelection); // 선택된 행 상태를 상위 컴포넌트로 전달
         }}
-        */
+        
 
         rows={rows}
         columns={columns}
+        getRowId={(row) => row._id}
         checkboxSelection
         pageSizeOptions={[10]}
         initialState={{

@@ -104,10 +104,10 @@ const AdminSubMenu = styled.div`
 const AdminFormContainer = styled.div`
   height: 631px;
   width: 1200px;
+  background-color: #eee;
   @media (max-width: 1200px) {
     width: 768px;
   }
-  background-color: #eee;
   border-radius: 4px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
   margin-bottom: 100px;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
+import axios from 'axios';
 
 const columns = [
   { field: 'id', headerName: '게시물 번호', width: 190 },
