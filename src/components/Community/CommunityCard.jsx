@@ -145,7 +145,7 @@ function CommunityCard({ title, complete, content, location, date, nickname, rep
   
   return (
     <CardContainer>
-      <Card onClick={() => navigate('/community/detail')}>
+      <Card onClick={() => navigate('/community/post')}>
         <PhotoContainer>
           <WallpaperOutlinedIcon fontSize="large" />
         </PhotoContainer>

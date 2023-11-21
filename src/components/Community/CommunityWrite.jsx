@@ -2,16 +2,16 @@ import styled from 'styled-components';
 import theme from '../../config/theme';
 import PlaceIcon from '@mui/icons-material/Place';
 import Calander from '../UI/DatePicker';
-import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 import { Link } from 'react-router-dom';
 import CustomizedSwitches from '../UI/SwitchButton';
 import Header from '../UI/Header';
 import { LOCATION_CATEGORY } from '../../config/constants';
+import ImageInput from '../UI/ImageInput';
 
 const Background = styled.div`
   background-color: #eee;
   height: 100%;
-padding-bottom: 3px;
+  padding-bottom: 3px;
 `;
 
 export const PostContainer = styled.div`
@@ -58,7 +58,6 @@ const ToolbarContainer = styled.div`
   height: 7rem;
   align-items: center;
 `;
-const Location = styled.p``;
 
 const ContentContainer = styled.div`
   display: flex;
@@ -131,28 +130,6 @@ const StyledSelect = styled.select`
   }
 `;
 
-const ImgFile = styled.input`
-  &::file-selector-button {
-    width: 83.2px;
-    padding-bottom: 15px;
-    padding: 8px;
-    background: ${theme.colors.textWhite};
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-weight: 400;
-    font-size: 1rem;
-    line-height: 1.4375em;
-    letter-spacing: 0.00938em;
-    color: ${theme.colors.text};
-    box-sizing: border-box;
-    margin: 12px;
-    outline: none;
-    &:hover {
-      border: 1px solid ${theme.colors.text};
-    }
-  }
-`;
-
 const GradationBox = styled.div`
   width: 54rem;
   height: 0.4rem;
@@ -182,12 +159,7 @@ function CommunityWrite() {
             ))}
           </StyledSelect>
           <Calander />
-          <ImgFile
-            type="file"
-            id="imgFile"
-            name="imgFile"
-            accept="image/png, image/jpeg"
-          />
+          <ImageInput />
         </ToolbarContainer>
         <CustomizedSwitches />
         <ContentContainer>
@@ -200,7 +172,7 @@ function CommunityWrite() {
         </ContentContainer>
         <ButtonContainer>
           <SubmitButton>등록</SubmitButton>
-          <BoardLink to="/community/board">
+          <BoardLink to="/community">
             <SubmitButton backgroundColor="white" color="#7C9299">
               취소
             </SubmitButton>

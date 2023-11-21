@@ -34,7 +34,7 @@ const EachTab = styled.p`
   }
 
   ${(props) =>
-    props.active &&
+    props.$active &&
     css`
       color: ${theme.colors.text};
       font-weight: bold;
@@ -56,7 +56,7 @@ function CommunityTab({ currentTab, onClick }) {
         return (
           <EachTab
             key={`${tab}-${i}`}
-            active={currentTab === tab}
+            $active={currentTab === tab}
             onClick={() => onClick(tab)}
           >
             {tab}

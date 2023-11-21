@@ -34,11 +34,15 @@ const router = createBrowserRouter([
       },
       { path: '/mypage', element: <MyPage /> },
       {
-        path: '/community/board',
+        path: '/community',
         element: <CommunityBoard />,
       },
       {
-        path: '/community/detail',
+        path: '/community/post',
+        element: <CommunityDetail />,
+      },
+      {
+        path: '/community/post/:id',
         element: <CommunityDetail />,
       },
       {
