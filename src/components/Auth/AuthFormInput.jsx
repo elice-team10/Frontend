@@ -18,7 +18,7 @@ const MyUserIcon = styled(PersonIcon)`
   padding: 0 4px;
   position: absolute;
   top: 40%;
-  left: 2px;
+  left: 12px; //바꿈
   transform: translateY(-40%);
   font-size: 2.4rem !important;
   color: ${theme.colors.text};
@@ -28,7 +28,7 @@ const MyEmailIcon = styled(EmailIcon)`
   padding: 0 4px;
   position: absolute;
   top: 40%;
-  left: 2px;
+  left: 10px; // 바꿈
   transform: translateY(-40%);
   font-size: 2.4rem !important;
   color: ${theme.colors.text};
@@ -38,25 +38,28 @@ const MyPasswordIcon = styled(LockIcon)`
   padding: 0 4px;
   position: absolute;
   top: 40%;
-  left: 2px;
+  left: 10px; // 바꿈
   transform: translateY(-40%);
   font-size: 2.4rem !important;
   color: ${theme.colors.text};
 `;
 
 const Input = styled.input`
+  box-sizing: border-box;
   width: 32rem;
-  height: 3.2rem;
-  padding: 1.2rem 2.8rem 1.2rem 3.6rem;
+  height: 5rem;
+  padding: 1.2rem 2.8rem 1.2rem 5rem;
   margin-bottom: 10px;
-  border: 1px solid ${theme.colors.border};
+  //border: 1px solid ${theme.colors.border};
+  border: none; // 바꿈
   border-radius: 12px;
   font-size: ${theme.fontSizes.large};
   color: ${theme.colors.text};
-  transition: border-color 0.3s ease;
+  transition: border 0.1s ease; // 바꿈
 
-  &:focus {
-    border-color: ${theme.colors.primary};
+  &:focus, // 바꿈
+  &:hover {
+    border: 2px solid ${theme.colors.primary};
     outline: none;
   }
 

@@ -6,6 +6,8 @@ import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
+import Header from '../components/UI/Header.jsx';
+import title from '../assets/로고11.png';
 
 const LoginContainer = styled.section`
   display: flex;
@@ -18,9 +20,9 @@ const LoginContainer = styled.section`
 const LoginFormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  padding: 3.2rem 2rem 4.8rem 2rem; // 바꿈
   border-radius: 12px;
-  background-color: #fff;
+  background-color: #eee;
 `;
 
 const LoginForm = styled.form`
@@ -35,6 +37,11 @@ const HeaderTitle = styled.h1`
   font-size: ${theme.fontSizes.subtitle};
 `;
 
+const Title = styled.img`
+  align-self: center;
+  margin-bottom: 3rem;
+  width: 17rem;
+`;
 const FormLabel = styled.label`
   font-size: ${theme.fontSizes.medium};
 `;
@@ -118,35 +125,39 @@ const Login = () => {
   };
 
   return (
-    <LoginContainer>
-      <LoginFormContainer>
-        <HeaderTitle>로그인</HeaderTitle>
-        <LoginForm onSubmit={handleSubmit}>
-          <FormLabel htmlFor="email">이메일</FormLabel>
-          <AuthFormInput
-            id="email"
-            type="text"
-            placeholder="이메일"
-            value={email}
-            onInputChange={handleInputChange}
-          />
-          <FormLabel htmlFor="password">비밀번호</FormLabel>
-          <AuthFormInput
-            id="password"
-            type="password"
-            placeholder="비밀번호"
-            value={password}
-            onInputChange={handleInputChange}
-          />
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-          <AuthFormButton text="로그인" />
-          <AuthLinksContainer>
-            <Link to="/register">회원가입</Link>
-            <Link to="/forgotpassword">비밀번호 찾기</Link>
-          </AuthLinksContainer>
-        </LoginForm>
-      </LoginFormContainer>
-    </LoginContainer>
+    <>
+      <Header />
+      <LoginContainer>
+        <LoginFormContainer>
+          {/* <HeaderTitle style={{ color: '#ff5000' }}>Lost & Found</HeaderTitle> */}
+          <Title src={title} />
+          <LoginForm onSubmit={handleSubmit}>
+            {/* <FormLabel htmlFor="email">이메일</FormLabel> */}
+            <AuthFormInput
+              id="email"
+              type="text"
+              placeholder="이메일"
+              value={email}
+              onInputChange={handleInputChange}
+            />
+            {/* <FormLabel htmlFor="password">비밀번호</FormLabel> */}
+            <AuthFormInput
+              id="password"
+              type="password"
+              placeholder="비밀번호"
+              value={password}
+              onInputChange={handleInputChange}
+            />
+            {error && <ErrorMessage>{error}</ErrorMessage>}
+            <AuthFormButton text="로그인" />
+            <AuthLinksContainer>
+              <Link to="/register">회원가입</Link>
+              <Link to="/forgotpassword">비밀번호 찾기</Link>
+            </AuthLinksContainer>
+          </LoginForm>
+        </LoginFormContainer>
+      </LoginContainer>
+    </>
   );
 };
 

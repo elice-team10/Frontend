@@ -52,7 +52,7 @@ const LoadButtonContainer = styled.div`
   justify-content: center;
 `;
 
-function SearchResultBar() {
+function SearchResultDetail() {
   const [selectedChip, setSelectedChip] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -205,49 +205,10 @@ function SearchResultBar() {
         <IconButton onClick={() => navigate(-1)} sx={{ padding: '0' }}>
           <ArrowBackIosIcon style={{ color: '#ff6700', fontSize: '2.5rem' }} />
         </IconButton>
-        <Chip
-          icon={<LocationOnIcon sx={{ fontSize: '2.5rem' }} />}
-          label="경찰서에서 보관중"
-          onClick={handleChipClick}
-          sx={{ fontSize: '1.6rem' }}
-        />
-        <Chip
-          icon={<SubwayIcon sx={{ fontSize: '2.5rem' }} />}
-          label="지하철에서 발견"
-          onClick={handleChipClick}
-          sx={{ fontSize: '1.6rem', padding: '1rem' }}
-        />
-        <Chip
-          avatar={<Avatar alt="LafButton" src={LafImage} />}
-          label="게시판"
-          color="warning"
-          onClick={handleChipClick}
-          sx={{
-            fontSize: '1.6rem',
-            backgroundColor: '#ff6700',
-            color: '#fffaf0',
-          }}
-        />
       </Stack>
       <GradationBox/>
-      {searchResults.length > 0 && (
-        <Grid container spacing={2}>
-          {searchResults.slice(0, 9).map((result, index) => (
-            <Grid item xs={4}>
-              <ResultCard/>
-            </Grid>
-          ))}
-        </Grid>
-      )}
-      <LoadButtonContainer>
-        {loading ? (
-          <CircularProgress sx={{ color: '#ff6700' }} />
-        ) : (
-          <LoadButton onClick={handleLoadMore}>더보기</LoadButton>
-        )}
-      </LoadButtonContainer>
     </div>
   );
 }
 
-export default SearchResultBar;
+export default SearchResultDetail;
