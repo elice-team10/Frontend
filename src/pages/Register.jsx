@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../config/theme';
@@ -6,9 +6,8 @@ import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { NICKNAME_REGEX, EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
-import axios from '../api/axios';
-
-const REGISTER_URL = '/user/join';
+import api from '../api/axios';
+import { isLoggedIn } from '../utils/Auth';
 
 const RegisterContainer = styled.section`
   display: flex;
@@ -48,6 +47,8 @@ const ErrorMessage = styled.span`
   color: ${theme.colors.error};
 `;
 
+const REGISTER_URL = '/user/join';
+
 const Register = () => {
   const navigate = useNavigate();
 
@@ -55,6 +56,12 @@ const Register = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -75,12 +82,12 @@ const Register = () => {
     }
 
     if (!PWD_REGEX.test(password)) {
-      setErrMsg('비밀번호는 최소 6자리 이상이어야 합니다.');
+      setErrMsg('비밀번호는 최소 5자리 이상이어야 합니다.');
       return;
     }
 
     try {
-      const response = await axios.post(
+      const response = await api.post(
         REGISTER_URL,
         JSON.stringify({ nickname, email, password }),
         {
@@ -89,11 +96,6 @@ const Register = () => {
         },
       );
 
-      console.log(response.data);
-      console.log(response.accessToken);
-      console.log(JSON.stringify(response));
-
-      console.log('회원가입 성공!');
       setNickname('');
       setEmail('');
       setPassword('');
@@ -105,7 +107,7 @@ const Register = () => {
       if (!err?.response) {
         setErrMsg('서버에서 응답이 없습니다.');
       } else if (err.response?.status === 409) {
-        setErrMsg('사용할 수 없는 닉네임입니다. 다른 닉네임을 사용하세요.');
+        setErrMsg(err.response?.data);
       } else {
         setErrMsg('회원가입에 실패하였습니다.');
       }

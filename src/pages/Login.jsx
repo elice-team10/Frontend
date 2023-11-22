@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import useAuth from '../hooks/useAuth';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
-import axios from '../api/axios';
-
-const LOGIN_URL = '/user/login';
+import api from '../api/axios';
+import { isLoggedIn } from '../utils/Auth';
+import Cookies from 'js-cookie';
 
 const LoginContainer = styled.section`
   display: flex;
@@ -70,12 +71,21 @@ const AuthLinksContainer = styled.div`
   }
 `;
 
+const LOGIN_URL = '/user/login';
+
 const Login = () => {
   const navigate = useNavigate();
+  const { saveAuth } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,12 +96,12 @@ const Login = () => {
     }
 
     if (!PWD_REGEX.test(password)) {
-      setErrMsg('비밀번호는 최소 6자리 이상이어야 합니다.');
+      setErrMsg('비밀번호는 최소 5자리 이상이어야 합니다.');
       return;
     }
 
     try {
-      const response = await axios.post(
+      const response = await api.post(
         LOGIN_URL,
         JSON.stringify({ email, password }),
         {
@@ -100,17 +110,22 @@ const Login = () => {
         },
       );
 
-      console.log('로그인 성공!');
       console.log(response);
       console.log(JSON.stringify(response?.data));
 
-      const accessToken = response?.data?.accessToken;
-      const roles = response?.data?.roles;
+      const nickname = response?.data?.nickname;
+      const accessToken = response?.data?.token;
+      const status = response?.data?.status;
+
+      Cookies.set('loginCookie', accessToken);
+
+      saveAuth({ email, nickname, status, accessToken });
 
       setEmail('');
       setPassword('');
 
-      navigate('/');
+      if (status === 0) navigate('/admin');
+      if (status === 1) navigate('/');
     } catch (err) {
       if (!err?.response) {
         setErrMsg('서버에서 응답이 없습니다.');

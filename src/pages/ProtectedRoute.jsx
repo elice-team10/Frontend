@@ -10,8 +10,8 @@ export default function ProtectedRoute({ children, requireAdmin }) {
   console.log(auth);
   console.log(email, status);
 
-  // status가 0: 일반회원
-  // status가 1: 관리자
+  // status가 0: 관리자
+  // status가 1: 일반회원
   if (!email || (requireAdmin && status !== 0)) {
     return <Navigate to="/" replace={true} />;
   }

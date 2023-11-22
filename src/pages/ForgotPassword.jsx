@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
-import axios from '../api/axios';
+import api from '../api/axios';
+import { isLoggedIn } from '../utils/Auth';
+import { useNavigate } from 'react-router-dom';
 
 const RESET_PASSWORD_URL = '/user/reset-password';
 
@@ -49,9 +51,17 @@ const Message = styled.span`
 `;
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -63,7 +73,7 @@ const ForgotPassword = () => {
     }
 
     try {
-      const res = await axios.post(
+      const res = await api.post(
         RESET_PASSWORD_URL,
         JSON.stringify({ email }),
         {
@@ -73,16 +83,15 @@ const ForgotPassword = () => {
       );
 
       // TODO: 비밀번호 찾기 마무리
-      if (res.ok) {
-        setIsError(false);
-        console.log('임시 비밀번호를 이메일로 전송했습니다.');
-        // setMessage('임시 비밀번호를 이메일로 전송했습니다.');
-        setMessage(res.data.message);
-      } else {
-        setIsError(true);
-        console.error('임시 비밀번호 전송 실패');
-        setMessage('임시 비밀번호 전송 실패');
-      }
+
+      setIsError(false);
+      console.log('임시 비밀번호를 이메일로 전송했습니다.');
+      // setMessage('임시 비밀번호를 이메일로 전송했습니다.');
+      setMessage(res.data.message);
+
+      setIsError(true);
+      console.error('임시 비밀번호 전송 실패');
+      setMessage('임시 비밀번호 전송 실패');
     } catch (error) {
       console.error(' 오류 발생: ', error);
       setMessage('이메일 전송 중 오류가 발생했습니다.');
