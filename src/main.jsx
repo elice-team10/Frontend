@@ -34,7 +34,14 @@ const router = createBrowserRouter([
         path: '/forgotpassword',
         element: <ForgotPassword />,
       },
-      { path: '/mypage', element: <MyPage /> },
+      {
+        path: '/mypage',
+        element: (
+          <ProtectedRoute>
+            <MyPage />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: '/community/board',
         element: <CommunityBoard />,
@@ -61,9 +68,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <AuthProvider>
+  <AuthProvider>
+    <Provider store={store}>
       <RouterProvider router={router} />
-    </AuthProvider>
-  </Provider>,
+    </Provider>
+  </AuthProvider>,
 );
