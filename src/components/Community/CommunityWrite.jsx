@@ -141,7 +141,8 @@ const GradationBox = styled.div`
 
 function CommunityWrite() {
   const [location, setLocation] = useState('');
-  console.log(location);
+
+
   return (
     <Background>
       <Header />
@@ -151,7 +152,7 @@ function CommunityWrite() {
           <GradationBox />
         </TitleContainer>
         <ToolbarContainer>
-          <StyledSelect  onChange={(event) => setLocation(event.target.value)}>
+          <StyledSelect value={location} onChange={(event) => setLocation(event.target.value)}>
             {LOCATION_CATEGORY.map((area) => (
               <option key={area} value={area}>
                 {area}
