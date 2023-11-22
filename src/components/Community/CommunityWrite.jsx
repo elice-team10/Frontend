@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import theme from '../../config/theme';
-import PlaceIcon from '@mui/icons-material/Place';
 import Calander from '../UI/DatePicker';
 import { Link } from 'react-router-dom';
 import CustomizedSwitches from '../UI/SwitchButton';
