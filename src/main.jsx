@@ -11,7 +11,7 @@ import NotFound from './pages/NotFound.jsx';
 import SearchResult from './pages/SearchResult.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
-
+//
 
 const router = createBrowserRouter([
   {
@@ -34,18 +34,18 @@ const router = createBrowserRouter([
         element: <ForgotPassword />,
       },
       { path: '/mypage', element: <MyPage /> },
-      {
-        path: '/community/board',
-        element: <CommunityBoard />,
-      },
-      {
-        path: '/community/detail',
-        element: <CommunityDetail />,
-      },
-      {
-        path: '/community/write',
-        element: <CommunityWrite />,
-      },
+      // {
+      //   path: '/community/board',
+      //   element: <CommunityBoard />,
+      // },
+      // {
+      //   path: '/community/detail',
+      //   element: <CommunityDetail />,
+      // },
+      // {
+      //   path: '/community/write',
+      //   element: <CommunityWrite />,
+      // },
       { path: '/admin', element: <Admin /> },
       // ... 다른 컴포넌트들
     ],

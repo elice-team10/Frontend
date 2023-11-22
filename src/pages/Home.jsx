@@ -4,7 +4,6 @@ import HomeSearchBar from '../components/Home/HomeSearchBar';
 import HomeButtons from '../components/Home/HomeButtons';
 import CardCarousel from '../components/Home/CardCarousel';
 import Header from '../components/UI/Header';
-import kakaoMap from '../assets/kakaomap.png';
 
 const HomeContainer = styled.div`
   display: flex;
@@ -33,6 +32,12 @@ const Home = () => {
       <HomeButtons />
       <CardCarousel />
       <GradationBox />
+      <div style={{ width: '100%', height: '10rem' }}>
+        <iframe
+          src="https://giphy.com/embed/t2aAdTgnU9Ie6jvG0W"
+          style={{ position: 'absolute' }}
+        />
+      </div>
     </HomeContainer>
   );
 };

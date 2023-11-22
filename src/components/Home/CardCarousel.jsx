@@ -12,6 +12,7 @@ import bag from '../../assets/bag.jpg';
 import jewerly from '../../assets/jewerly.jpg';
 import clothes from '../../assets/clothes.jpg';
 import laptop from '../../assets/laptop.jpg';
+import axios from 'axios';
 
 const CarouselText = styled.span`
   margin-top: 5rem;
@@ -77,16 +78,90 @@ const CardText = styled.div`
 `;
 
 const cardsData = [
-  { image: airpods, label: '이어폰' },
-  { image: wallet, label: '지갑' },
-  { image: phone, label: '휴대폰' },
-  { image: card, label: '카드' },
-  { image: bag, label: '가방' },
-  { image: jewerly, label: '귀금속' },
-  { image: clothes, label: '의류' },
-  { image: laptop, label: '노트북' },
-  { image: watch, label: '시계' },
+  {
+    image: airpods,
+    label: '이어폰',
+    categoryCode: 'PRG000',
+    categoryCode2: 'PRG900',
+  },
+  { image: wallet, label: '지갑', categoryCode: 'PRH000' },
+  { image: phone, label: '휴대폰', categoryCode: 'PRJ000' },
+  { image: card, label: '카드', categoryCode: 'PRP000' },
+  { image: bag, label: '가방', categoryCode: 'PRA000' },
+  { image: jewerly, label: '귀금속', categoryCode: 'PRO000' },
+  { image: clothes, label: '의류', categoryCode: 'PRK000' },
+  { image: laptop, label: '노트북', categoryCode: 'PRI000' },
+  {
+    image: watch,
+    label: '시계',
+    categoryCode: 'PRO000',
+    categoryCode2: 'PRO400',
+  },
 ];
+
+async function fetchItemCategory(categoryCode, categoryCode2 = null) {
+  const url =
+    'http://apis.data.go.kr/1320000/LosfundInfoInqireService/getLosfundInfoAccToClAreaPd';
+  const serviceKey = decodeURIComponent(
+    'ANqqJt8CTWuvlA%2BWsV9WzIpKzY3RQAarn%2F2QkJD1AN3FYzZS6zMsDuq%2B8jDbXE6fXW8u50ZbGWdAWYLEzXK2TQ%3D%3D',
+  );
+
+  const queryParams = {
+    serviceKey, // 서비스 키
+    PRDT_CL_CD_01: categoryCode, // 상품명
+    N_FD_LCT_CD: 'LCA000',
+    pageNo: 1, // 페이지 번호
+    numOfRows: '10', // 행 수
+  };
+
+  if (categoryCode2) {
+    queryParams.PRDT_CL_CD_02 = categoryCode2;
+  }
+
+  try {
+    const response = await axios.get(url, { params: queryParams });
+
+    // XML 파싱을 위한 파서 생성
+    // const parser = new XMLParser();
+    // const parsedResponse = parser.parse(response.data);
+
+    const lostItems = response.data.response.body.items.item;
+    const numOfRows = response.data.response.body.numOfRows;
+    const pageNo = response.data.response.body.pageNo;
+    const totalCount = response.data.response.body.totalCount;
+
+    const results = [];
+    for (const lostItem of lostItems) {
+      const item = {
+        id: lostItem.atcId,
+        content: lostItem.fdSbjt,
+        name: lostItem.fdPrdtNm,
+        imageUrl: lostItem.fdFilePathImg,
+        dateOfLoss: lostItem.fdYmd,
+        location: lostItem.depPlace,
+        productCategory: lostItem.prdtClNm,
+      };
+
+      // Add image to results
+      // if (item.imageUrl) {
+      //   item.image = await fetch(item.imageUrl);
+      //   item.image = await item.image.buffer();
+      // }
+
+      results.push(item);
+    }
+    // 결과 출력
+    console.log('Status:', response.status);
+    console.log('Headers:', response.headers);
+    console.log('Parsed Body:', results);
+    console.log(
+      `Num of Rows:${numOfRows}, Page No. : ${pageNo}, Total Count : ${totalCount}`,
+    );
+    return results;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 const CardCarousel = () => {
   // 초기 인덱스를 0으로 설정합니다.
@@ -94,6 +169,14 @@ const CardCarousel = () => {
   const [carouselTransition, setCarouselTransition] = useState(
     'transform 0.3s ease-in-out',
   );
+
+  const handleClick = (card) => {
+    if (card.categoryCode2) {
+      fetchItemCategory(card.categoryCode, card.categoryCode2);
+    } else {
+      fetchItemCategory(card.categoryCode);
+    }
+  };
 
   const handleNext = () => {
     // 애니메이션 효과를 비활성화하는 조건을 체크합니다.
@@ -132,7 +215,7 @@ const CardCarousel = () => {
             }}
           >
             {cardsData.map((card, index) => (
-              <CardContainer>
+              <CardContainer key={index} onClick={() => handleClick(card)}>
                 <CardImage src={card.image} key={index} />
                 <CardText>{card.label}</CardText>
               </CardContainer>
