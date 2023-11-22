@@ -11,10 +11,12 @@ import NotFound from './pages/NotFound.jsx';
 import CommunityBoard from './components/Community/CommunityBoard.jsx';
 import CommunityDetail from './components/Community/CommunityDetail.jsx';
 import CommunityWrite from './components/Community/CommunityWrite.jsx';
-import { Provider } from "react-redux";
+import { Provider } from 'react-redux';
 import store from './store';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
+import { AuthProvider } from './context/AuthProvider.jsx';
+import ProtectedRoute from './pages/ProtectedRoute.jsx';
 
 const router = createBrowserRouter([
   {
@@ -45,7 +47,14 @@ const router = createBrowserRouter([
         path: '/community/write',
         element: <CommunityWrite />,
       },
-      { path: '/admin', element: <Admin /> },
+      {
+        path: '/admin',
+        element: (
+          <ProtectedRoute requireAdmin={true}>
+            <Admin />
+          </ProtectedRoute>
+        ),
+      },
       // ... 다른 컴포넌트들
     ],
   },
@@ -53,6 +62,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </Provider>,
 );
