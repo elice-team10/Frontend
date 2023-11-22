@@ -15,11 +15,12 @@ const Card = styled.div`
   width: 29.6rem;
   height: 40.7rem;
   box-sizing: border-box;
-  padding: 2.8rem 2.4rem 0;
+  // padding: 2.8rem 2.4rem 0;
   position: relative;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   top: 0;
   transition: all 0.1s ease-in;
+  overflow: hidden;
 
   &:hover {
     top: -2px;
@@ -32,12 +33,21 @@ const PhotoContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 15rem;
+  img {
+    object-fit: cover;
+    width: 29.6rem;
+    height: 15rem;
+  }
 `;
 
 const CardContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+`;
+
+const ContentContainer = styled.div`
+  padding: 0.7rem 2.4rem;
 `;
 
 const TitleContainer = styled.div`
@@ -107,7 +117,7 @@ const DividerLine = styled.div`
 const UserContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-top: -0.6rem;
+  margin-top: 0.4rem;
   justify-content: space-between;
 `;
 
@@ -160,29 +170,31 @@ function CommunityCard({
     <CardContainer>
       <Card onClick={() => navigate('/community/post')}>
         <PhotoContainer>
-          {picture ? <img src='picture' /> : <img src={logoImg} />}
+          {picture ? <img src={`${picture}`} /> : <img src={logoImg} />}
           {/* <WallpaperOutlinedIcon fontSize="large" /> */}
         </PhotoContainer>
         <DividerLine />
-        <TitleContainer>
-          <Title>{title}</Title>
-          <Badge label={`${complete}`} size="small" />
-        </TitleContainer>
-        <Content>{content}</Content>
-        <PositionContainer>
-          <LocationIcon />
-          <Location>{`서울시 ${location}`}</Location>
-          <DateIcon />
-          <Date>{date}</Date>
-        </PositionContainer>
-        <DividerLine />
-        <UserContainer>
-          <Nickname>{nickname}</Nickname>
-          <ReplyContainer>
-            <ReplyIcon />
-            <Reply>{replyCount}</Reply>
-          </ReplyContainer>
-        </UserContainer>
+        <ContentContainer>
+          <TitleContainer>
+            <Title>{title}</Title>
+            <Badge label={`${complete}`} size="small" />
+          </TitleContainer>
+          <Content>{content}</Content>
+          <PositionContainer>
+            <LocationIcon />
+            <Location>{`서울시 ${location}`}</Location>
+            <DateIcon />
+            <Date>{date}</Date>
+          </PositionContainer>
+          <DividerLine />
+          <UserContainer>
+            <Nickname>{nickname}</Nickname>
+            <ReplyContainer>
+              <ReplyIcon />
+              <Reply>{replyCount}</Reply>
+            </ReplyContainer>
+          </UserContainer>
+        </ContentContainer>
       </Card>
     </CardContainer>
   );

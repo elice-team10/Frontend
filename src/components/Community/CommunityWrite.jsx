@@ -11,7 +11,7 @@ import { useState } from 'react';
 const Background = styled.div`
   background-color: #eee;
   height: 100%;
-  padding-bottom: 3px;
+  padding: 3px;
 `;
 
 export const PostContainer = styled.div`
@@ -144,7 +144,7 @@ function CommunityWrite() {
 
   return (
     <Background>
-      <Header />
+      {/* <Header /> */}
       <PostContainer>
         <TitleContainer>
           <Title type="text" placeholder="제목을 입력해주세요." />

@@ -19,7 +19,7 @@ const CommunityContainer = styled.div`
   min-height: 100vh;
   justify-content: center;
   margin: auto;
-  padding: 5rem 0;
+  // padding: 5rem 0;
 `;
 
 const LostContainer = styled.div`
@@ -43,14 +43,14 @@ function CommunityBoard() {
     setCurrentTab(tab);
   };
 
-  const { data, isPending, isError, error } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ['events'],
     queryFn: fetchEvents,
   });
   console.log(data);
   let content;
 
-  if (isPending) {
+  if (isLoading) {
     content = <div>Loading...</div>;
   }
 

@@ -11,7 +11,7 @@ import Comment from './Comment';
 const Background = styled.div`
 background-color: #eee;
 height: 100%;
-padding-bottom: 3px;
+padding: 3px;
 `;
 
 const StyledArrowIcon = styled(ArrowBackIosIcon)`
@@ -167,7 +167,7 @@ function CommunityDetail({
 }) {
   return (
     <Background>
-      <Header />
+      {/* <Header /> */}
       <PostContainer style={{ height: '100%' }}>
         <ButtonContainer>
           <StyledArrowIcon fontSize="3.5rem" />
