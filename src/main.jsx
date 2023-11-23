@@ -8,10 +8,13 @@ import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import Admin from './pages/Admin.jsx';
 import NotFound from './pages/NotFound.jsx';
-import SearchResult from './pages/SearchResult.jsx';
+import CommunityBoard from './components/Community/CommunityBoard.jsx';
+import CommunityDetail from './components/Community/CommunityDetail.jsx';
+import CommunityWrite from './components/Community/CommunityWrite.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
-//
+import ProtectedRoute from './pages/ProtectedRoute.jsx';
+import SearchResult from './pages/SearchResult.jsx';
 
 const router = createBrowserRouter([
   {
@@ -33,21 +36,36 @@ const router = createBrowserRouter([
         path: '/forgotpassword',
         element: <ForgotPassword />,
       },
+      {
+        path: '/mypage',
+        element: (
+          <ProtectedRoute>
+            <MyPage />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: '/community/board',
+        element: <CommunityBoard />,
+      },
+      {
+        path: '/community/detail',
+        element: <CommunityDetail />,
+      },
+      {
+        path: '/community/write',
+        element: <CommunityWrite />,
+      },
+      {
+        path: '/admin',
+        element: (
+          <ProtectedRoute requireAdmin={true}>
+            <Admin />
+          </ProtectedRoute>
+        ),
+      },
       { path: '/mypage', element: <MyPage /> },
-      // {
-      //   path: '/community/board',
-      //   element: <CommunityBoard />,
-      // },
-      // {
-      //   path: '/community/detail',
-      //   element: <CommunityDetail />,
-      // },
-      // {
-      //   path: '/community/write',
-      //   element: <CommunityWrite />,
-      // },
       { path: '/admin', element: <Admin /> },
-      // ... 다른 컴포넌트들
     ],
   },
 ]);

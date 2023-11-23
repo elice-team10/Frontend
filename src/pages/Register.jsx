@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../config/theme';
@@ -6,8 +6,8 @@ import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { NICKNAME_REGEX, EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
-
-const REGISTER_URL = '/register';
+import api from '../api/axios';
+import { isLoggedIn } from '../utils/Auth';
 
 const RegisterContainer = styled.section`
   display: flex;
@@ -47,57 +47,71 @@ const ErrorMessage = styled.span`
   color: ${theme.colors.error};
 `;
 
+const REGISTER_URL = '/user/join';
+
 const Register = () => {
   const navigate = useNavigate();
 
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (nickname.length < 2 || nickname.length > 10) {
+      setErrMsg('닉네임은 2~10자의 한글, 영문, 숫자만 사용할 수 있습니다.');
+      return;
+    }
+
+    if (!NICKNAME_REGEX.test(nickname)) {
+      setErrMsg('닉네임은 2~10자의 한글, 영문, 숫자만 사용할 수 있습니다.');
+      return;
+    }
+
+    if (!EMAIL_REGEX.test(email)) {
+      setErrMsg('유효한 이메일 주소를 입력하세요.');
+      return;
+    }
+
+    if (!PWD_REGEX.test(password)) {
+      setErrMsg('비밀번호는 최소 5자리 이상이어야 합니다.');
+      return;
+    }
+
     try {
-      if (nickname.length < 2 || nickname.length > 10) {
-        setError('닉네임은 2~10자의 한글, 영문, 숫자만 사용할 수 있습니다.');
-        return;
-      }
-
-      if (!NICKNAME_REGEX.test(nickname)) {
-        setError('닉네임은 2~10자의 한글, 영문, 숫자만 사용할 수 있습니다.');
-        return;
-      }
-
-      if (!EMAIL_REGEX.test(email)) {
-        setError('유효한 이메일 주소를 입력하세요.');
-        return;
-      }
-
-      if (!PWD_REGEX.test(password)) {
-        setError('비밀번호는 최소 6자리 이상이어야 합니다.');
-        return;
-      }
-
-      // TODO: API 적용
-      const res = await fetch('REGISTER_API', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await api.post(
+        REGISTER_URL,
+        JSON.stringify({ nickname, email, password }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
         },
-        body: JSON.stringify({ nickname, email, password }),
-      });
+      );
 
-      if (res.ok) {
-        console.log('회원가입 성공!');
-        alert('가입해주셔서 감사합니다. 로그인 페이지로 이동합니다.');
+      setNickname('');
+      setEmail('');
+      setPassword('');
+      setErrMsg('');
+      alert('가입해주셔서 감사합니다. 로그인 페이지로 이동합니다.');
 
-        // 회원가입에 성공하면 Login 페이지로 이동
-        navigate('/login');
+      navigate('/login');
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg('서버에서 응답이 없습니다.');
+      } else if (err.response?.status === 409) {
+        setErrMsg(err.response?.data);
       } else {
-        console.error('회원가입 실패');
+        setErrMsg('회원가입에 실패하였습니다.');
       }
-    } catch (error) {
-      console.error('회원가입 중 오류 발생: ', error);
+      console.error('회원가입 중 오류 발생: ', err);
     }
   };
 
@@ -143,7 +157,7 @@ const Register = () => {
             value={password}
             onInputChange={handleInputChange}
           />
-          {error && <ErrorMessage>{error}</ErrorMessage>}
+          {errMsg && <ErrorMessage>{errMsg}</ErrorMessage>}
           <AuthFormButton text="회원가입" />
         </RegisterForm>
       </RegisterFormContainer>
