@@ -9,6 +9,7 @@ import CustomizedSwitches from '../UI/SwitchButton';
 import ImageInput from '../UI/ImageInput';
 import { createNewEvent } from '../../api/http';
 import { useQuery } from '@tanstack/react-query';
+import useAuth from '../../hooks/useAuth';
 
 const Background = styled.div`
   background-color: #eee;
@@ -166,9 +167,11 @@ function CommunityWrite() {
   const [nickname, setNickname] = useState('');
   const [boardCategory, setBoardCategory] = useState(0);
 
+  const { auth } = useAuth();
+
   const handleFileChange = (event) => {
-    const selectedFile= event.target.files[0];
-    setFile(selectedFile)
+    const selectedFile = event.target.files[0];
+    setFile(selectedFile);
   };
 
   const handleSwitch = (isCompleted) => {
@@ -181,7 +184,7 @@ function CommunityWrite() {
 
   useEffect(() => {
     if (boardCategoryFromQuery !== null) {
-      setBoardCategory(Number(boardCategoryFromQuery))
+      setBoardCategory(Number(boardCategoryFromQuery));
     }
   }, [boardCategoryFromQuery]);
 
@@ -198,10 +201,10 @@ function CommunityWrite() {
       date,
       complete,
       content,
-      nickname,
+      nickname: auth.nickname,
       board_category: boardCategory,
     };
-    
+
     console.log(formData);
     mutate(formData);
   }
@@ -236,7 +239,7 @@ function CommunityWrite() {
             onChange={(event) => setDate(event.target.value)}
           />
           {/* <Calander/> */}
-          <ImageInput onChange={handleFileChange}/>
+          <ImageInput onChange={handleFileChange} />
         </ToolbarContainer>
         <CustomizedSwitches onChangeSwitch={handleSwitch} />
         <ContentContainer>
