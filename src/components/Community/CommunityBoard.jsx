@@ -1,18 +1,25 @@
+import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import styled from 'styled-components';
 import CommunityTab from './CommunityTab';
-import { useState } from 'react';
 import CommunityCard from './CommunityCard';
-import Header from '../UI/Header';
+import { fetchEvents } from '../../api/http';
+import ErrorBlock from '../UI/ErrorBlock';
+
+const Background = styled.div`
+  background-color: #eee;
+`;
 
 const CommunityContainer = styled.div`
   width: 1200px;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
   justify-content: center;
   margin: auto;
-  padding: 5rem 0;
+  // padding: 5rem 0;
 `;
 
 const LostContainer = styled.div`
@@ -32,39 +39,83 @@ const FoundContainer = styled.div`
 function CommunityBoard() {
   const [currentTab, setCurrentTab] = useState('찾아요');
   const clickTabHandle = (tab) => {
+    console.log('Tab clicked:', tab);
     setCurrentTab(tab);
   };
 
-  return (
-    <>
-    <Header />
-    <CommunityContainer>
-      <CommunityTab currentTab={currentTab} onClick={clickTabHandle} />
-      {currentTab === '찾아요' ? (
-        <LostContainer>
-          {Array(8)
-            .fill('')
-            .map((item, index) => (
-              <CommunityCard key={`card-${index}`} />
-            ))}
-        </LostContainer>
-      ) : (
-        <FoundContainer>
-          {Array(8)
-            .fill('')
-            .map((item, index) => (
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ['events'],
+    queryFn: () => fetchEvents('/post'),
+    staleTime: 5000,
+  });
+
+  let content;
+
+  if (isLoading) {
+    content = <div>Loading...</div>;
+  }
+
+  if (isError) {
+    content = (
+      <ErrorBlock
+        title="에러 발생"
+        message={error.info?.message || '데이터를 가져오는데 실패했습니다.'}
+      />
+    );
+  }
+
+  if (data) {
+    const lostItem = data.filter((event) => event.board_category === 0);
+    const foundItem = data.filter((event) => event.board_category === 1);
+    console.log(data);
+    
+    content = (
+      <>
+        {currentTab === '찾아요' ? (
+          <LostContainer>
+            {lostItem.map((item, index) => (
               <CommunityCard
-                key={`card-${index}`}
-                title={'에어팟 찾았어요.'}
-                content={'그 소중한 에어팟 제가 찾았습니다'}
+                key={item._id}
+                picture={item.picture}
+                title={item.title}
+                complete={item.isFound ? '완료' : '미완료'}
+                content={item.content}
+                location={item.event_location}
+                date={item.event_date}
+                nickname={item.nickname}
+                replyCount={'0'}
               />
             ))}
-        </FoundContainer>
-      )}
-    </CommunityContainer>
-    </>
+          </LostContainer>
+        ) : (
+          <FoundContainer>
+            {foundItem.map((item, index) => (
+              <CommunityCard
+                key={item._id}
+                picture={item.picture}
+                title={item.title}
+                complete={item.isFound ? '완료' : '미완료'}
+                content={item.content}
+                location={item.event_location}
+                date={item.event_date}
+                nickname={item.nickname}
+                replyCount={'0'}
+              />
+            ))}
+          </FoundContainer>
+        )}
+      </>
+    );
+  }
+
+  return (
+    <Background>
+      <CommunityContainer>
+        <CommunityTab currentTab={currentTab} onClick={clickTabHandle} />
+        {content}
+      </CommunityContainer>
+    </Background>
   );
 }
 
 export default CommunityBoard;
-
