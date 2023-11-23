@@ -7,7 +7,6 @@ import AdminFoundComment from './AdminFoundComment';
 import AdminLostBoard from './AdminLostBoard';
 import AdminLostComment from './AdminLostComment';
 import api from '../../api/axios';
-import Cookies from 'js-cookie';
 
 const AdminNavContainer = styled.div`
   display: flex;
@@ -76,8 +75,8 @@ const AdminSubNavBox = styled.div`
       props.$activeMenu === '찾아요'
         ? '880px'
         : props.$activeMenu === '주웠어요'
-          ? '1170px'
-          : '0px'};
+        ? '1170px'
+        : '0px'};
 `;
 
 const AdminSubMenu = styled.div`
@@ -208,8 +207,8 @@ const AdminTemplate = () => {
             activeMenu === '찾아요'
               ? '450px'
               : activeMenu === '주웠어요'
-                ? '750px'
-                : '0px'
+              ? '750px'
+              : '0px'
           }
         >
           <AdminSubMenu

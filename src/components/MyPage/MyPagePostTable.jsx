@@ -10,8 +10,11 @@ import TableRow from '@mui/material/TableRow';
 import theme from '../../config/theme';
 import styled from 'styled-components';
 import { StyledEngineProvider } from '@mui/styled-engine';
-import api from '../../api/axios';
+import CircularProgress from '@mui/material/CircularProgress';
+import api, { axiosPrivate } from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
+import { plPL } from '@mui/x-data-grid';
+import Spinner from '../UI/Spinner';
 
 const fake_data = [
   {
@@ -168,15 +171,6 @@ const columns = [
   },
 ];
 
-function createData(postId, postDate, postTitle, foundOrFind, completedStatus) {
-  return { postId, postDate, postTitle, foundOrFind, completedStatus };
-}
-
-const rows = fake_data.map(
-  ({ postId, postDate, postTitle, foundOrFind, completedStatus }) =>
-    createData(postId, postDate, postTitle, foundOrFind, completedStatus),
-);
-
 const MyTablePagination = styled(TablePagination)`
   div,
   p,
@@ -187,27 +181,57 @@ const MyTablePagination = styled(TablePagination)`
 
 export default function MyPageUserPostTable() {
   const { auth } = useAuth();
+  const [postData, setPostData] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
-    // isLoading(true);
+    setIsLoading(true);
     async function getUserPostData() {
+      setIsLoading(true);
       try {
-        const response = await api.get(`/post/${auth.nickname}`, {
-          withCredentials: true,
-        });
-        console.log(response.data);
+        const response = await axiosPrivate().get(
+          `/post/홍길동/?page=${page}&pageSize=${5}`,
+          {
+            withCredentials: true,
+          },
+        );
 
-        // setIsLoading(false);
+        setPostData(response.data);
+        setIsLoading(false);
       } catch (err) {
         console.error(err);
       }
     }
 
     getUserPostData();
-  }, [auth.nickname]);
+  }, []);
+
+  function createData(
+    postId,
+    postDate,
+    postTitle,
+    foundOrFind,
+    completedStatus,
+  ) {
+    return { postId, postDate, postTitle, foundOrFind, completedStatus };
+  }
+
+  // const rows = fake_data.map(
+  //   ({ postId, postDate, postTitle, foundOrFind, completedStatus }) =>
+  //     createData(postId, postDate, postTitle, foundOrFind, completedStatus),
+  // );
+
+  const rows = postData.map(({ _id: postId, createdAt, title, isFound }) =>
+    createData(
+      postId,
+      createdAt,
+      title,
+      isFound ? '찾았다' : '찾아요',
+      isFound ? '완료 상태 못 받음' : '수정이 필요함',
+    ),
+  );
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -218,7 +242,9 @@ export default function MyPageUserPostTable() {
     setPage(0);
   };
 
-  return (
+  return isLoading ? (
+    <CircularProgress sx={{ color: '#ff6700' }} />
+  ) : (
     <Paper
       sx={{
         boxShadow: 'none',
