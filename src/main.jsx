@@ -13,6 +13,7 @@ import CommunityDetail from './components/Community/CommunityDetail.jsx';
 import CommunityWrite from './components/Community/CommunityWrite.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
+import Chat from './pages/Chat';
 import ProtectedRoute from './pages/ProtectedRoute.jsx';
 import SearchResult from './pages/SearchResult.jsx';
 
@@ -66,6 +67,8 @@ const router = createBrowserRouter([
       },
       { path: '/mypage', element: <MyPage /> },
       { path: '/admin', element: <Admin /> },
+      { path: '/chat', element: <Chat /> },
+      // ... 다른 컴포넌트들
     ],
   },
 ]);
