@@ -7,9 +7,8 @@ import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
-import api from '../api/axios';
 import { isLoggedIn } from '../utils/Auth';
-import Cookies from 'js-cookie';
+import api from '../api/axios';
 
 const LoginContainer = styled.section`
   display: flex;
@@ -75,6 +74,7 @@ const LOGIN_URL = '/user/login';
 
 const Login = () => {
   const navigate = useNavigate();
+
   const { saveAuth } = useAuth();
 
   const [email, setEmail] = useState('');
@@ -117,8 +117,6 @@ const Login = () => {
       const accessToken = response?.data?.token;
       const status = response?.data?.status;
 
-      Cookies.set('loginCookie', accessToken);
-
       saveAuth({ email, nickname, status, accessToken });
 
       setEmail('');
@@ -151,6 +149,8 @@ const Login = () => {
   return (
     <LoginContainer>
       <LoginFormContainer>
+        {/* TODO: 예쁜 화살표 아이콘을 찾아 넣어서, 뒤로 가기 기능 넣기(로그인, 회원가입, 비밀번호 찾기) */}
+        {/* Link to='/' replace 또는 onClick 이벤트로 navigate(-1, { replace: true }) */}
         <HeaderTitle>로그인</HeaderTitle>
         <LoginForm onSubmit={handleSubmit}>
           <FormLabel htmlFor="email">이메일</FormLabel>
