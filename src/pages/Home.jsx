@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import HomeSearchBar from '../components/Home/HomeSearchBar';
 import HomeButtons from '../components/Home/HomeButtons';
 import CardCarousel from '../components/Home/CardCarousel';
-import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 const HomeContainer = styled.div`
   display: flex;
@@ -24,24 +23,6 @@ const MapBox = styled.img`
 `;
 
 const Home = () => {
-  const axiosPrivate = useAxiosPrivate();
-
-  const fetchEvents = async () => {
-    const response = await axiosPrivate.get('/post');
-
-    if (response.status !== 200) {
-      const error = new Error('An error occurred while fetching the events');
-      error.code = response.status;
-      error.info = response;
-      throw error;
-    }
-
-    const events = response.data;
-    console.log(events);
-
-    return events;
-  };
-
   return (
     <HomeContainer>
       <HomeSearchBar />
@@ -53,7 +34,6 @@ const Home = () => {
           src="https://giphy.com/embed/t2aAdTgnU9Ie6jvG0W"
           style={{ position: 'absolute' }}
         />
-        <button onClick={fetchEvents}>클릭</button>
       </div>
     </HomeContainer>
   );

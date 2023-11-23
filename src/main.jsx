@@ -15,7 +15,6 @@ import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
 import Chat from './pages/Chat';
-import ProtectedRoute from './pages/ProtectedRoute.jsx';
 import SearchResult from './pages/SearchResult.jsx';
 
 const router = createBrowserRouter([
@@ -40,11 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/mypage',
-        element: (
-          <ProtectedRoute>
-            <MyPage />
-          </ProtectedRoute>
-        ),
+        element: <MyPage />,
       },
       {
         path: '/community',
@@ -64,11 +59,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/admin',
-        element: (
-          <ProtectedRoute requireAdmin={true}>
-            <Admin />
-          </ProtectedRoute>
-        ),
+        element: <Admin />,
       },
       { path: '/mypage', element: <MyPage /> },
       { path: '/admin', element: <Admin /> },
@@ -82,6 +73,6 @@ const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
   </QueryClientProvider>,
 );

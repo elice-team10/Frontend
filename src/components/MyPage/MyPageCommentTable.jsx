@@ -10,7 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import theme from '../../config/theme';
 import styled from 'styled-components';
 import { StyledEngineProvider } from '@mui/styled-engine';
-import api from '../../api/axios';
+import CircularProgress from '@mui/material/CircularProgress';
+import { axiosPrivate } from '../../api/axios';
 
 const fake_data = [
   {
@@ -126,14 +127,6 @@ const columns = [
   },
 ];
 
-function createData(commentId, commentDate, commentContent) {
-  return { commentId, commentDate, commentContent };
-}
-
-const rows = fake_data.map(({ commentId, commentDate, commentContent }) =>
-  createData(commentId, commentDate, commentContent),
-);
-
 const MyTablePagination = styled(TablePagination)`
   div,
   p,
@@ -145,6 +138,49 @@ const MyTablePagination = styled(TablePagination)`
 export default function MyPageCommentTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [commentData, setCommentData] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsLoading(true);
+    async function getUserPostData() {
+      setIsLoading(true);
+      try {
+        const response = await axiosPrivate().get(
+          `/post/홍길동/?page=${page}&pageSize=${5}`,
+          {
+            withCredentials: true,
+          },
+        );
+        console.log(response.data);
+        setCommentData(response.data);
+        setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    getUserPostData();
+  }, []);
+
+  function createData(commentId, commentDate, commentContent) {
+    return { commentId, commentDate, commentContent };
+  }
+
+  // const rows = fake_data.map(({ commentId, commentDate, commentContent }) =>
+  //   createData(commentId, commentDate, commentContent),
+  // );
+
+  const rows = commentData.map(
+    ({ _id: commentId, createdAt, title, isFound }) =>
+      createData(
+        commentId,
+        createdAt,
+        title,
+        isFound ? '찾았다' : '찾아요',
+        isFound ? '완료 상태 못 받음' : '수정이 필요함',
+      ),
+  );
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -155,7 +191,9 @@ export default function MyPageCommentTable() {
     setPage(0);
   };
 
-  return (
+  return isLoading ? (
+    <CircularProgress sx={{ color: '#ff6700' }} />
+  ) : (
     <Paper
       sx={{
         boxShadow: 'none',

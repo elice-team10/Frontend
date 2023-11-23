@@ -1,4 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import {
+  useState,
+  useEffect,
+  useImperativeHandle,
+  forwardRef,
+} from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
 import api from '../../api/axios';
@@ -12,7 +17,12 @@ const columns = [
     width: 190,
   },
   { field: 'nickname', headerName: '닉네임', width: 190 },
-  { field: 'isFound', headerName: '현재 상태', width: 190 },
+  {
+    field: 'isFound',
+    headerName: '현재 상태',
+    width: 190,
+    renderCell: (params) => <span>{params.value ? '완료' : '미완료'}</span>,
+  },
 
   {
     field: 'createdAt',
@@ -21,24 +31,28 @@ const columns = [
   },
 ];
 
-export default function AdminFoundBoard() {
+const AdminFoundBoard = ({ onSelectionChange }, ref) => {
   const [rows, setRows] = useState([]); // 서버로부터 받은 데이터를 저장할 상태
 
+  const fetchData = async () => {
+    try {
+      // 서버로부터 board_category가 1인 게시물만 가져옴
+      const response = await api.get('/post');
+      const filteredData = response.data.filter(
+        (post) => post.board_category === 1,
+      );
+      setRows(filteredData); // 서버로부터 받은 데이터로 rows 상태를 업데이트
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // 서버로부터 board_category가 1인 게시물만 가져옴
-        const response = await api.get('/post');
-        const filteredData = response.data.filter(
-          (post) => post.board_category === 1,
-        );
-        setRows(filteredData); // 서버로부터 받은 데이터로 rows 상태를 업데이트
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      }
-    };
     fetchData();
   }, []);
+
+  useImperativeHandle(ref, () => ({
+    fetchData,
+  }));
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
@@ -46,13 +60,14 @@ export default function AdminFoundBoard() {
         rows={rows}
         columns={columns}
         getRowId={(row) => row._id}
+        checkboxSelection
+        onRowSelectionModelChange={(ids) => onSelectionChange(ids)}
         pageSizeOptions={[10]}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 10 },
           },
         }}
-        checkboxSelection
         sx={{
           borderRadius: '4px',
           '& .MuiDataGrid-cell': {
@@ -75,4 +90,6 @@ export default function AdminFoundBoard() {
       />
     </div>
   );
-}
+};
+
+export default forwardRef(AdminFoundBoard);
