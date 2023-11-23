@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import styled from 'styled-components';
 import theme from '../../config/theme';
 import AdminUser from './AdminUser';
 import AdminFoundBoard from './AdminFoundBoard';
 import AdminFoundComment from './AdminFoundComment';
-import AdminLostBorad from './AdminLostBorad';
+import AdminLostBoard from './AdminLostBoard';
 import AdminLostComment from './AdminLostComment';
+import api from '../../api/axios';
+import Cookies from 'js-cookie';
 
 const AdminNavContainer = styled.div`
   display: flex;
@@ -75,8 +76,8 @@ const AdminSubNavBox = styled.div`
       props.$activeMenu === '찾아요'
         ? '880px'
         : props.$activeMenu === '주웠어요'
-        ? '1170px'
-        : '0px'};
+          ? '1170px'
+          : '0px'};
 `;
 
 const AdminSubMenu = styled.div`
@@ -116,61 +117,53 @@ const AdminFormContainer = styled.div`
 const AdminTemplate = () => {
   const [activeMenu, setActiveMenu] = useState('회원정보');
   const [activeSubMenu, setActiveSubMenu] = useState('게시물');
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedUser, setSelectedUser] = useState([]);
 
-  const handleDeleteUsers = async () => {
+  const handleUserSelection = (ids) => {
+    setSelectedUser(ids);
+    console.log(ids);
+  };
+
+  const deleteUser = async () => {
     try {
-      await axios.post('/api/delete-users', { userIds: selectedRows });
-      // 성공적으로 삭제 후 추가 처리
+      await Promise.all(selectedUser.map((ids) => api.delete(`/user/${ids}`)));
+      // AdminUser 컴포넌트 getUser 함수를 호출
     } catch (error) {
       console.error('Error deleting users: ', error);
+      console.log(selectedUser);
     }
   };
 
-  const handleDeletePost = async () => {
-    try {
-      // 선택된 게시물을 삭제하는 로직
-      await axios.post('/api/delete-Post', { PostIds: selectedRows });
-      // 성공 후 추가 처리
-    } catch (error) {
-      console.error('Error deleting Post: ', error);
-    }
-  };
-
-  const handleDeleteComment = async () => {
-    try {
-      // 선택된 댓글을 삭제하는 로직
-      await axios.post('/api/delete-comments', { commentIds: selectedRows });
-      // 성공 후 추가 처리, 예를 들어 상태 업데이트나 사용자에게 알림 등
-    } catch (error) {
-      console.error('Error deleting comments: ', error);
-    }
-  };
-
-  const showDeleteUserBtn = activeMenu === '회원정보';
-  const showDeletePostBtn =
-    (activeMenu === '찾아요' || activeMenu === '주웠어요') &&
-    activeSubMenu === '게시물';
-  const showDeleteCommentBtn =
-    (activeMenu === '찾아요' || activeMenu === '주웠어요') &&
-    activeSubMenu === '댓글';
-
+  let button;
   let table;
 
   if (activeMenu === '회원정보') {
-    table = <AdminUser onSelectionChange={setSelectedRows} />;
+    button = (
+      <Button
+        onClick={() => {
+          deleteUser();
+        }}
+      >
+        관리자 권한으로 탈퇴
+      </Button>
+    );
+    table = <AdminUser onSelectionChange={handleUserSelection} />;
   }
   if (activeMenu === '찾아요' && activeSubMenu === '게시물') {
-    table = <AdminLostBorad onSelectionChange={setSelectedRows} />;
+    button = <Button>관리자 권한으로 삭제</Button>;
+    table = <AdminLostBoard />;
   }
   if (activeMenu === '찾아요' && activeSubMenu === '댓글') {
-    table = <AdminLostComment onSelectionChange={setSelectedRows} />;
+    button = <Button>관리자 권한으로 삭제</Button>;
+    table = <AdminLostComment />;
   }
   if (activeMenu === '주웠어요' && activeSubMenu === '게시물') {
-    table = <AdminFoundBoard onSelectionChange={setSelectedRows} />;
+    button = <Button>관리자 권한으로 삭제</Button>;
+    table = <AdminFoundBoard />;
   }
   if (activeMenu === '주웠어요' && activeSubMenu === '댓글') {
-    table = <AdminFoundComment onSelectionChange={setSelectedRows} />;
+    button = <Button>관리자 권한으로 삭제</Button>;
+    table = <AdminFoundComment />;
   }
 
   return (
@@ -205,27 +198,19 @@ const AdminTemplate = () => {
             주웠어요
           </AdminMenu>
         </AdminMenuBox>
-        {showDeleteUserBtn && (
-          <Button onClick={handleDeleteUsers}>관리자 권한으로 탈퇴</Button>
-        )}
-        {showDeletePostBtn && (
-          <Button onClick={handleDeletePost}>관리자 권한으로 삭제</Button>
-        )}
-        {showDeleteCommentBtn && (
-          <Button onClick={handleDeleteComment}>관리자 권한으로 삭제</Button>
-        )}
+        {button}
       </AdminNavContainer>
       <AdminSubNavContainer>
         <AdminSubNavBox
           $show={activeMenu === '찾아요' || activeMenu === '주웠어요'}
+          $activeMenu={activeMenu}
           $width={
             activeMenu === '찾아요'
               ? '450px'
               : activeMenu === '주웠어요'
-              ? '750px'
-              : '0px'
+                ? '750px'
+                : '0px'
           }
-          $activeMenu={activeMenu}
         >
           <AdminSubMenu
             $active={activeSubMenu === '게시물'}

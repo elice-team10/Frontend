@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
-import axios from 'axios';
+import api from '../../api/axios';
 
 const columns = [
   { field: '_id', headerName: '회원 번호', width: 230 },
@@ -20,36 +20,30 @@ const columns = [
 ];
 
 export default function AdminUser({ onSelectionChange }) {
+  const [user, setUser] = useState([]);
 
-  const [rows, setRows] = useState([]);
+  const getUser = async () => {
+    try {
+      const response = await api.get('/user');
+      setUser(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('http://kdt-sw-6-team10.elicecoding.com/api/user');
-        setRows(response.data);
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      }
-    };
-
-    fetchData();
+    getUser();
   }, []);
-
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
-        
-        onSelectionModelChange={(newSelection) => {
-        onSelectionChange(newSelection); // 선택된 행 상태를 상위 컴포넌트로 전달
-        }}
-        
-
-        rows={rows}
+        rows={user}
         columns={columns}
-        getRowId={(row) => row._id}
+        getRowId={(user) => user._id}
         checkboxSelection
+        onRowSelectionModelChange={(ids) => onSelectionChange(ids)}
         pageSizeOptions={[10]}
         initialState={{
           pagination: {
