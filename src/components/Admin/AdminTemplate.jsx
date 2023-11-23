@@ -7,7 +7,6 @@ import AdminFoundComment from './AdminFoundComment';
 import AdminLostBoard from './AdminLostBoard';
 import AdminLostComment from './AdminLostComment';
 import api from '../../api/axios';
-import Cookies from 'js-cookie';
 
 const AdminNavContainer = styled.div`
   display: flex;

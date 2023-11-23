@@ -6,7 +6,7 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import { useNavigate } from 'react-router-dom';
-// import logoImg from '../../assets/로고10.png';
+import logoImg from '../../assets/로고10.png';
 
 const Card = styled.div`
   background-color: ${theme.colors.background};
@@ -173,7 +173,7 @@ function CommunityCard({
     <CardContainer>
       <Card onClick={() => navigate('/community/post')}>
         <PhotoContainer>
-          {picture ? <img src={`http://kdt-sw-6-team10.elicecoding.com${picture}`} /> : <img src={logoImg} />}
+          {picture ? <img src={`http://kdt-sw-6-team10.elicecoding.com${picture}`} /> : <WallpaperOutlinedIcon fontSize='large' />}
           {/* <WallpaperOutlinedIcon fontSize="large" /> */}
         </PhotoContainer>
         <DividerLine />

@@ -21,7 +21,7 @@ export async function createNewEvent(eventData) {
   const response = await api.post(
     '/post',
     eventData,
-    { headers: { 'Content-Type': 'application/json' }, withCredentials: true }
+    { headers: { 'Content-Type': 'multipart/form-data' }, withCredentials: true }
   );
 
   if (response.status !== 200) {
