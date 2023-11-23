@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 import theme from '../config/theme';
-import Header from '../components/UI/Header';
 import MyPageUserPostTable from '../components/MyPage/MyPagePostTable';
 import MyPageCommentTable from '../components/MyPage/MyPageCommentTable';
 import MyPageChangePassword from '../components/MyPage/MyPageChangePassword';
 import { NICKNAME_REGEX, EMAIL_REGEX } from '../config/regex';
+import useAuth from '../hooks/useAuth';
+import useAuthInitialization from '../hooks/useAuthInitialization';
 
 const MyPageContainer = styled.div`
   display: flex;
@@ -89,9 +90,11 @@ const StyledDeactivateLink = styled(Link)`
 const tabs = ['회원 정보수정/탈퇴', '나의 게시물', '나의 댓글'];
 
 const MyPage = () => {
+  const { auth, saveAuth } = useAuth();
+
   const [currTab, setCurrTab] = useState('회원 정보수정/탈퇴');
-  const [nickname, setNickname] = useState('유저이름');
-  const [email, setEmail] = useState('user@email.com');
+  const [nickname, setNickname] = useState(auth?.nickname);
+  const [email, setEmail] = useState(auth?.email);
   const [tempNickname, setTempNickname] = useState('');
   const [tempEmail, setTempEmail] = useState('');
   const [isNicknameEditMode, setIsNicknameEditMode] = useState(false);
@@ -99,6 +102,9 @@ const MyPage = () => {
   const [errorMsgNickname, setErrorMsgNickname] = useState('');
   const [errorMsgEmail, setErrorMsgEmail] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // 로컬 스토리지에 저장된 사용자 데이터를 가져오는 훅
+  useAuthInitialization();
 
   const handleClickTab = (tab) => {
     setCurrTab(tab);
@@ -185,7 +191,6 @@ const MyPage = () => {
 
   return (
     <>
-      <Header />
       <MyPageContainer>
         <NavAside>
           <NavTitle>마이 페이지</NavTitle>
