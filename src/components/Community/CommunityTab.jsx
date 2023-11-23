@@ -24,6 +24,11 @@ const Container = styled.div`
   padding-bottom: 5rem;
 `;
 
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: white;
+`;
+
 const EachTab = styled.p`
   font-size: ${theme.fontSizes.subtitle};
   line-height: 22px;
@@ -64,12 +69,11 @@ function CommunityTab({ currentTab, onClick }) {
         );
       })}
       <WriteButton>
-        <Link
-          to="/community/write"
-          style={{ textDecoration: 'none', color: 'white' }}
+        <StyledLink
+          to={`/community/write?board_category=${currentTab === '찾아요' ? 0 : 1}`}
         >
           글 작성
-        </Link>
+        </StyledLink>
       </WriteButton>
     </Container>
   );

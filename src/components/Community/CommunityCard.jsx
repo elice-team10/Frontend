@@ -164,13 +164,16 @@ function CommunityCard({
   nickname,
   replyCount,
 }) {
+
   let navigate = useNavigate();
 
+  console.log(picture);
+  
   return (
     <CardContainer>
       <Card onClick={() => navigate('/community/post')}>
         <PhotoContainer>
-          {picture ? <img src={`${picture}`} /> : <img src={logoImg} />}
+          {picture ? <img src={`http://kdt-sw-6-team10.elicecoding.com${picture}`} /> : <img src={logoImg} />}
           {/* <WallpaperOutlinedIcon fontSize="large" /> */}
         </PhotoContainer>
         <DividerLine />

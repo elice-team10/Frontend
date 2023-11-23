@@ -20,6 +20,7 @@ const InputContainer = styled.div`
 const ImgInput = styled.input`
   border: none;
   &::placeholder {
+    color: ${theme.colors.text};
     font-weight: 400;
     font-size: 1rem;
     line-height: 1.4375em;
@@ -40,15 +41,9 @@ const Input = styled.input`
   display: none;
 `;
 
-function ImageInput() {
+function ImageInput({ onChange }) {
   const [placeholder, setPlaceholder] = useState('사진 등록');
   const imgRef = useRef(null);
-  const changeFilename = () => {
-    if (imgRef.current.value !== '') {
-      const fileName = imgRef.current.value;
-      setPlaceholder(fileName);
-    }
-  };
 
   return (
     <InputContainer>
@@ -61,7 +56,15 @@ function ImageInput() {
         id="imgFile"
         accept="image/png, image/jpeg"
         ref={imgRef}
-        onChange={changeFilename}
+        onChange={(event) => {
+          // 파일 콜백 호출
+          onChange(event);
+          // 파일 이름으로 placeholder 지정
+          if (imgRef.current && imgRef.current.files.length > 0) {
+            const filename = imgRef.current.files[0].name;
+            setPlaceholder(filename);
+          }
+        }}
       />
     </InputContainer>
   );

@@ -1,12 +1,14 @@
+import { useMutation } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { LOCATION_CATEGORY } from '../../config/constants';
 import styled from 'styled-components';
 import theme from '../../config/theme';
 import Calander from '../UI/DatePicker';
-import { Link } from 'react-router-dom';
 import CustomizedSwitches from '../UI/SwitchButton';
-import Header from '../UI/Header';
-import { LOCATION_CATEGORY } from '../../config/constants';
 import ImageInput from '../UI/ImageInput';
-import { useState } from 'react';
+import { createNewEvent } from '../../api/http';
+import { useQuery } from '@tanstack/react-query';
 
 const Background = styled.div`
   background-color: #eee;
@@ -14,7 +16,7 @@ const Background = styled.div`
   padding: 3px;
 `;
 
-export const PostContainer = styled.div`
+export const PostContainer = styled.form`
   width: 56rem;
   height: 70%;
   display: flex;
@@ -130,6 +132,23 @@ const StyledSelect = styled.select`
   }
 `;
 
+const CalInput = styled.input`
+  padding: 0.7rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-weight: 400;
+  font-size: 1rem;
+  font-family: 'Noto Sans KR', sans-serif;
+  line-height: 1.4375em;
+  letter-spacing: 0.00938em;
+  color: ${theme.colors.text};
+  box-sizing: border-box;
+  outline: none;
+  &:hover {
+    border: 1px solid ${theme.colors.text};
+  }
+`;
+
 const GradationBox = styled.div`
   width: 54rem;
   height: 0.4rem;
@@ -139,39 +158,99 @@ const GradationBox = styled.div`
 `;
 
 function CommunityWrite() {
+  const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
+  const [date, setDate] = useState('');
+  const [complete, setComplete] = useState(false);
+  const [content, setContent] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [boardCategory, setBoardCategory] = useState(0);
 
+  const handleFileChange = (event) => {
+    const selectedFile= event.target.files[0];
+    setFile(selectedFile)
+  };
+
+  const handleSwitch = (isCompleted) => {
+    setComplete(isCompleted);
+  };
+
+  const urlLocation = useLocation();
+  const searchParams = new URLSearchParams(urlLocation.search);
+  const boardCategoryFromQuery = searchParams.get('board_category');
+
+  useEffect(() => {
+    if (boardCategoryFromQuery !== null) {
+      setBoardCategory(Number(boardCategoryFromQuery))
+    }
+  }, [boardCategoryFromQuery]);
+
+  const { mutate } = useMutation({
+    mutationFn: createNewEvent,
+  });
+
+  function handleSubmit(event) {
+    event.preventDefault();
+
+    const formData = {
+      title,
+      location,
+      date,
+      complete,
+      content,
+      nickname,
+      board_category: boardCategory,
+    };
+    
+    console.log(formData);
+    mutate(formData);
+  }
 
   return (
     <Background>
       {/* <Header /> */}
-      <PostContainer>
+      <PostContainer onSubmit={handleSubmit}>
         <TitleContainer>
-          <Title type="text" placeholder="제목을 입력해주세요." />
+          <Title
+            type="text"
+            placeholder="제목을 입력해주세요."
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
+          />
           <GradationBox />
         </TitleContainer>
         <ToolbarContainer>
-          <StyledSelect value={location} onChange={(event) => setLocation(event.target.value)}>
+          <StyledSelect
+            value={location}
+            onChange={(event) => setLocation(event.target.value)}
+          >
             {LOCATION_CATEGORY.map((area) => (
               <option key={area} value={area}>
                 {area}
               </option>
             ))}
           </StyledSelect>
-          <Calander />
-          <ImageInput />
+          <CalInput
+            type="date"
+            value={date}
+            onChange={(event) => setDate(event.target.value)}
+          />
+          {/* <Calander/> */}
+          <ImageInput onChange={handleFileChange}/>
         </ToolbarContainer>
-        <CustomizedSwitches />
+        <CustomizedSwitches onChangeSwitch={handleSwitch} />
         <ContentContainer>
           <Content
             cols="50"
             rows="10"
-            placeholder="찾는(은) 물건의 위치, 장소와 날짜를 상세하게 적을 수록 찾을 수 있는 확률이 높아져요!"
+            placeholder="찾는(은) 물건의 위치와 장소, 그리고 날짜를 상세하게 작성할수록 찾을 확률이 높아집니다!"
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
           ></Content>
           {/* <Editor /> */}
         </ContentContainer>
         <ButtonContainer>
-          <SubmitButton>등록</SubmitButton>
+          <SubmitButton type="submit">등록</SubmitButton>
           <BoardLink to="/community">
             <SubmitButton $background="white" color="#7C9299">
               취소

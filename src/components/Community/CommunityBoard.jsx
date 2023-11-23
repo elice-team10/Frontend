@@ -45,9 +45,10 @@ function CommunityBoard() {
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['events'],
-    queryFn: fetchEvents,
+    queryFn: () => fetchEvents('/post'),
+    staleTime: 5000,
   });
-  console.log(data);
+
   let content;
 
   if (isLoading) {
@@ -66,7 +67,8 @@ function CommunityBoard() {
   if (data) {
     const lostItem = data.filter((event) => event.board_category === 0);
     const foundItem = data.filter((event) => event.board_category === 1);
-
+    console.log(data);
+    
     content = (
       <>
         {currentTab === '찾아요' ? (
