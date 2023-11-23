@@ -22,6 +22,11 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('auth', JSON.stringify(authData));
   };
 
+  const updateAuth = (authData) => {
+    setAuth((prev) => ({ ...prev, authData }));
+    localStorage.setItem('auth', JSON.stringify({ ...auth, authData }));
+  };
+
   // 로그아웃 할 때, 로그인 정보 삭제
   const clearAuth = () => {
     setAuth(null);
@@ -33,7 +38,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ auth, saveAuth, clearAuth }}>
+    <AuthContext.Provider value={{ auth, saveAuth, updateAuth, clearAuth }}>
       {children}
     </AuthContext.Provider>
   );

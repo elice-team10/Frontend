@@ -90,7 +90,7 @@ const StyledDeactivateLink = styled(Link)`
 const tabs = ['회원 정보수정/탈퇴', '나의 게시물', '나의 댓글'];
 
 const MyPage = () => {
-  const { auth } = useAuth();
+  const { auth, updateAuth } = useAuth();
 
   const [currTab, setCurrTab] = useState('회원 정보수정/탈퇴');
   const [nickname, setNickname] = useState(auth?.nickname);
@@ -123,7 +123,7 @@ const MyPage = () => {
     setCurrTab(tab);
   };
 
-  const handleNicknameConfirm = () => {
+  const handleNicknameConfirm = async () => {
     // 닉네임 데이터 업데이트 요청
     // 닉네임 유효성 검사
     if (tempNickname.length < 2 || tempNickname.length > 10) {
@@ -140,15 +140,23 @@ const MyPage = () => {
       return;
     }
 
-    // TODO: axios 닉네임 변경 Post 요청
+    try {
+      const response = await axiosPrivate().put('/user', {
+        nickname: tempNickname,
+      });
 
-    // 닉네임 유효성 검사 통과 -> 상태 업데이트
-    setNickname(tempNickname);
-    setErrorMsgNickname('');
-    setIsNicknameEditMode(false);
+      // 닉네임 유효성 검사 통과 -> 로컬 스토리지 데이터 업데이트
+      updateAuth({ nickname: tempNickname });
+
+      setNickname(tempNickname);
+      setErrorMsgNickname('');
+      setIsNicknameEditMode(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleEmailConfirm = () => {
+  const handleEmailConfirm = async () => {
     // 이메일 데이터 업데이트 요청
     // 이메일 유효성 검사 필요
     if (!EMAIL_REGEX.test(tempEmail)) {
@@ -156,12 +164,21 @@ const MyPage = () => {
       return;
     }
 
-    // TODO: axios 이메일 변경 Post 요청
+    try {
+      const response = await axiosPrivate().put('/user', {
+        email: tempEmail,
+      });
 
-    // 이메일 유효성 검사 통과 -> 상태 업데이트
-    setEmail(tempEmail);
-    setErrorMsgEmail('');
-    setIsEmailEditMode(false);
+      // 닉네임 유효성 검사 통과 -> 로컬 스토리지 데이터 업데이트
+      updateAuth({ email: tempNickname });
+
+      // 이메일 유효성 검사 통과 -> 상태 업데이트
+      setEmail(tempEmail);
+      setErrorMsgEmail('');
+      setIsEmailEditMode(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleClickEditNickname = () => {
