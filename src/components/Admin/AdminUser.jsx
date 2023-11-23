@@ -1,70 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
+import api from '../../api/axios';
 
 const columns = [
-  { field: 'id', headerName: '회원 번호', width: 230 },
-  { field: 'email', headerName: '이메일', width: 230 },
+  { field: '_id', headerName: '회원 번호', width: 230 },
+  { field: 'email', headerName: '아이디(이메일)', width: 230 },
   { field: 'nickname', headerName: '닉네임', width: 230 },
   {
     field: 'status',
-    headerName: '현재 상태',
+    headerName: '회원 상태',
     width: 230,
   },
   {
-    field: 'date',
-    headerName: '가입 시기',
+    field: 'createdAt',
+    headerName: '회원 가입일',
     width: 228,
   },
 ];
 
-const rows = [
-  {
-    id: 1,
-    email: 'Jon@gmail.com',
-    nickname: 'Snow',
-    status: '일반회원',
-    date: '2023/11/14',
-  },
-  {
-    id: 2,
-    email: 'Cersei@gmail.com',
-    nickname: 'Snow',
-    status: '일반회원',
-    date: '2023/11/14',
-  },
-];
-
 export default function AdminUser({ onSelectionChange }) {
-  /*
-  const [rows, setRows] = useState([]);
+  const [user, setUser] = useState([]);
+
+  const getUser = async () => {
+    try {
+      const response = await api.get('/user');
+      setUser(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get('/api/users');
-        setRows(response.data);
-      } catch (error) {
-        console.error('Error fetching data: ', error);
-      }
-    };
-
-    fetchData();
+    getUser();
   }, []);
-  */
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
-        /*
-        onSelectionModelChange={(newSelection) => {
-        onSelectionChange(newSelection); // 선택된 행 상태를 상위 컴포넌트로 전달
-        }}
-        */
-
-        rows={rows}
+        rows={user}
         columns={columns}
+        getRowId={(user) => user._id}
         checkboxSelection
+        onRowSelectionModelChange={(ids) => onSelectionChange(ids)}
         pageSizeOptions={[10]}
         initialState={{
           pagination: {
