@@ -1,12 +1,15 @@
 // App.jsx
 import { Outlet } from 'react-router-dom';
-// import Header from './components/Header';
+import Header from './components/UI/Header';
+import { AuthProvider } from './context/AuthProvider';
 
 function App() {
   return (
     <>
-      {/* <Header /> */}
-      <Outlet />
+      <AuthProvider>
+        <Header />
+        <Outlet />
+      </AuthProvider>
     </>
   );
 }

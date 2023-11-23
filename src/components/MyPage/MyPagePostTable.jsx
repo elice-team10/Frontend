@@ -10,6 +10,8 @@ import TableRow from '@mui/material/TableRow';
 import theme from '../../config/theme';
 import styled from 'styled-components';
 import { StyledEngineProvider } from '@mui/styled-engine';
+import api from '../../api/axios';
+import useAuth from '../../hooks/useAuth';
 
 const fake_data = [
   {
@@ -184,8 +186,28 @@ const MyTablePagination = styled(TablePagination)`
 `;
 
 export default function MyPageUserPostTable() {
+  const { auth } = useAuth();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    // isLoading(true);
+    async function getUserPostData() {
+      try {
+        const response = await api.get(`/post/${auth.nickname}`, {
+          withCredentials: true,
+        });
+        console.log(response.data);
+
+        // setIsLoading(false);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    getUserPostData();
+  }, [auth.nickname]);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
