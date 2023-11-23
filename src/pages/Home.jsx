@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import HomeSearchBar from '../components/Home/HomeSearchBar';
 import HomeButtons from '../components/Home/HomeButtons';
 import CardCarousel from '../components/Home/CardCarousel';
-import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 const HomeContainer = styled.div`
   display: flex;
@@ -24,22 +23,6 @@ const MapBox = styled.img`
 `;
 
 const Home = () => {
-  const fetchEvents = async () => {
-    const response = await axiosPrivate().get('/post');
-
-    if (response.status !== 200) {
-      const error = new Error('An error occurred while fetching the events');
-      error.code = response.status;
-      error.info = response;
-      throw error;
-    }
-
-    const events = response.data;
-    console.log(events);
-
-    return events;
-  };
-
   return (
     <HomeContainer>
       <HomeSearchBar />
@@ -52,7 +35,6 @@ const Home = () => {
           style={{ position: 'absolute' }}
         />
       </div>
-      <button onClick={fetchEvents}>클릭</button>
     </HomeContainer>
   );
 };
