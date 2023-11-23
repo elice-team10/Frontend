@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from 'styled-components';
-import theme from './config/theme';
 import './index.css';
 import App from './App.jsx';
 import Home from './pages/Home.jsx';
@@ -16,6 +14,8 @@ import CommunityWrite from './components/Community/CommunityWrite.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
 import Chat from './pages/Chat';
+import ProtectedRoute from './pages/ProtectedRoute.jsx';
+import SearchResult from './pages/SearchResult.jsx';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +24,10 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, path: '/', element: <Home /> },
+      {
+        path: '/search/result',
+        element: <SearchResult />,
+      },
       { path: '/login', element: <Login /> },
       {
         path: '/register',
@@ -33,7 +37,14 @@ const router = createBrowserRouter([
         path: '/forgotpassword',
         element: <ForgotPassword />,
       },
-      { path: '/mypage', element: <MyPage /> },
+      {
+        path: '/mypage',
+        element: (
+          <ProtectedRoute>
+            <MyPage />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: '/community/board',
         element: <CommunityBoard />,
@@ -46,6 +57,15 @@ const router = createBrowserRouter([
         path: '/community/write',
         element: <CommunityWrite />,
       },
+      {
+        path: '/admin',
+        element: (
+          <ProtectedRoute requireAdmin={true}>
+            <Admin />
+          </ProtectedRoute>
+        ),
+      },
+      { path: '/mypage', element: <MyPage /> },
       { path: '/admin', element: <Admin /> },
       { path: '/chat', element: <Chat /> },
       // ... 다른 컴포넌트들
@@ -54,7 +74,5 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <ThemeProvider theme={theme}>
-    <RouterProvider router={router} />
-  </ThemeProvider>
+  <RouterProvider router={router} />,
 );

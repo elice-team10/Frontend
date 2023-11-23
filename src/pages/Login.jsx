@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import useAuth from '../hooks/useAuth';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
+import { isLoggedIn } from '../utils/Auth';
+import api from '../api/axios';
+// import title from '../assets/로고11.png';
 
 const LoginContainer = styled.section`
   display: flex;
@@ -18,9 +22,9 @@ const LoginContainer = styled.section`
 const LoginFormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  padding: 3.2rem 2rem 4.8rem 2rem; // 바꿈
   border-radius: 12px;
-  background-color: #fff;
+  background-color: #eee;
 `;
 
 const LoginForm = styled.form`
@@ -35,6 +39,11 @@ const HeaderTitle = styled.h1`
   font-size: ${theme.fontSizes.subtitle};
 `;
 
+const Title = styled.img`
+  align-self: center;
+  margin-bottom: 3rem;
+  width: 17rem;
+`;
 const FormLabel = styled.label`
   font-size: ${theme.fontSizes.medium};
 `;
@@ -67,49 +76,70 @@ const AuthLinksContainer = styled.div`
   }
 `;
 
+const LOGIN_URL = '/user/login';
+
 const Login = () => {
   const navigate = useNavigate();
 
+  const { saveAuth } = useAuth();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errMsg, setErrMsg] = useState('');
+
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate('/');
+    }
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!EMAIL_REGEX.test(email)) {
+      setErrMsg('유효한 이메일 주소를 입력하세요.');
+      return;
+    }
+
+    if (!PWD_REGEX.test(password)) {
+      setErrMsg('비밀번호는 최소 5자리 이상이어야 합니다.');
+      return;
+    }
+
     try {
-      if (!EMAIL_REGEX.test(email)) {
-        setError('유효한 이메일 주소를 입력하세요.');
-        return;
-      }
-
-      if (!PWD_REGEX.test(password)) {
-        setError('비밀번호는 최소 6자리 이상이어야 합니다.');
-        return;
-      }
-
-      // TODO: API 적용
-      const res = await fetch(
-        'http://kdt-sw-6-team10.elicecoding.com/api/user/login',
+      const response = await api.post(
+        LOGIN_URL,
+        JSON.stringify({ email, password }),
         {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-          body: JSON.stringify({ email, password }),
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
         },
       );
-      console.log(res);
 
-      if (res.ok) {
-        console.log('로그인 성공!');
-        // 로그인에 성공하면 Home 페이지로 이동
-        navigate('/');
+      console.log(response);
+      console.log(JSON.stringify(response?.data));
+
+      const nickname = response?.data?.nickname;
+      const accessToken = response?.data?.token;
+      const status = response?.data?.status;
+
+      saveAuth({ email, nickname, status, accessToken });
+
+      setEmail('');
+      setPassword('');
+
+      if (status === 0) navigate('/admin');
+      if (status === 1) navigate('/');
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg('서버에서 응답이 없습니다.');
+      } else if (err.response?.status === 400) {
+        setErrMsg('이메일 또는 비밀번호를 잘못 입력했습니다.');
+      } else if (err.response?.status === 401) {
+        setErrMsg('인증 실패하였습니다.');
       } else {
-        console.error('로그인 실패');
+        setErrMsg('로그인에 실패였습니다.');
       }
-    } catch (error) {
-      console.error('로그인 중 오류 발생: ', error);
     }
   };
 
@@ -125,6 +155,12 @@ const Login = () => {
   return (
     <LoginContainer>
       <LoginFormContainer>
+        {/* <Title src={title} /> */}
+
+        {/* <HeaderTitle style={{ color: '#ff5000' }}>Lost & Found</HeaderTitle> */}
+
+        {/* TODO: 예쁜 화살표 아이콘을 찾아 넣어서, 뒤로 가기 기능 넣기(로그인, 회원가입, 비밀번호 찾기) */}
+        {/* Link to='/' replace 또는 onClick 이벤트로 navigate(-1, { replace: true }) */}
         <HeaderTitle>로그인</HeaderTitle>
         <LoginForm onSubmit={handleSubmit}>
           <FormLabel htmlFor="email">이메일</FormLabel>
@@ -143,7 +179,7 @@ const Login = () => {
             value={password}
             onInputChange={handleInputChange}
           />
-          {error && <ErrorMessage>{error}</ErrorMessage>}
+          {errMsg && <ErrorMessage>{errMsg}</ErrorMessage>}
           <AuthFormButton text="로그인" />
           <AuthLinksContainer>
             <Link to="/register">회원가입</Link>

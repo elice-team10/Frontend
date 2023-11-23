@@ -5,6 +5,9 @@ import theme from '../../config/theme';
 import AuthFormInput from '../Auth/AuthFormInput';
 import AuthFormButton from '../Auth/AuthFormButton';
 import { PWD_REGEX } from '../../config/regex';
+import api from '../../api/axios';
+
+const CHANGE_PASSWORD_URL = '/user/change-password';
 
 const ChangePasswordModalWrapper = styled.section`
   display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
@@ -47,28 +50,35 @@ const ErrorMessage = styled.span`
 const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
   const navigate = useNavigate();
 
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [validPassword, setValidPassword] = useState(false);
-
-  const [newPassword, setNewPassword] = useState('');
-  const [validNewPassword, setValidNewPassword] = useState('');
-
-  const [matchPassword, setMatchPassword] = useState('');
-  const [validMatch, setValidMatch] = useState(false);
-
-  const [errMessage, setErrMessage] = useState('');
-
-  useEffect(() => {
-    const result = PWD_REGEX.test(newPassword);
-    setValidNewPassword(result);
-    const match = newPassword === matchPassword;
-    setValidMatch(match);
-  }, [newPassword, matchPassword]);
+  const [passwordInfo, setPasswordInfo] = useState({
+    currentPassword: '',
+    validPassword: false,
+    newPassword: '',
+    validNewPassword: false,
+    matchPassword: '',
+    validMatch: false,
+    errMessage: '',
+  });
 
   useEffect(() => {
-    if (!validMatch) setErrMessage('새 비밀번호와 확인이 일치하지 않습니다.');
-    else setErrMessage('');
-  }, [validMatch]);
+    const result = PWD_REGEX.test(passwordInfo.newPassword);
+    setPasswordInfo((prev) => ({ ...prev, validNewPassword: result }));
+    const match = passwordInfo.newPassword === passwordInfo.matchPassword;
+    setPasswordInfo((prev) => ({ ...prev, validMatch: match }));
+  }, [passwordInfo.newPassword, passwordInfo.matchPassword]);
+
+  useEffect(() => {
+    if (!passwordInfo.validMatch)
+      setPasswordInfo((prev) => ({
+        ...prev,
+        errMessage: '새 비밀번호와 확인이 일치하지 않습니다.',
+      }));
+    else
+      setPasswordInfo((prev) => ({
+        ...prev,
+        errMessage: '',
+      }));
+  }, [passwordInfo.validMatch]);
 
   const handleSubmitChangePassword = async (e) => {
     e.preventDefault();
@@ -83,39 +93,69 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
      * 로그인 페이지로 이동하도록 유도
      */
 
-    if (!validNewPassword) {
-      setErrMessage('비밀번호는 최소 6자리 이상이어야 합니다.');
+    if (!passwordInfo.validNewPassword) {
+      setPasswordInfo((prev) => ({
+        ...prev,
+        errMessage: '비밀번호는 최소 5자리 이상이어야 합니다.',
+      }));
       return;
-    } else if (!validMatch) {
-      setErrMessage('새 비밀번호와 확인이 일치하지 않습니다.');
+    } else if (!passwordInfo.validMatch) {
+      setPasswordInfo((prev) => ({
+        ...prev,
+        errMessage: '새 비밀번호와 확인이 일치하지 않습니다.',
+      }));
       return;
     }
 
     try {
-      // TODO: API 요청 적용
-      //
-      //
-      // TODO: 성공 코드 적용
-      // if (성공코드) {
-      //   // 비밀번호 변경 성공
-      //    setValidPassword(true);
-      //   // 알림 메시지
-      //   alert('비밀번호가 변경되어, 로그인 페이지로 이동합니다.');
-      //   // 로그인 페이지로 이동
-      //   navigate('/login');
-      // } else {
-      //    setErrMessage('현재 비밀번호가 다릅니다.');
-      //   console.error('비밀번호 변경 실패');
-      // }
+      const res = await api.post(
+        CHANGE_PASSWORD_URL,
+        JSON.stringify({
+          currentPassword: passwordInfo.currentPassword,
+          newPassword: passwordInfo.newPassword,
+        }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
+        },
+      );
+
+      console.log(res);
+
+      // TODO: 비밀번호 변경 마무리
+      // 비밀번호 변경 성공
+      setPasswordInfo((prev) => ({ ...prev, validPassword: true }));
+
+      // 알림 메시지
+      alert('비밀번호가 변경되어, 로그인 페이지로 이동합니다.');
+      // 로그인 페이지로 이동
+      navigate('/login');
+      setPasswordInfo((prev) => ({
+        ...prev,
+        errMessage: '현재 비밀번호가 다릅니다.',
+      }));
+      console.error('비밀번호 변경 실패');
     } catch (error) {
       console.error('비밀번호 변경 중 오류 발생: ', error);
     }
   };
 
   const handleInputChange = (id, value) => {
-    if (id === 'current_password') setCurrentPassword(value);
-    if (id === 'new_password') setNewPassword(value);
-    if (id === 'confirm_new_password') setMatchPassword(value);
+    if (id === 'current_password')
+      setPasswordInfo((prev) => ({
+        ...prev,
+        currentPassword: value,
+      }));
+    if (id === 'new_password')
+      setPasswordInfo((prev) => ({
+        ...prev,
+        newPassword: value,
+      }));
+    if (id === 'confirm_new_password')
+      setPasswordInfo((prev) => ({
+        ...prev,
+        matchPassword: value,
+      }));
   };
 
   const handleModalClick = (e) => {
@@ -141,25 +181,27 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
             id="current_password"
             type="password"
             placeholder="현재 비밀번호"
-            value={currentPassword}
+            value={passwordInfo.currentPassword}
             onInputChange={handleInputChange}
           />
           <AuthFormInput
             id="new_password"
             type="password"
             placeholder="새 비밀번호"
-            value={newPassword}
+            value={passwordInfo.newPassword}
             onInputChange={handleInputChange}
           />
           <AuthFormInput
             id="confirm_new_password"
             type="password"
             placeholder="새 비밀번호 확인"
-            value={matchPassword}
+            value={passwordInfo.matchPassword}
             onInputChange={handleInputChange}
           />
-          {(!validPassword || !validNewPassword || !validMatch) && (
-            <ErrorMessage>{errMessage}</ErrorMessage>
+          {(!passwordInfo.validPassword ||
+            !passwordInfo.validNewPassword ||
+            !passwordInfo.validMatch) && (
+            <ErrorMessage>{passwordInfo.errMessage}</ErrorMessage>
           )}
 
           <AuthFormButton
