@@ -11,12 +11,10 @@ import NotFound from './pages/NotFound.jsx';
 import CommunityBoard from './components/Community/CommunityBoard.jsx';
 import CommunityDetail from './components/Community/CommunityDetail.jsx';
 import CommunityWrite from './components/Community/CommunityWrite.jsx';
-import { Provider } from 'react-redux';
-import store from './store';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
-import { AuthProvider } from './context/AuthProvider.jsx';
 import ProtectedRoute from './pages/ProtectedRoute.jsx';
+import SearchResult from './pages/SearchResult.jsx';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +23,10 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, path: '/', element: <Home /> },
+      {
+        path: '/search/result',
+        element: <SearchResult />,
+      },
       { path: '/login', element: <Login /> },
       {
         path: '/register',
@@ -62,13 +64,12 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-      // ... 다른 컴포넌트들
+      { path: '/mypage', element: <MyPage /> },
+      { path: '/admin', element: <Admin /> },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <Provider store={store}>
-    <RouterProvider router={router} />
-  </Provider>,
+  <RouterProvider router={router} />,
 );

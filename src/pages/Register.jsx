@@ -20,9 +20,9 @@ const RegisterContainer = styled.section`
 const RegisterFormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  padding: 3.2rem 2rem 4.8rem 2rem; // 바꿈
   border-radius: 12px;
-  background-color: #fff;
+  background-color: #eee; //바꿈
 `;
 
 const RegisterForm = styled.form`
@@ -133,7 +133,7 @@ const Register = () => {
       <RegisterFormContainer>
         <HeaderTitle>회원가입</HeaderTitle>
         <RegisterForm onSubmit={handleSubmit}>
-          <FormLabel htmlFor="nickname">닉네임</FormLabel>
+          {/* <FormLabel htmlFor="nickname">닉네임</FormLabel> */}
           <AuthFormInput
             id="nickname"
             type="text"
@@ -141,7 +141,7 @@ const Register = () => {
             value={nickname}
             onInputChange={handleInputChange}
           />
-          <FormLabel htmlFor="email">이메일</FormLabel>
+          {/* <FormLabel htmlFor="email">이메일</FormLabel> */}
           <AuthFormInput
             id="email"
             type="text"
@@ -149,7 +149,7 @@ const Register = () => {
             value={email}
             onInputChange={handleInputChange}
           />
-          <FormLabel htmlFor="password">비밀번호</FormLabel>
+          {/* <FormLabel htmlFor="password">비밀번호</FormLabel> */}
           <AuthFormInput
             id="password"
             type="password"

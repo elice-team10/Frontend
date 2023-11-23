@@ -9,6 +9,7 @@ import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
 import { isLoggedIn } from '../utils/Auth';
 import api from '../api/axios';
+// import title from '../assets/로고11.png';
 
 const LoginContainer = styled.section`
   display: flex;
@@ -21,9 +22,9 @@ const LoginContainer = styled.section`
 const LoginFormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  padding: 3.2rem 2rem 4.8rem 2rem; // 바꿈
   border-radius: 12px;
-  background-color: #fff;
+  background-color: #eee;
 `;
 
 const LoginForm = styled.form`
@@ -38,6 +39,11 @@ const HeaderTitle = styled.h1`
   font-size: ${theme.fontSizes.subtitle};
 `;
 
+const Title = styled.img`
+  align-self: center;
+  margin-bottom: 3rem;
+  width: 17rem;
+`;
 const FormLabel = styled.label`
   font-size: ${theme.fontSizes.medium};
 `;
@@ -149,6 +155,10 @@ const Login = () => {
   return (
     <LoginContainer>
       <LoginFormContainer>
+        {/* <Title src={title} /> */}
+
+        {/* <HeaderTitle style={{ color: '#ff5000' }}>Lost & Found</HeaderTitle> */}
+
         {/* TODO: 예쁜 화살표 아이콘을 찾아 넣어서, 뒤로 가기 기능 넣기(로그인, 회원가입, 비밀번호 찾기) */}
         {/* Link to='/' replace 또는 onClick 이벤트로 navigate(-1, { replace: true }) */}
         <HeaderTitle>로그인</HeaderTitle>

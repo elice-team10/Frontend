@@ -22,9 +22,9 @@ const ForgotPasswordContainer = styled.section`
 const ForgotPasswordFormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  padding: 3.2rem 2rem 3rem 2rem; //바꿈
   border-radius: 12px;
-  background-color: #fff;
+  background-color: #eee; //바꿈
 `;
 
 const ForgotPasswordForm = styled.form`
@@ -107,7 +107,7 @@ const ForgotPassword = () => {
       <ForgotPasswordFormContainer>
         <HeaderTitle>비밀번호 찾기</HeaderTitle>
         <ForgotPasswordForm onSubmit={handleSubmit}>
-          <FormLabel htmlFor="email">이메일</FormLabel>
+          {/* <FormLabel htmlFor="email">이메일</FormLabel> */}
           <AuthFormInput
             id="email"
             type="text"
