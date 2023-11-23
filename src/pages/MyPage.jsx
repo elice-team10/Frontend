@@ -7,7 +7,7 @@ import MyPageCommentTable from '../components/MyPage/MyPageCommentTable';
 import MyPageChangePassword from '../components/MyPage/MyPageChangePassword';
 import { NICKNAME_REGEX, EMAIL_REGEX } from '../config/regex';
 import useAuth from '../hooks/useAuth';
-import useAuthInitialization from '../hooks/useAuthInitialization';
+import { axiosPrivate } from '../api/axios';
 
 const MyPageContainer = styled.div`
   display: flex;
@@ -90,7 +90,7 @@ const StyledDeactivateLink = styled(Link)`
 const tabs = ['회원 정보수정/탈퇴', '나의 게시물', '나의 댓글'];
 
 const MyPage = () => {
-  const { auth, saveAuth } = useAuth();
+  const { auth } = useAuth();
 
   const [currTab, setCurrTab] = useState('회원 정보수정/탈퇴');
   const [nickname, setNickname] = useState(auth?.nickname);
@@ -103,8 +103,21 @@ const MyPage = () => {
   const [errorMsgEmail, setErrorMsgEmail] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // 로컬 스토리지에 저장된 사용자 데이터를 가져오는 훅
-  useAuthInitialization();
+  useEffect(() => {
+    async function getUserInfo() {
+      try {
+        const response = await axiosPrivate().get('/user/detail');
+        const nickname = response?.data?.nickname;
+        const email = response?.data?.email;
+
+        setNickname(nickname);
+        setEmail(email);
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    getUserInfo();
+  }, []);
 
   const handleClickTab = (tab) => {
     setCurrTab(tab);
