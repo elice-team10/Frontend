@@ -8,6 +8,7 @@ import MyPageChangePassword from '../components/MyPage/MyPageChangePassword';
 import { NICKNAME_REGEX, EMAIL_REGEX } from '../config/regex';
 import useAuth from '../hooks/useAuth';
 import { axiosPrivate } from '../api/axios';
+import useLogout from '../hooks/useLogout';
 
 const MyPageContainer = styled.div`
   display: flex;
@@ -90,6 +91,8 @@ const StyledDeactivateLink = styled(Link)`
 const tabs = ['회원 정보수정/탈퇴', '나의 게시물', '나의 댓글'];
 
 const MyPage = () => {
+  const navigate = useNavigate();
+  const logout = useLogout();
   const { auth, updateAuth } = useAuth();
 
   const [currTab, setCurrTab] = useState('회원 정보수정/탈퇴');
@@ -178,6 +181,23 @@ const MyPage = () => {
       setIsEmailEditMode(false);
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    const userConfirmed = confirm('정말 탈퇴하시겠습까?');
+
+    if (userConfirmed) {
+      try {
+        const response = await axiosPrivate().delete('/user');
+        console.log(response);
+
+        alert('이용해주셔서 감사합니다.');
+        logout();
+        navigate('/', { replace: true });
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -275,7 +295,9 @@ const MyPage = () => {
               <StyledChangePasswordLink onClick={openModal}>
                 비밀번호 변경
               </StyledChangePasswordLink>
-              <StyledDeactivateLink>회원 탈퇴</StyledDeactivateLink>
+              <StyledDeactivateLink onClick={handleDeleteAccount}>
+                회원 탈퇴
+              </StyledDeactivateLink>
             </ActionLinksContainer>
           </UserInfoPanel>
         )}

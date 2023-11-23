@@ -45,7 +45,7 @@ const NavLink = styled.div`
 `;
 
 const Header = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const logout = useLogout();
   const { auth } = useAuth();
 
