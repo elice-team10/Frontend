@@ -17,5 +17,3 @@ export const axiosPrivate = axios.create({
   },
   withCredentials: true,
 });
-
-export default api;
