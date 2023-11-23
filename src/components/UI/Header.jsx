@@ -2,6 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import logoImage from '../../assets/로고10.png';
+import useLogout from '../../hooks/useLogout';
+import useAuth from '../../hooks/useAuth';
 
 const HeaderContainer = styled.header`
   background-color: #000000;
@@ -44,6 +46,14 @@ const NavLink = styled.div`
 
 const Header = () => {
   let navigate = useNavigate();
+  const logout = useLogout();
+  const { auth } = useAuth();
+
+  const signOut = async () => {
+    await logout();
+
+    navigate('/');
+  };
 
   return (
     <HeaderContainer>
@@ -51,8 +61,16 @@ const Header = () => {
         <Logo src={logoImage} alt="LAF Logo" onClick={() => navigate('/')} />
         <Navigation>
           <NavLink onClick={() => navigate('/community')}>게시판</NavLink>
-          <NavLink onClick={() => navigate('/mypage')}>마이 페이지</NavLink>
-          <NavLink onClick={() => navigate('/logout')}>로그아웃</NavLink>
+          {(auth?.status === 0 || auth?.status === 1) && (
+            <NavLink onClick={() => navigate('/mypage')}>마이 페이지</NavLink>
+          )}
+          {auth?.status === 0 && (
+            <NavLink onClick={() => navigate('/admin')}>관리자 페이지</NavLink>
+          )}
+          {auth && <NavLink onClick={signOut}>로그아웃</NavLink>}
+          {!auth && (
+            <NavLink onClick={() => navigate('/login')}>로그인</NavLink>
+          )}
         </Navigation>
       </ContentContainer>
     </HeaderContainer>

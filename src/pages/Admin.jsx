@@ -15,16 +15,17 @@ const AdminTitleBox = styled.div`
   margin: 30px 0;
   font-weight: bold;
   letter-spacing: 3px;
-  font-size: ${theme.fontSizes.heading1};
+  font-size: ${theme.fontSizes.title};
+  @media (max-width: 1200px) {
+    font-size: ${theme.fontSizes.subtitle};
+  }
   color: ${theme.colors.text};
 `;
 
 const Admin = () => {
   return (
     <AdminContainer>
-      <AdminTitleBox>
-        관리자 페이지
-      </AdminTitleBox>
+      <AdminTitleBox>관리자 페이지</AdminTitleBox>
       <AdminTemplate />
     </AdminContainer>
   );

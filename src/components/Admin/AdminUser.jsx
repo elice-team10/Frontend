@@ -1,47 +1,69 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
-import { useSelector } from 'react-redux';
+import api from '../../api/axios';
 
 const columns = [
-  { field: 'id', headerName: '회원 번호', width: 150 },
-  { field: 'email', headerName: '이메일', width: 318 },
+  { field: '_id', headerName: '회원 번호', width: 230 },
+  { field: 'email', headerName: '아이디(이메일)', width: 230 },
   { field: 'nickname', headerName: '닉네임', width: 230 },
   {
-    field: 'state',
-    headerName: '현재 상태',
-    width: 250,
+    field: 'status',
+    headerName: '회원 상태',
+    width: 230,
   },
   {
-    field: 'date',
-    headerName: '가입 시기',
-    width: 200,
+    field: 'createdAt',
+    headerName: '회원 가입일',
+    width: 228,
   },
 ];
 
-export default function AdminUser() {
-  // Redux 스토어의 상태를 가져옴
-  const rows = useSelector((state) => state.user);
+export default function AdminUser({ onSelectionChange }) {
+  const [user, setUser] = useState([]);
+
+  const getUser = async () => {
+    try {
+      const response = await api.get('/user');
+      setUser(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error fetching data: ', error);
+    }
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
-        rows={rows}
+        rows={user}
         columns={columns}
+        getRowId={(user) => user._id}
+        checkboxSelection
+        onRowSelectionModelChange={(ids) => onSelectionChange(ids)}
+        pageSizeOptions={[10]}
         initialState={{
           pagination: {
             paginationModel: { page: 0, pageSize: 10 },
           },
         }}
-        checkboxSelection
         sx={{
           borderRadius: '4px',
           '& .MuiDataGrid-cell': {
             fontSize: theme.fontSizes.medium,
+            '@media (max-width: 1200px)': {
+              fontSize: theme.fontSizes.small,
+            },
             color: theme.colors.text,
           },
           '& .MuiDataGrid-columnHeader': {
             fontSize: theme.fontSizes.large,
+            '@media (max-width: 1200px)': {
+              fontSize: theme.fontSizes.medium,
+            },
             color: theme.colors.text,
             borderTop: '1.5px solid black',
             borderBottom: '0.5px solid black',

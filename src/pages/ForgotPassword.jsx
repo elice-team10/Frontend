@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
+import api from '../api/axios';
+import { isLoggedIn } from '../utils/Auth';
+import { useNavigate } from 'react-router-dom';
+
+const RESET_PASSWORD_URL = '/user/reset-password';
 
 const ForgotPasswordContainer = styled.section`
   display: flex;
@@ -17,9 +22,9 @@ const ForgotPasswordContainer = styled.section`
 const ForgotPasswordFormContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  padding: 3.2rem 2rem 3rem 2rem; //바꿈
   border-radius: 12px;
-  background-color: #fff;
+  background-color: #eee; //바꿈
 `;
 
 const ForgotPasswordForm = styled.form`
@@ -46,40 +51,50 @@ const Message = styled.span`
 `;
 
 const ForgotPassword = () => {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
 
+  useEffect(() => {
+    if (isLoggedIn()) {
+      navigate('/');
+    }
+  }, [navigate]);
+
   const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!EMAIL_REGEX.test(email)) {
+      setIsError(true);
+      setMessage('유효한 이메일 주소를 입력하세요.');
+      return;
+    }
+
     try {
-      e.preventDefault();
-
-      if (!EMAIL_REGEX.test(email)) {
-        setIsError(true);
-        setMessage('유효한 이메일 주소를 입력하세요.');
-        return;
-      }
-
-      // TODO: API 적용
-      const res = await fetch('FORGOTPASSWORD_API', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await api.post(
+        RESET_PASSWORD_URL,
+        JSON.stringify({ email }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+          withCredentials: true,
         },
-        body: JSON.stringify({ email }),
-      });
+      );
 
-      if (res.ok) {
-        setIsError(false);
-        console.log('임시 비밀번호를 이메일로 전송했습니다.');
-        setMessage('임시 비밀번호를 이메일로 전송했습니다.');
-      } else {
-        setIsError(true);
-        setMessage('임시 비밀번호 전송 실패');
-        console.error('임시 비밀번호 전송 실패');
-      }
+      // TODO: 비밀번호 찾기 마무리
+
+      setIsError(false);
+      console.log('임시 비밀번호를 이메일로 전송했습니다.');
+      // setMessage('임시 비밀번호를 이메일로 전송했습니다.');
+      setMessage(res.data.message);
+
+      setIsError(true);
+      console.error('임시 비밀번호 전송 실패');
+      setMessage('임시 비밀번호 전송 실패');
     } catch (error) {
       console.error(' 오류 발생: ', error);
+      setMessage('이메일 전송 중 오류가 발생했습니다.');
     }
   };
 
@@ -92,7 +107,7 @@ const ForgotPassword = () => {
       <ForgotPasswordFormContainer>
         <HeaderTitle>비밀번호 찾기</HeaderTitle>
         <ForgotPasswordForm onSubmit={handleSubmit}>
-          <FormLabel htmlFor="email">이메일</FormLabel>
+          {/* <FormLabel htmlFor="email">이메일</FormLabel> */}
           <AuthFormInput
             id="email"
             type="text"

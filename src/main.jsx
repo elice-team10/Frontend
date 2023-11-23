@@ -11,11 +11,12 @@ import NotFound from './pages/NotFound.jsx';
 import CommunityBoard from './components/Community/CommunityBoard.jsx';
 import CommunityDetail from './components/Community/CommunityDetail.jsx';
 import CommunityWrite from './components/Community/CommunityWrite.jsx';
-import { Provider } from 'react-redux';
-import store from './store';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import Chat from './pages/Chat';
+import ProtectedRoute from './pages/ProtectedRoute.jsx';
+import SearchResult from './pages/SearchResult.jsx';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
     errorElement: <NotFound />,
     children: [
       { index: true, path: '/', element: <Home /> },
+      {
+        path: '/search/result',
+        element: <SearchResult />,
+      },
       { path: '/login', element: <Login /> },
       {
         path: '/register',
@@ -33,7 +38,14 @@ const router = createBrowserRouter([
         path: '/forgotpassword',
         element: <ForgotPassword />,
       },
-      { path: '/mypage', element: <MyPage /> },
+      {
+        path: '/mypage',
+        element: (
+          <ProtectedRoute>
+            <MyPage />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: '/community',
         element: <CommunityBoard />,
@@ -50,7 +62,17 @@ const router = createBrowserRouter([
         path: '/community/write',
         element: <CommunityWrite />,
       },
+      {
+        path: '/admin',
+        element: (
+          <ProtectedRoute requireAdmin={true}>
+            <Admin />
+          </ProtectedRoute>
+        ),
+      },
+      { path: '/mypage', element: <MyPage /> },
       { path: '/admin', element: <Admin /> },
+      { path: '/chat', element: <Chat /> },
       // ... 다른 컴포넌트들
     ],
   },
@@ -60,8 +82,6 @@ const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
-    <Provider store={store}>
       <RouterProvider router={router} />
-    </Provider>
   </QueryClientProvider>,
 );
