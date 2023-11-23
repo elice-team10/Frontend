@@ -11,6 +11,7 @@ import NotFound from './pages/NotFound.jsx';
 import CommunityBoard from './components/Community/CommunityBoard.jsx';
 import CommunityDetail from './components/Community/CommunityDetail.jsx';
 import CommunityWrite from './components/Community/CommunityWrite.jsx';
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
 import Chat from './pages/Chat';
@@ -46,11 +47,15 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: '/community/board',
+        path: '/community',
         element: <CommunityBoard />,
       },
       {
-        path: '/community/detail',
+        path: '/community/post',
+        element: <CommunityDetail />,
+      },
+      {
+        path: '/community/post/:id',
         element: <CommunityDetail />,
       },
       {
@@ -73,6 +78,10 @@ const router = createBrowserRouter([
   },
 ]);
 
+const queryClient = new QueryClient();
+
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <RouterProvider router={router} />,
+  <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+  </QueryClientProvider>,
 );

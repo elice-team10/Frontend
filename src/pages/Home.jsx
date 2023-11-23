@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import HomeSearchBar from '../components/Home/HomeSearchBar';
 import HomeButtons from '../components/Home/HomeButtons';
 import CardCarousel from '../components/Home/CardCarousel';
-import Header from '../components/UI/Header';
 import useAxiosPrivate from '../hooks/useAxiosPrivate';
 
 const HomeContainer = styled.div`
@@ -45,7 +44,6 @@ const Home = () => {
 
   return (
     <HomeContainer>
-      <Header />
       <HomeSearchBar />
       <HomeButtons />
       <CardCarousel />
