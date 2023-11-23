@@ -164,11 +164,10 @@ function CommunityCard({
   nickname,
   replyCount,
 }) {
-
   let navigate = useNavigate();
 
   console.log(picture);
-  
+
   return (
     <CardContainer>
       <Card onClick={() => navigate('/community/post')}>
