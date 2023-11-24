@@ -1,7 +1,7 @@
 import { useState, useEffect, useImperativeHandle, forwardRef  } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
-import api from '../../api/axios';
+import { axiosPrivate } from '../../api/axios';
 
 const columns = [
   { field: '_id', headerName: '회원 번호', width: 230 },
@@ -27,7 +27,7 @@ const AdminUser = ({ onSelectionChange }, ref) => {
 
   const getUser = async () => {
     try {
-      const response = await api.get('/user');
+      const response = await axiosPrivate().get('/user');
       setUser(response.data);
     } catch (error) {
       console.error('Error fetching data: ', error);

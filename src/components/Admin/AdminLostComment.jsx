@@ -6,7 +6,7 @@ import {
 } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
-import api from '../../api/axios';
+import { axiosPrivate } from '../../api/axios';
 
 const columns = [
   { field: '_id', headerName: '댓글 번호', width: 230 },
@@ -31,12 +31,11 @@ const AdminLostComment = ({ onSelectionChange }, ref) => {
   const fetchData = async () => {
     try {
       // 서버로부터 board_category가 0인 게시물의 댓글만 가져옴
-      const response = await api.get('/comment');
+      const response = await axiosPrivate().get('/comment');
       const filteredData = response.data.filter(
         (comment) => comment.postId && comment.postId.board_category === 0,
       );
       setFilteredComments(filteredData); // 서버로부터 받은 데이터로 rows 상태를 업데이트
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching data: ', error);
     }

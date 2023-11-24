@@ -6,7 +6,7 @@ import {
 } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
-import api from '../../api/axios';
+import { axiosPrivate } from '../../api/axios';
 
 const columns = [
   { field: '_id', headerName: '게시물 번호', width: 190 },
@@ -37,7 +37,7 @@ const AdminFoundBoard = ({ onSelectionChange }, ref) => {
   const fetchData = async () => {
     try {
       // 서버로부터 board_category가 1인 게시물만 가져옴
-      const response = await api.get('/post');
+      const response = await axiosPrivate().get('/post');
       const filteredData = response.data.filter(
         (post) => post.board_category === 1,
       );

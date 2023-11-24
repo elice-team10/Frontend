@@ -7,6 +7,7 @@ import AdminFoundComment from './AdminFoundComment';
 import AdminLostBoard from './AdminLostBoard';
 import AdminLostComment from './AdminLostComment';
 import { axiosPrivate } from '../../api/axios';
+import ModalBasic from '../UI/Modal';
 
 const AdminNavContainer = styled.div`
   display: flex;
@@ -122,10 +123,34 @@ const AdminTemplate = () => {
   const adminFoundPostRef = useRef();
   const adminLostCommentRef = useRef();
   const adminFoundCommentRef = useRef();
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const showModal = () => {
+    setModalOpen(true);
+  };
 
   const handleSelection = (ids) => {
     setSelectedIds(ids);
-    console.log(ids);
+  };
+
+  const handleDelete = () => {
+    if (selectedIds.length > 0) {
+      showModal();
+    } else {
+      alert('삭제할 항목을 선택해주세요.');
+    }
+  };
+
+  const getFunction = () => {
+    if (activeMenu === '회원정보') {
+      return deleteUser;
+    }
+    if (activeMenu === '찾아요') {
+      return activeSubMenu === '게시물' ? deletePost : deleteComment;
+    }
+    if (activeMenu === '주웠어요') {
+      return activeSubMenu === '게시물' ? deletePost : deleteComment;
+    }
   };
 
   const deleteUser = async () => {
@@ -134,6 +159,7 @@ const AdminTemplate = () => {
         selectedIds.map((ids) => axiosPrivate().delete(`/user/${ids}`)),
       );
       adminUserRef.current.getUser();
+      alert('삭제 완료 되었습니다.');
     } catch (error) {
       console.error('Error deleting users: ', error);
     }
@@ -146,9 +172,11 @@ const AdminTemplate = () => {
       );
       if (activeMenu === '찾아요' && activeSubMenu === '게시물') {
         adminLostPostRef.current.fetchData();
+        alert('삭제 완료 되었습니다.');
       }
       if (activeMenu === '주웠어요' && activeSubMenu === '게시물') {
         adminFoundPostRef.current.fetchData();
+        alert('삭제 완료 되었습니다.');
       }
     } catch (error) {
       console.error('Error deleting posts: ', error);
@@ -162,42 +190,25 @@ const AdminTemplate = () => {
       );
       if (activeMenu === '찾아요' && activeSubMenu === '댓글') {
         adminLostCommentRef.current.fetchData();
+        alert('삭제 완료 되었습니다.');
       }
       if (activeMenu === '주웠어요' && activeSubMenu === '댓글') {
         adminFoundCommentRef.current.fetchData();
+        alert('삭제 완료 되었습니다.');
       }
     } catch (error) {
       console.error('Error deleting posts: ', error);
     }
   };
 
-  let button;
   let table;
 
   if (activeMenu === '회원정보') {
-    button = (
-      <Button
-        onClick={() => {
-          deleteUser();
-        }}
-      >
-        관리자 권한으로 탈퇴
-      </Button>
-    );
     table = (
       <AdminUser onSelectionChange={handleSelection} ref={adminUserRef} />
     );
   }
   if (activeMenu === '찾아요' && activeSubMenu === '게시물') {
-    button = (
-      <Button
-        onClick={() => {
-          deletePost();
-        }}
-      >
-        관리자 권한으로 삭제
-      </Button>
-    );
     table = (
       <AdminLostBoard
         onSelectionChange={handleSelection}
@@ -206,15 +217,6 @@ const AdminTemplate = () => {
     );
   }
   if (activeMenu === '찾아요' && activeSubMenu === '댓글') {
-    button = (
-      <Button
-        onClick={() => {
-          deleteComment();
-        }}
-      >
-        관리자 권한으로 삭제
-      </Button>
-    );
     table = (
       <AdminLostComment
         AdminLostBoard
@@ -224,32 +226,22 @@ const AdminTemplate = () => {
     );
   }
   if (activeMenu === '주웠어요' && activeSubMenu === '게시물') {
-    button = (
-      <Button
-        onClick={() => {
-          deletePost();
-        }}
-      >
-        관리자 권한으로 삭제
-      </Button>
+    table = (
+      <AdminFoundBoard
+        AdminLostBoard
+        onSelectionChange={handleSelection}
+        ref={adminFoundPostRef}
+      />
     );
-    table = <AdminFoundBoard AdminLostBoard
-    onSelectionChange={handleSelection}
-    ref={adminFoundPostRef} />;
   }
   if (activeMenu === '주웠어요' && activeSubMenu === '댓글') {
-    button = (
-      <Button
-        onClick={() => {
-          deleteComment();
-        }}
-      >
-        관리자 권한으로 삭제
-      </Button>
+    table = (
+      <AdminFoundComment
+        AdminLostBoard
+        onSelectionChange={handleSelection}
+        ref={adminFoundCommentRef}
+      />
     );
-    table = <AdminFoundComment AdminLostBoard
-    onSelectionChange={handleSelection}
-    ref={adminFoundCommentRef} />;
   }
 
   return (
@@ -284,7 +276,7 @@ const AdminTemplate = () => {
             주웠어요
           </AdminMenu>
         </AdminMenuBox>
-        {button}
+        <Button onClick={handleDelete}>관리자 권한으로 삭제</Button>
       </AdminNavContainer>
       <AdminSubNavContainer>
         <AdminSubNavBox
@@ -313,6 +305,15 @@ const AdminTemplate = () => {
         </AdminSubNavBox>
       </AdminSubNavContainer>
       <AdminFormContainer>{table}</AdminFormContainer>
+      {modalOpen && (
+        <ModalBasic
+          setModalOpen={setModalOpen}
+          title={'관리자 권한으로 삭제'}
+          content={'정말 삭제하시겠습니까?'}
+          btnText={'삭제'}
+          getFunction={getFunction()}
+        />
+      )}
     </>
   );
 };
