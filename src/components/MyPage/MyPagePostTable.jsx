@@ -52,6 +52,14 @@ const MyTablePagination = styled(TablePagination)`
   }
 `;
 
+const CenteredCircularProgress = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '80vh',
+  flex: 1,
+});
+
 export default function MyPageUserPostTable() {
   const navigate = useNavigate();
   const { auth } = useAuth();
@@ -119,7 +127,13 @@ export default function MyPageUserPostTable() {
   };
 
   return isLoading ? (
-    <CircularProgress sx={{ color: '#ff6700' }} />
+    <CenteredCircularProgress>
+      <CircularProgress
+        sx={{
+          color: '#ff6700',
+        }}
+      />
+    </CenteredCircularProgress>
   ) : postData.length === 0 ? (
     <MyPageNoContent text={'작성한 게시물이 없습니다.'} />
   ) : (
