@@ -13,8 +13,6 @@ import { StyledEngineProvider } from '@mui/styled-engine';
 import CircularProgress from '@mui/material/CircularProgress';
 import { axiosPrivate } from '../../api/axios';
 
-import Spinner from '../UI/Spinner';
-
 const fake_data = [
   {
     commentId: 1,
