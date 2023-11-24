@@ -116,9 +116,6 @@ const Login = () => {
         },
       );
 
-      console.log(response);
-      console.log(JSON.stringify(response?.data));
-
       const nickname = response?.data?.nickname;
       const accessToken = response?.data?.token;
       const status = response?.data?.status;

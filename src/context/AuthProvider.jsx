@@ -11,7 +11,6 @@ export const AuthProvider = ({ children }) => {
 
     if (authString) {
       const auth = JSON.parse(authString);
-      console.log(auth);
       setAuth(auth);
     }
   }, []);
