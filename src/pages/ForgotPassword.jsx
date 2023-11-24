@@ -8,6 +8,7 @@ import background from '../assets/background.webp';
 import api from '../api/axios';
 import { isLoggedIn } from '../utils/Auth';
 import { useNavigate } from 'react-router-dom';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const RESET_PASSWORD_URL = '/user/reset-password';
 
@@ -20,11 +21,20 @@ const ForgotPasswordContainer = styled.section`
 `;
 
 const ForgotPasswordFormContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 3.2rem 2rem 3rem 2rem; //바꿈
   border-radius: 12px;
   background-color: #eee; //바꿈
+`;
+
+const StyledArrowIcon = styled(ArrowBackIosIcon)`
+  position: absolute;
+  top: 3rem;
+  font-size: ${theme.fontSizes.subtitle} !important;
+  color: ${theme.colors.primary};
+  cursor: pointer;
 `;
 
 const ForgotPasswordForm = styled.form`
@@ -105,6 +115,7 @@ const ForgotPassword = () => {
   return (
     <ForgotPasswordContainer>
       <ForgotPasswordFormContainer>
+        <StyledArrowIcon onClick={() => navigate(-1)} />
         <HeaderTitle>비밀번호 찾기</HeaderTitle>
         <ForgotPasswordForm onSubmit={handleSubmit}>
           {/* <FormLabel htmlFor="email">이메일</FormLabel> */}

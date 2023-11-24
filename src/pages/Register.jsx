@@ -8,6 +8,7 @@ import { NICKNAME_REGEX, EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
 import api from '../api/axios';
 import { isLoggedIn } from '../utils/Auth';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const RegisterContainer = styled.section`
   display: flex;
@@ -18,6 +19,7 @@ const RegisterContainer = styled.section`
 `;
 
 const RegisterFormContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 3.2rem 2rem 4.8rem 2rem; // 바꿈
@@ -29,6 +31,14 @@ const RegisterForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+`;
+
+const StyledArrowIcon = styled(ArrowBackIosIcon)`
+  position: absolute;
+  top: 3rem;
+  font-size: ${theme.fontSizes.subtitle} !important;
+  color: ${theme.colors.primary};
+  cursor: pointer;
 `;
 
 const HeaderTitle = styled.h1`
@@ -131,6 +141,7 @@ const Register = () => {
   return (
     <RegisterContainer>
       <RegisterFormContainer>
+        <StyledArrowIcon onClick={() => navigate(-1)} />
         <HeaderTitle>회원가입</HeaderTitle>
         <RegisterForm onSubmit={handleSubmit}>
           {/* <FormLabel htmlFor="nickname">닉네임</FormLabel> */}
