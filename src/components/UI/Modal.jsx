@@ -100,26 +100,26 @@ const styleButton2 = {
   },
 };
 
-function ModalBasic({ closeModal, title, content, btnText, getFunction }) {
+function ModalBasic({  getFunction, onCloseModal, title, content, btnText }) {
   const handleFunction = () => {
     getFunction(); // 버튼 클릭시 실행헐 부모 컴포넌트의 함수
-    closeModal(); // 모달 닫기
+    onCloseModal(); // 모달 닫기
   };
 
   return (
     <>
-      <StyledBackdrop onClick={closeModal}>
+      <StyledBackdrop onClick={onCloseModal}>
         <ModalContainer>
           <Titlebox>
             {/* 모달 헤더 글귀 */}
             <TitelText>{title}</TitelText>
-            <ClearIcon onClick={closeModal} sx={styleClearIcon} />
+            <ClearIcon onClick={onCloseModal} sx={styleClearIcon} />
           </Titlebox>
           {/* 모달 본문 */}
           <Text>{content}</Text>
           <BtnBox>
             {/* 취소 버튼 */}
-            <Button onClick={closeModal} sx={styleButton1} variant="outlined">
+            <Button onClick={onCloseModal} sx={styleButton1} variant="outlined">
               취소
             </Button>
             {/* 확인 버튼 (클릭 시 부모 컴포넌트 함수 실행 후 모달 닫기) */}
