@@ -7,6 +7,7 @@ import AuthFormButton from '../Auth/AuthFormButton';
 import { PWD_REGEX } from '../../config/regex';
 import { axiosPrivate } from '../../api/axios';
 import useLogout from '../../hooks/useLogout';
+import ToastAlert from '../UI/ToastAlert';
 
 const ChangePasswordModalWrapper = styled.section`
   display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
@@ -60,6 +61,7 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
     matchPassword: '',
     validMatch: false,
     errMessage: '',
+    success: false,
   });
 
   useEffect(() => {
@@ -113,10 +115,13 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
       // 로그아웃: 로컬 스토리지 데이터 및 토큰 삭제
       logout();
 
-      // 알림 메시지
-      alert('비밀번호가 변경되어, 로그인 페이지로 이동합니다.');
+      setPasswordInfo((prev) => ({ ...prev, success: true }));
+
+      setTimeout(() => {
+        navigate('/login', { replace: true });
+      }, 1500);
+
       // 로그인 페이지로 이동
-      navigate('/login', { replace: true });
     } catch (error) {
       setPasswordInfo((prev) => ({
         ...prev,
@@ -200,6 +205,12 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
             type="cancel"
             onButtonClick={handleModalClick}
           />
+          {passwordInfo.success && (
+            <ToastAlert
+              icon="success"
+              title="비밀번호가 변경되어, 로그인 페이지로 이동합니다."
+            />
+          )}
         </ChangePasswordForm>
       </ChangePasswordModalContainer>
     </ChangePasswordModalWrapper>

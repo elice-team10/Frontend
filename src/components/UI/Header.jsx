@@ -51,7 +51,6 @@ const Header = () => {
 
   const signOut = async () => {
     await logout();
-    alert('로그아웃되었습니다.');
     navigate('/');
   };
 

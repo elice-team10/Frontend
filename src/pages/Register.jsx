@@ -7,8 +7,9 @@ import AuthFormButton from '../components/Auth/AuthFormButton';
 import { NICKNAME_REGEX, EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
 import api from '../api/axios';
-import { isLoggedIn } from '../utils/Auth';
+import { CheckLoggedIn } from '../utils/CheckLoggedIn';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ToastAlert from '../components/UI/ToastAlert';
 
 const RegisterContainer = styled.section`
   display: flex;
@@ -67,8 +68,10 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [errMsg, setErrMsg] = useState('');
 
+  const [success, setSuccess] = useState(false);
+
   useEffect(() => {
-    if (isLoggedIn()) {
+    if (CheckLoggedIn()) {
       navigate('/');
     }
   }, [navigate]);
@@ -110,9 +113,13 @@ const Register = () => {
       setEmail('');
       setPassword('');
       setErrMsg('');
-      alert('가입해주셔서 감사합니다. 로그인 페이지로 이동합니다.');
 
-      navigate('/login');
+      setSuccess(true);
+      // alert('가입해주셔서 감사합니다. 로그인 페이지로 이동합니다.');
+
+      setTimeout(() => {
+        navigate('/login');
+      }, 1500);
     } catch (err) {
       if (!err?.response) {
         setErrMsg('서버에서 응답이 없습니다.');
@@ -170,6 +177,12 @@ const Register = () => {
           />
           {errMsg && <ErrorMessage>{errMsg}</ErrorMessage>}
           <AuthFormButton text="회원가입" />
+          {success && (
+            <ToastAlert
+              icon="success"
+              title="가입해주셔서 감사합니다. 로그인 페이지로 이동합니다."
+            />
+          )}
         </RegisterForm>
       </RegisterFormContainer>
     </RegisterContainer>
