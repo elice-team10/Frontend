@@ -104,7 +104,8 @@ const MyPage = () => {
   const [isEmailEditMode, setIsEmailEditMode] = useState(false);
   const [errorMsgNickname, setErrorMsgNickname] = useState('');
   const [errorMsgEmail, setErrorMsgEmail] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
+    useState(false);
 
   useEffect(() => {
     async function getUserInfo() {
@@ -231,12 +232,12 @@ const MyPage = () => {
     setIsEmailEditMode(false);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const handleOpenPasswordChangeModal = () => {
+    setIsPasswordChangeModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleClosePasswordChangeModal = () => {
+    setIsPasswordChangeModalOpen(false);
   };
 
   return (
@@ -256,10 +257,10 @@ const MyPage = () => {
             ))}
           </NavigationList>
         </NavAside>
-        {isModalOpen && (
+        {isPasswordChangeModalOpen && (
           <MyPageChangePassword
-            isModalOpen={isModalOpen}
-            onCloseModal={closeModal}
+            isModalOpen={isPasswordChangeModalOpen}
+            onCloseModal={handleClosePasswordChangeModal}
           />
         )}
 
@@ -291,8 +292,9 @@ const MyPage = () => {
                 errorMsg={errorMsgEmail}
               />
             </UserInfoCard>
+
             <ActionLinksContainer>
-              <StyledChangePasswordLink onClick={openModal}>
+              <StyledChangePasswordLink onClick={handleOpenPasswordChangeModal}>
                 비밀번호 변경
               </StyledChangePasswordLink>
               <StyledDeactivateLink onClick={handleDeleteAccount}>
