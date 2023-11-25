@@ -125,24 +125,24 @@ const AdminTemplate = () => {
   const adminFoundCommentRef = useRef();
   const [modalOpen, setModalOpen] = useState(false);
 
-  const showModal = () => {
-    setModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setModalOpen(false); // 모달 닫기
-  };
-
   const handleSelection = (ids) => {
     setSelectedIds(ids);
   };
 
   const handleDelete = () => {
     if (selectedIds.length > 0) {
-      showModal();
+      onShowModal();
     } else {
       alert('삭제할 항목을 선택해주세요.');
     }
+  };
+
+  const onShowModal = () => {
+    setModalOpen(true);
+  };
+
+  const onCloseModal = () => {
+    setModalOpen(false); // 모달 닫기
   };
 
   const getFunction = () => {
@@ -250,6 +250,15 @@ const AdminTemplate = () => {
 
   return (
     <>
+      {modalOpen && (
+        <ModalBasic
+          title={'관리자 권한으로 삭제'}
+          content={'정말 삭제하시겠습니까?'}
+          btnText={'삭제'}
+          onCloseModal={onCloseModal}
+          getFunction={getFunction}
+        />
+      )}
       <AdminNavContainer>
         <AdminMenuBox>
           <AdminMenu
@@ -309,15 +318,6 @@ const AdminTemplate = () => {
         </AdminSubNavBox>
       </AdminSubNavContainer>
       <AdminFormContainer>{table}</AdminFormContainer>
-      {modalOpen && (
-        <ModalBasic
-          setModalOpen={setModalOpen}
-          title={'관리자 권한으로 삭제'}
-          content={'정말 삭제하시겠습니까?'}
-          btnText={'삭제'}
-          closeModal={closeModal}
-        />
-      )}
     </>
   );
 };
