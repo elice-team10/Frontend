@@ -11,3 +11,7 @@ body {
   margin: 0;
   font-family: 'Noto Sans KR', sans-serif;
 }
+
+.swal2-container {
+  margin-top: 9rem;
+}
