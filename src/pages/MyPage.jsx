@@ -106,6 +106,8 @@ const MyPage = () => {
   const [errorMsgEmail, setErrorMsgEmail] = useState('');
   const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
     useState(false);
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
+    useState(false);
 
   useEffect(() => {
     async function getUserInfo() {
@@ -186,19 +188,15 @@ const MyPage = () => {
   };
 
   const handleDeleteAccount = async () => {
-    const userConfirmed = confirm('정말 탈퇴하시겠습까?');
+    try {
+      const response = await axiosPrivate().delete('/user');
+      console.log(response);
 
-    if (userConfirmed) {
-      try {
-        const response = await axiosPrivate().delete('/user');
-        console.log(response);
-
-        alert('이용해주셔서 감사합니다.');
-        logout();
-        navigate('/', { replace: true });
-      } catch (err) {
-        console.error(err);
-      }
+      alert('이용해주셔서 감사합니다.');
+      logout();
+      navigate('/', { replace: true });
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -238,6 +236,14 @@ const MyPage = () => {
 
   const handleClosePasswordChangeModal = () => {
     setIsPasswordChangeModalOpen(false);
+  };
+
+  const handleOpenDeleteAccountModal = () => {
+    setIsDeleteAccountModalOpen(true);
+  };
+
+  const handleCloseDeleteAccountModal = () => {
+    setIsDeleteAccountModalOpen(false);
   };
 
   return (
@@ -297,7 +303,7 @@ const MyPage = () => {
               <StyledChangePasswordLink onClick={handleOpenPasswordChangeModal}>
                 비밀번호 변경
               </StyledChangePasswordLink>
-              <StyledDeactivateLink onClick={handleDeleteAccount}>
+              <StyledDeactivateLink onClick={handleOpenDeleteAccountModal}>
                 회원 탈퇴
               </StyledDeactivateLink>
             </ActionLinksContainer>
