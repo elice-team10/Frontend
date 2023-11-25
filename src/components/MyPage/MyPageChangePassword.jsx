@@ -5,9 +5,9 @@ import theme from '../../config/theme';
 import AuthFormInput from '../Auth/AuthFormInput';
 import AuthFormButton from '../Auth/AuthFormButton';
 import { PWD_REGEX } from '../../config/regex';
-import api from '../../api/axios';
-
-const CHANGE_PASSWORD_URL = '/user/change-password';
+import { axiosPrivate } from '../../api/axios';
+import useLogout from '../../hooks/useLogout';
+import ToastAlert from '../UI/ToastAlert';
 
 const ChangePasswordModalWrapper = styled.section`
   display: ${(props) => (props.$isOpen ? 'flex' : 'none')};
@@ -47,8 +47,11 @@ const ErrorMessage = styled.span`
   color: ${theme.colors.error};
 `;
 
+const CHANGE_PASSWORD_URL = '/user';
+
 const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
   const navigate = useNavigate();
+  const logout = useLogout();
 
   const [passwordInfo, setPasswordInfo] = useState({
     currentPassword: '',
@@ -58,6 +61,7 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
     matchPassword: '',
     validMatch: false,
     errMessage: '',
+    success: false,
   });
 
   useEffect(() => {
@@ -82,16 +86,6 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
 
   const handleSubmitChangePassword = async (e) => {
     e.preventDefault();
-    // TODO:
-    /**
-     * fetch가 아닌 axios로 api 요청하기
-     * 유효성 검사
-     * 각 단계마다 문제가 있으면, 에러 메시지 업데이트, return
-     * 서버에 새 비밀번호로 업데이트 요청
-     * 현재 비밀번호가 동일한 지, 서버에 요청해서 확인
-     * alert 메시지 '로그인 페이지로 이동합니다'를 띄우고,
-     * 로그인 페이지로 이동하도록 유도
-     */
 
     if (!passwordInfo.validNewPassword) {
       setPasswordInfo((prev) => ({
@@ -108,34 +102,31 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
     }
 
     try {
-      const res = await api.post(
-        CHANGE_PASSWORD_URL,
-        JSON.stringify({
-          currentPassword: passwordInfo.currentPassword,
-          newPassword: passwordInfo.newPassword,
-        }),
-        {
-          headers: { 'Content-Type': 'application/json' },
-          withCredentials: true,
-        },
-      );
+      const response = await axiosPrivate().put(CHANGE_PASSWORD_URL, {
+        password: passwordInfo.currentPassword,
+        newPassword: passwordInfo.newPassword,
+      });
 
-      console.log(res);
+      console.log(response);
 
-      // TODO: 비밀번호 변경 마무리
       // 비밀번호 변경 성공
       setPasswordInfo((prev) => ({ ...prev, validPassword: true }));
 
-      // 알림 메시지
-      alert('비밀번호가 변경되어, 로그인 페이지로 이동합니다.');
+      // 로그아웃: 로컬 스토리지 데이터 및 토큰 삭제
+      logout();
+
+      setPasswordInfo((prev) => ({ ...prev, success: true }));
+
+      setTimeout(() => {
+        navigate('/login', { replace: true });
+      }, 1500);
+
       // 로그인 페이지로 이동
-      navigate('/login');
+    } catch (error) {
       setPasswordInfo((prev) => ({
         ...prev,
         errMessage: '현재 비밀번호가 다릅니다.',
       }));
-      console.error('비밀번호 변경 실패');
-    } catch (error) {
       console.error('비밀번호 변경 중 오류 발생: ', error);
     }
   };
@@ -214,6 +205,12 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
             type="cancel"
             onButtonClick={handleModalClick}
           />
+          {passwordInfo.success && (
+            <ToastAlert
+              icon="success"
+              title="비밀번호가 변경되어, 로그인 페이지로 이동합니다."
+            />
+          )}
         </ChangePasswordForm>
       </ChangePasswordModalContainer>
     </ChangePasswordModalWrapper>

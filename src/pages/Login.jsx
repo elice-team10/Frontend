@@ -7,7 +7,7 @@ import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
-import { isLoggedIn } from '../utils/Auth';
+import { CheckLoggedIn } from '../utils/CheckLoggedIn';
 import api from '../api/axios';
 // import title from '../assets/로고11.png';
 
@@ -15,7 +15,7 @@ const LoginContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: calc(100vh - 90px);
   background: url(${background});
 `;
 
@@ -88,7 +88,7 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState('');
 
   useEffect(() => {
-    if (isLoggedIn()) {
+    if (CheckLoggedIn()) {
       navigate('/');
     }
   }, [navigate]);
@@ -115,9 +115,6 @@ const Login = () => {
           withCredentials: true,
         },
       );
-
-      console.log(response);
-      console.log(JSON.stringify(response?.data));
 
       const nickname = response?.data?.nickname;
       const accessToken = response?.data?.token;
