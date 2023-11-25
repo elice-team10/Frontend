@@ -9,6 +9,7 @@ import { NICKNAME_REGEX, EMAIL_REGEX } from '../config/regex';
 import useAuth from '../hooks/useAuth';
 import { axiosPrivate } from '../api/axios';
 import useLogout from '../hooks/useLogout';
+import ModalBasic from '../components/UI/Modal';
 
 const MyPageContainer = styled.div`
   display: flex;
@@ -307,6 +308,15 @@ const MyPage = () => {
                 회원 탈퇴
               </StyledDeactivateLink>
             </ActionLinksContainer>
+            {isDeleteAccountModalOpen && (
+              <ModalBasic
+                title="Lost And Found 계정 탈퇴"
+                content="회원 탈퇴 하시겠습니까?"
+                btnText="확인"
+                getFunction={handleDeleteAccount}
+                onCloseModal={handleCloseDeleteAccountModal}
+              />
+            )}
           </UserInfoPanel>
         )}
         {currTab === '나의 게시물' && <MyPageUserPostTable />}
