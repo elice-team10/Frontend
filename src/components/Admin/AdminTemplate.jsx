@@ -129,6 +129,10 @@ const AdminTemplate = () => {
     setModalOpen(true);
   };
 
+  const closeModal = () => {
+    setModalOpen(false); // 모달 닫기
+  };
+
   const handleSelection = (ids) => {
     setSelectedIds(ids);
   };
@@ -311,7 +315,7 @@ const AdminTemplate = () => {
           title={'관리자 권한으로 삭제'}
           content={'정말 삭제하시겠습니까?'}
           btnText={'삭제'}
-          getFunction={getFunction()}
+          closeModal={closeModal}
         />
       )}
     </>

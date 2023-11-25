@@ -16,7 +16,7 @@ const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   background-color: #fff;
   border-radius: 12px;
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.5);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 `;
 
 const StyledBackdrop = styled.div`
@@ -100,13 +100,7 @@ const styleButton2 = {
   },
 };
 
-// sx 속성 변수로 뺴기 !!!
-
-function ModalBasic({ setModalOpen, title, content, btnText, getFunction }) {
-  const closeModal = () => {
-    setModalOpen(false); // 모달 닫기
-  };
-
+function ModalBasic({ closeModal, title, content, btnText, getFunction }) {
   const handleFunction = () => {
     getFunction(); // 버튼 클릭시 실행헐 부모 컴포넌트의 함수
     closeModal(); // 모달 닫기
@@ -124,11 +118,12 @@ function ModalBasic({ setModalOpen, title, content, btnText, getFunction }) {
           {/* 모달 본문 */}
           <Text>{content}</Text>
           <BtnBox>
+            {/* 취소 버튼 */}
             <Button onClick={closeModal} sx={styleButton1} variant="outlined">
               취소
             </Button>
+            {/* 확인 버튼 (클릭 시 부모 컴포넌트 함수 실행 후 모달 닫기) */}
             <Button
-              // 클릭 시 부모 컴포넌트 함수 실행 후 모달 닫기
               onClick={handleFunction}
               sx={styleButton2}
               variant="contained"
