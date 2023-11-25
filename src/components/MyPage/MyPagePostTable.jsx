@@ -14,7 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import api, { axiosPrivate } from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
 import { plPL } from '@mui/x-data-grid';
-import Spinner from '../UI/Spinner';
+
 
 const fake_data = [
   {
