@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import theme from '../../config/theme';
 import CustomizedSwitches from '../UI/SwitchButton';
 import ImageInput from '../UI/ImageInput';
-import { createNewEvent } from '../../api/http';
+import { createNewEvent, queryClient } from '../../api/http';
 import useAuth from '../../hooks/useAuth';
 import ErrorBlock from '../UI/ErrorBlock';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -151,7 +151,7 @@ const GradationBox = styled.div`
   border-radius: 12px;
 `;
 
-function CommunityWrite() {
+function CommunityWrite({ inputData, onEditSubmit }) {
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const [date, setDate] = useState('');
@@ -161,8 +161,24 @@ function CommunityWrite() {
   const [boardCategory, setBoardCategory] = useState(0);
   const [picture, setPicture] = useState(null);
   const [productCategory, setProductCategory] = useState('');
-
   const { auth } = useAuth();
+  // 수정 버튼 상태
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  useEffect(() => {
+    if (inputData) {
+      setTitle(inputData.title || '');
+      setLocation(inputData.event_location || '');
+      setDate(inputData.event_date || '');
+      setComplete(inputData.isFound || false);
+      setContent(inputData.content || '');
+      setBoardCategory(inputData.board_category || 0);
+      setPicture(inputData.picture || null);
+      setProductCategory(inputData.product_category || '');
+
+      setIsEditMode(true);
+    }
+  }, [inputData]);
 
   // 이미지 파일 업로드
   const handleFileChange = (event) => {
@@ -185,15 +201,18 @@ function CommunityWrite() {
   }, [boardCategoryFromQuery]);
 
   const navigate = useNavigate();
-  // react query로 데이터 수정
+  //게시판 작성 데이터 변경
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: createNewEvent,
-    onSuccess: () => navigate('/community'),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['events'] });
+      navigate('/community');
+    },
   });
   // 게시판 작성 데이터 전송 formdata
   function handleSubmit(event) {
     event.preventDefault();
-
+    console.log('event', title);
     const formData = new FormData();
     formData.append('board_category', boardCategory);
     formData.append('product_category', productCategory);
@@ -203,12 +222,28 @@ function CommunityWrite() {
     formData.append('title', title);
     formData.append('content', content);
     formData.append('isFound', complete);
+    formData.append('picture', picture);
 
-    if (picture) {
-      formData.append('picture', picture);
+    if (isEditMode) {
+      // 수정 모드인 경우, onEditSubmit 콜백 호출
+      console.log('event2', title);
+
+      const updatedFormData = new FormData();
+      updatedFormData.append('board_category', boardCategory);
+      updatedFormData.append('product_category', productCategory);
+      updatedFormData.append('event_date', date);
+      updatedFormData.append('event_location', location);
+      updatedFormData.append('nickname', auth.nickname);
+      updatedFormData.append('title', title);
+      updatedFormData.append('content', content);
+      updatedFormData.append('isFound', complete);
+      updatedFormData.append('picture', picture);
+
+      onEditSubmit(updatedFormData);
+    } else {
+      // 등록 모드인 경우, mutate 함수 호출
+      mutate(formData);
     }
-
-    mutate(formData);
   }
 
   return (
@@ -252,9 +287,15 @@ function CommunityWrite() {
                 value={date}
                 onChange={(event) => setDate(event.target.value)}
               />
-              <ImageInput onChange={handleFileChange} />
+              <ImageInput
+                defaultValue={inputData ? inputData.picture : picture}
+                onChange={handleFileChange}
+              />
             </ToolbarContainer>
-            <CustomizedSwitches onChangeSwitch={handleSwitch} />
+            <CustomizedSwitches
+              defaultValue={inputData ? inputData.isFound : false}
+              onChangeSwitch={handleSwitch}
+            />
             <ContentContainer>
               <Content
                 cols="50"
@@ -265,7 +306,13 @@ function CommunityWrite() {
               ></Content>
             </ContentContainer>
             <ButtonContainer>
-              <SubmitButton type="submit">등록</SubmitButton>
+              {isEditMode ? (
+                <SubmitButton type="submit" onClick={handleSubmit}>
+                  수정
+                </SubmitButton>
+              ) : (
+                <SubmitButton type="submit">등록</SubmitButton>
+              )}
               <BoardLink to="/community">
                 <SubmitButton $background="white" color="#7C9299">
                   취소
@@ -274,7 +321,12 @@ function CommunityWrite() {
             </ButtonContainer>
           </>
         )}
-      {isError && <ErrorBlock title='글 등록을 실패했습니다.' message={error.info?.message || '잠시후 다시 작성 부탁드립니다.'}/>}
+        {isError && (
+          <ErrorBlock
+            title="글 등록을 실패했습니다."
+            message={error.info?.message || '잠시후 다시 작성 부탁드립니다.'}
+          />
+        )}
       </PostContainer>
     </Background>
   );

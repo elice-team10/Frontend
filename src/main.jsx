@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Outlet, Route, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import './index.css';
 import App from './App.jsx';
 import Home from './pages/Home.jsx';
@@ -11,11 +11,13 @@ import NotFound from './pages/NotFound.jsx';
 import CommunityBoard from './components/Community/CommunityBoard.jsx';
 import CommunityDetail from './components/Community/CommunityDetail.jsx';
 import CommunityWrite from './components/Community/CommunityWrite.jsx';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
 import Chat from './pages/Chat';
 import SearchResult from './pages/SearchResult.jsx';
+import { queryClient } from './api/http.jsx';
+import CommunityEdit from './components/Community/CommunityEdit.jsx';
 
 const router = createBrowserRouter([
   {
@@ -46,12 +48,12 @@ const router = createBrowserRouter([
         element: <CommunityBoard />,
       },
       {
-        path: '/community/post',
-        element: <CommunityDetail />,
+        path: '/community/post/:id',
+        element: <CommunityDetail />
       },
       {
-        path: '/community/post/:id',
-        element: <CommunityDetail />,
+        path: '/community/post/:id/edit',
+        element: <CommunityEdit />,
       },
       {
         path: '/community/write',
@@ -69,7 +71,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
