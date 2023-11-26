@@ -48,6 +48,7 @@ const MessageList = styled.div`
   flex-grow: 1;
   overflow-y: scroll;
   padding: 10px;
+  background-color: rgba(255, 127, 80, 0.2);
 `;
 
 const Message = styled.div`
@@ -99,10 +100,23 @@ const ChatRoom = () => {
 
   const handleMessageChange = (e) => {
     setNewMessage(e.target.value);
+    console.log(newMessage);
   };
 
   const handleSendMessage = () => {
     // 메시지 전송 로직
+    if (newMessage !== '') {
+      // 새로운 메시지 객체 생성
+      const newMsgObj = {
+        content: newMessage,
+        sender: 'me', // 현재 사용자를 나타내는 문자열, 필요에 따라 변경 가능
+        // 추가적인 메시지 정보 (예: timestamp)를 여기에 포함할 수 있습니다.
+      };
+      // 기존 메시지에 새 메시지 추가
+      setMessages([...messages, newMsgObj]);
+      // 입력 필드 초기화
+      setNewMessage('');
+    }
   };
   return (
     <ChatRoomcontainer>

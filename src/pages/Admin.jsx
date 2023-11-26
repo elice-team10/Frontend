@@ -12,7 +12,7 @@ const AdminContainer = styled.div`
 const AdminTitleBox = styled.div`
   width: 1200px;
   text-align: center;
-  margin: 30px 0;
+  margin: 40px 0;
   font-weight: bold;
   letter-spacing: 3px;
   font-size: ${theme.fontSizes.title};

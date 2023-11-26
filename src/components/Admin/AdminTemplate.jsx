@@ -252,9 +252,9 @@ const AdminTemplate = () => {
     <>
       {modalOpen && (
         <ModalBasic
-          title={'관리자 권한으로 삭제'}
-          content={'정말 삭제하시겠습니까?'}
-          btnText={'삭제'}
+          title={activeMenu === '회원정보' ? '관리자 권한으로 탈퇴' : '관리자 권한으로 삭제'}
+          content={activeMenu === '회원정보' ? '정말 탈퇴시키겠습니까?' : '정말 삭제하시겠습니까?'}
+          btnText={activeMenu === '회원정보' ? '선택한 회원 탈퇴' : '삭제'}
           onCloseModal={onCloseModal}
           getFunction={getFunction}
         />
@@ -289,7 +289,7 @@ const AdminTemplate = () => {
             주웠어요
           </AdminMenu>
         </AdminMenuBox>
-        <Button onClick={handleDelete}>관리자 권한으로 삭제</Button>
+        <Button onClick={handleDelete}>{activeMenu === '회원정보' ? '관리자 권한으로 탈퇴' : '관리자 권한으로 삭제'}</Button>
       </AdminNavContainer>
       <AdminSubNavContainer>
         <AdminSubNavBox
