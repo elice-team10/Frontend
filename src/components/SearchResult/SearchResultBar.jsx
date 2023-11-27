@@ -16,10 +16,9 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import IconButton from '@mui/material/IconButton';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Navigate, useNavigate } from 'react-router-dom';
-import airpods from '../../assets/airpods.jpg';
-import iphone from '../../assets/iphone.jpg';
 import notfound from '../../assets/notfound.jpg';
 import ResultCard from './ResultCard';
+import { useSearch } from '../../context/SearchProvider';
 
 const LoadButton = styled.button`
   background:  linear-gradient(135deg, #ffa500, #ff7f50, #ff6700);
@@ -39,11 +38,11 @@ const LoadButton = styled.button`
 `;
 
 const GradationBox = styled.div`
-width: 103rem;
-height: 1rem;
-background: linear-gradient(135deg, #ffa500, #ff7f50, #ff6700);
-margin: 2rem 0;
-border-radius: 12px;
+  width: 103rem;
+  height: 1rem;
+  background: linear-gradient(135deg, #ffa500, #ff7f50, #ff6700);
+  margin: 2rem 0;
+  border-radius: 12px;
 `;
 
 const LoadButtonContainer = styled.div`
@@ -56,7 +55,7 @@ function SearchResultBar() {
   const [selectedChip, setSelectedChip] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [itemsToShow, setItemsToShow] = useState(searchResults.slice(0, 9));
+  const { result, page, totalCount } = useSearch('');
 
   const handleLoadMore = () => {
     setLoading(true);
@@ -72,129 +71,19 @@ function SearchResultBar() {
 
   const handleChipClick = (chipKey) => {
     setSelectedChip(chipKey);
-    // TODO: 검색 결과를 가져오는 로직을 여기에 구현
-    // 예를 들어, API 호출 등을 통해 검색 결과를 설정할 수 있습니다.
-    setSearchResults([
-      // 검색 결과 데이터의 예시
-      {
-        title: '에어팟',
-        foundAt: '버스정류장',
-        location: '시청역에서 보관중',
-        date: '1일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: notfound,
-      },
-      {
-        title: '에어팟 프로',
-        foundAt: '택시',
-        location: '용산역에서 보관중',
-        date: '1일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: airpods,
-      },
-      {
-        title: '에어팟 맥스',
-        foundAt: '택시',
-        location: '신도림경찰서에서 보관중',
-        date: '2일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      {
-        title: '빨간 에어팟',
-        foundAt: '성수낙낙',
-        location: '성동경찰서에서 보관중',
-        date: '2일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: notfound,
-      },
-      {
-        title: '검정 에어팟',
-        foundAt: '강남사거리',
-        location: '강남역에서 보관중',
-        date: '4일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: airpods,
-      },
-      {
-        title: '에어팟 6',
-        foundAt: '강남역 8번 출구',
-        location: '강남역에서 보관중',
-        date: '4일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: notfound,
-      },
-      {
-        title: '에어팟 7',
-        foundAt: '어느 뒷골목',
-        location: '용산지구대에서 보관중',
-        date: '1주일 전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      {
-        title: '짝퉁 에어팟',
-        foundAt: '보도블럭',
-        location: '강남역에서 보관중',
-        date: '한 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: notfound,
-      },
-      {
-        title: '에어팟 9',
-        foundAt: '강남역 11번출구',
-        location: '강남역에서 보관중',
-        date: '두 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: notfound,
-      },
-      {
-        title: '에어팟 10',
-        foundAt: '강남역 지하상가',
-        location: '강남역에서 보관중',
-        date: '두 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      {
-        title: '에어팟 11',
-        foundAt: '강남역 지하상가',
-        location: '강남역에서 보관중',
-        date: '두 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      {
-        title: '에어팟 12',
-        foundAt: '강남역 지하상가',
-        location: '강남역에서 보관중',
-        date: '두 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      {
-        title: '에어팟 13',
-        foundAt: '강남역 지하상가',
-        location: '강남역에서 보관중',
-        date: '두 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      // ... 추가 결과
-    ]);
+
+    // '전체 검색결과' 칩을 클릭했을 때 모든 결과를 보여줍니다.
+    if (chipKey === 'all') {
+      setSearchResults([...result]);
+    }
+    // '경찰서에서 보관중' 칩을 클릭했을 때 ID가 'F'로 시작하는 결과만 필터링합니다.
+    else if (chipKey === 'police') {
+      setSearchResults(result.filter((item) => item.id[0] === 'F'));
+    }
+    // '지하철 및 기타기관' 칩을 클릭했을 때 해당 결과를 보여줍니다.
+    else if (chipKey === 'subway') {
+      setSearchResults(result.filter((item) => item.id[0] === 'V'));
+    }
   };
 
   const navigate = useNavigate();
@@ -206,15 +95,21 @@ function SearchResultBar() {
           <ArrowBackIosIcon style={{ color: '#ff6700', fontSize: '2.5rem' }} />
         </IconButton>
         <Chip
+          icon={<SearchIcon sx={{ fontSize: '2.5rem' }} />}
+          label="전체 검색결과"
+          onClick={() => handleChipClick('all')}
+          sx={{ fontSize: '1.6rem' }}
+        />
+        <Chip
           icon={<LocationOnIcon sx={{ fontSize: '2.5rem' }} />}
           label="경찰서에서 보관중"
-          onClick={handleChipClick}
+          onClick={() => handleChipClick('police')}
           sx={{ fontSize: '1.6rem' }}
         />
         <Chip
           icon={<SubwayIcon sx={{ fontSize: '2.5rem' }} />}
-          label="지하철에서 발견"
-          onClick={handleChipClick}
+          label="지하철 및 기타기관"
+          onClick={() => handleChipClick('subway')}
           sx={{ fontSize: '1.6rem', padding: '1rem' }}
         />
         <Chip
@@ -229,12 +124,12 @@ function SearchResultBar() {
           }}
         />
       </Stack>
-      <GradationBox/>
-      {searchResults.length > 0 && (
+      <GradationBox />
+      {result.length > 0 && (
         <Grid container spacing={2}>
-          {searchResults.slice(0, 9).map((result, index) => (
-            <Grid item xs={4}>
-              <ResultCard/>
+          {searchResults.map((item, index) => (
+            <Grid item xs={4} key={index}>
+              <ResultCard {...item} />
             </Grid>
           ))}
         </Grid>

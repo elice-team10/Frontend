@@ -3,6 +3,8 @@ import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn'; // 위치 아이콘
 import styled from 'styled-components';
 import theme from '../../config/theme';
+import { useSearch } from '../../context/SearchProvider';
+import { LOCATION_CATEGORY } from '../../config/constants';
 
 // Styled Components
 const StyledFormControl = styled(FormControl)`
@@ -47,17 +49,25 @@ const StyledMenuItem = styled(MenuItem)`
 
 // 컴포넌트
 const DistrictSelector = () => {
-  const [district, setDistrict] = React.useState('');
+  const { district, setDistrict } = useSearch();
 
   const handleChange = (event) => {
-    setDistrict(event.target.value);
+    const value = event.target.value;
+    let districtName;
+
+    if (value === '중구') {
+      districtName = '서울중부';
+    } else {
+      districtName = value.slice(0, -1); // 마지막 글자 제거
+    }
+
+    setDistrict(districtName);
   };
 
   return (
     <StyledFormControl variant="outlined">
       <InputLabel htmlFor="district-select"></InputLabel>
       <StyledSelect
-        value={district}
         onChange={handleChange}
         displayEmpty
         inputProps={{ id: 'district-select' }}
@@ -97,33 +107,7 @@ const DistrictSelector = () => {
           );
         }}
       >
-        {[
-          '강남구',
-          '강동구',
-          '강북구',
-          '강서구',
-          '관악구',
-          '광진구',
-          '구로구',
-          '금천구',
-          '노원구',
-          '도봉구',
-          '동대문구',
-          '동작구',
-          '마포구',
-          '서대문구',
-          '서초구',
-          '성동구',
-          '성북구',
-          '송파구',
-          '양천구',
-          '영등포구',
-          '용산구',
-          '은평구',
-          '종로구',
-          '중구',
-          '중랑구',
-        ].map((area) => (
+        {LOCATION_CATEGORY.map((area) => (
           <StyledMenuItem key={area} value={area}>
             {area}
           </StyledMenuItem>

@@ -26,7 +26,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, path: '/', element: <Home /> },
       {
-        path: '/search/result',
+        path: '/search',
         element: <SearchResult />,
       },
       { path: '/login', element: <Login /> },
@@ -82,6 +82,6 @@ const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+    <RouterProvider router={router} />
   </QueryClientProvider>,
 );

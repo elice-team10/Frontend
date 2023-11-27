@@ -2,13 +2,16 @@
 import { Outlet } from 'react-router-dom';
 import Header from './components/UI/Header';
 import { AuthProvider } from './context/AuthProvider';
+import { SearchProvider } from './context/SearchProvider';
 
 function App() {
   return (
     <>
       <AuthProvider>
-        <Header />
-        <Outlet />
+        <SearchProvider>
+          <Header />
+          <Outlet />
+        </SearchProvider>
       </AuthProvider>
     </>
   );

@@ -3,6 +3,7 @@ import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import SubwayIcon from '@mui/icons-material/DirectionsSubway'; // 지하철 아이콘
 import styled from 'styled-components';
 import theme from '../../config/theme';
+import { useSearch } from '../../context/SearchProvider';
 
 // Styled Components
 const StyledFormControl = styled(FormControl)`
@@ -69,21 +70,31 @@ const subwayLines = [
   { name: '8호선', color: '#E6186C' },
   { name: '9호선', color: '#BDB092' },
   { name: '신분당선', color: '#D31145' },
+  { name: '경의중앙선', color: '#77C4A3' },
 ];
 
 // 컴포넌트
 const SubwaySelector = () => {
-  const [line, setLine] = React.useState('');
+  const { subwayLine, setSubwayLine } = useSearch('');
 
   const handleChange = (event) => {
-    setLine(event.target.value);
+    let line;
+
+    if (event.target.value === '신분당선') {
+      line = '신분당선';
+    } else if (event.target.value === '경의중앙선') {
+      line = '경의중앙선';
+    } else {
+      line = event.target.value;
+    }
+
+    setSubwayLine(line);
   };
 
   return (
     <StyledFormControl variant="outlined">
       <InputLabel htmlFor="subway-line-select"></InputLabel>
       <StyledSelect
-        value={line}
         onChange={handleChange}
         displayEmpty
         inputProps={{ id: 'subway-line-select' }}
@@ -115,17 +126,17 @@ const SubwaySelector = () => {
             );
           }
           // 선택된 노선의 색상과 이름을 표시
-          const line = subwayLines.find((line) => line.color === selected);
+          const line = subwayLines.find((line) => line.name === selected);
           return (
             <SelectLabel>
-              <ColorCircle color={selected} />
-              <LabelText>{line ? line.name : '지하철 노선'}</LabelText>
+              <ColorCircle color={line ? line.color : ''} />
+              <LabelText>{selected}</LabelText>
             </SelectLabel>
           );
         }}
       >
         {subwayLines.map((line) => (
-          <StyledMenuItem key={line.color} value={line.color}>
+          <StyledMenuItem key={line.color} value={line.name}>
             <ColorCircle color={line.color} />
             {line.name}
           </StyledMenuItem>
