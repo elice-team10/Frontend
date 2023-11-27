@@ -36,7 +36,7 @@ const MyEmailIcon = styled(EmailIcon)`
 
 const MyPasswordIcon = styled(LockIcon)`
   padding: ${(props) =>
-    props.id === 'change_password' ? 0 : '0 4px !important'};
+    props.id === 'change_password' ? '0 !important' : '0 4px !important'};
 
   position: absolute;
   top: 40%;
@@ -82,8 +82,8 @@ export default function AuthFormInput({
     <InputContainer>
       {id === 'nickname' && <MyUserIcon />}
       {id === 'email' && <MyEmailIcon />}
-      {(id === 'password' ||
-        id === 'current_password' ||
+      {id === 'password' && <MyPasswordIcon />}
+      {(id === 'current_password' ||
         id === 'new_password' ||
         id === 'confirm_new_password') && (
         <MyPasswordIcon id="change_password" />
