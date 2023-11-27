@@ -36,6 +36,7 @@ const AdminLostComment = ({ onSelectionChange }, ref) => {
         (comment) => comment.postId && comment.postId.board_category === 0,
       );
       setFilteredComments(filteredData); // 서버로부터 받은 데이터로 rows 상태를 업데이트
+      console.log(response.data);
     } catch (error) {
       console.error('Error fetching data: ', error);
     }
