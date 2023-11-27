@@ -55,8 +55,8 @@ const IOSSwitch = styled((props) => (
   },
 }));
 
-export default function CustomizedSwitches({onChangeSwitch}) {
-  const [completed, setCompleted] = React.useState(false);
+export default function CustomizedSwitches({onChangeSwitch, defaultValue}) {
+  const [completed, setCompleted] = React.useState(defaultValue);
 
   const switchChangeHandle = () => {
     setCompleted((prevCompleted) => !prevCompleted);

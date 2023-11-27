@@ -5,13 +5,20 @@ import PlaceIcon from '@mui/icons-material/Place';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Chip from '@mui/material/Chip';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import Header from '../UI/Header';
+import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 import Comment from './Comment';
+import { useQuery, useMutation } from '@tanstack/react-query';
+import { deleteEvent, fetchEvents, queryClient } from '../../api/http';
+import { useNavigate, useParams } from 'react-router';
+import CircularProgress from '@mui/material/CircularProgress';
+import ErrorBlock from '../UI/ErrorBlock';
+import { useState } from 'react';
+import ModalBasic from '../UI/Modal';
 
 const Background = styled.div`
-background-color: #eee;
-height: 100%;
-padding: 3px;
+  background-color: #eee;
+  height: 100%;
+  padding: 3px;
 `;
 
 const StyledArrowIcon = styled(ArrowBackIosIcon)`
@@ -23,7 +30,9 @@ const StyledArrowIcon = styled(ArrowBackIosIcon)`
 const PhotoContainer = styled.div`
   width: 56rem;
   height: 25rem;
-
+  display: flex;
+  // justify-content: center;
+  align-items: center;
   img {
     width: 54rem;
     height: 23rem;
@@ -131,10 +140,13 @@ const Content = styled.p`
 const Badge = styled(Chip)`
   && {
     width: fit-content;
-    background-color: ${theme.colors.primary};
-    color: ${theme.colors.textWhite};
     font-size: ${theme.fontSizes.small};
     font-weight: bold;
+    background-color: ${(props) =>
+      props.label === '미완료'
+        ? `${theme.colors.primary}`
+        : `${theme.colors.border}`};
+    color: ${theme.colors.textWhite};
   }
 `;
 
@@ -144,61 +156,119 @@ const ReplyCount = styled.p`
   font-weight: bold;
 `;
 
+function CommunityDetail() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-CommunityDetail.defaultProps = {
-  title: '에어팟 찾아요.',
-  complete: '미완료',
-  content:
-    '성수동 성수낙낙에서 에어팟을 잃어버렸습니다. 제 소중한 에어팟을 찾아주세요!',
-  location: '성동구',
-  date: '23-11-14',
-  nickname: '라프',
-  replyCount: '2',
-};
+  const navigate = useNavigate();
+  const params = useParams();
 
-function CommunityDetail({
-  title,
-  nickname,
-  location,
-  date,
-  content,
-  complete,
-  replyCount,
-}) {
-  return (
-    <Background>
-      {/* <Header /> */}
-      <PostContainer style={{ height: '100%' }}>
+  const { data, isPending, isError, error } = useQuery({
+    queryKey: ['events', params.id],
+    queryFn: () => fetchEvents(`post/detail/${params.id}`),
+  });
+
+  const { mutate } = useMutation({
+    mutationFn: deleteEvent,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['events'],
+        refetchType: 'none',
+      });
+      navigate('/community');
+    },
+  });
+
+  // 삭제 질문 모달
+  const handleStartDelete = () => {
+    console.log('Before setIsModalOpen(true):', isModalOpen);
+    setIsModalOpen(true);
+    console.log('After setIsModalOpen(true):', isModalOpen);
+  };
+
+  const handleStopDelete = () => {
+    setIsModalOpen(false);
+    console.log(isModalOpen);
+  };
+
+  const handleDelete = () => {
+    mutate(params.id);
+  };
+
+  const handleEdit = () => {
+    navigate(`/community/post/${params.id}/edit`);
+  };
+
+  let content;
+
+  if (isPending) {
+    content = <CircularProgress sx={{ color: '#ff6700' }} />;
+  }
+
+  if (isError) {
+    content = (
+      <ErrorBlock
+        title="에러 발생"
+        message={error.info?.message || '데이터를 가져오는데 실패했습니다.'}
+      />
+    );
+  }
+
+  if (data) {
+    content = (
+      <>
         <ButtonContainer>
-          <StyledArrowIcon fontSize="3.5rem" />
-          <button>수정</button>
-          <button>삭제</button>
+          <StyledArrowIcon fontSize="3.5rem" onClick={() => navigate(-1)} />
+          <button onClick={handleEdit}>수정</button>
+          <button onClick={handleStartDelete}>삭제</button>
         </ButtonContainer>
         <ContentContainer>
           <PhotoContainer>
-            <img src="https://th3.tmon.kr/thumbs/image/7de/c9c/84d/c7123664a_700x700_95_FIT.jpg" />
+            {data.picture ? (
+              <img
+                src={`http://kdt-sw-6-team10.elicecoding.com${data.picture}`}
+              />
+            ) : (
+              <WallpaperOutlinedIcon fontSize="large" />
+            )}
           </PhotoContainer>
-          <Badge label={`${complete}`} size="small" />
+          <Badge label={`${data.isFound ? '완료' : '미완료'}`} size="small" />
           {/* 장소 날짜 컨테이너 */}
           <PositionContainer>
-            <Name>{nickname}</Name>
+            <Name>{data.nickname}</Name>
             <LocationIcon />
-            <Location>{`서울시 ${location}`}</Location>
+            <Location>{`서울시 ${data.event_location}`}</Location>
             <DateIcon />
-            <Date>{date}</Date>
+            <Date>{data.event_date}</Date>
           </PositionContainer>
           {/* 타이틀 컨테이너 */}
           <TitleContainer>
-            <Title>{title}</Title>
+            <Title>{data.title}</Title>
           </TitleContainer>
           {/* 컨텐츠와 완료 뱃지 */}
-          <Content>{content}</Content>
+          <Content>{data.content}</Content>
         </ContentContainer>
         {/* 리플 컨테이너 */}
-        <ReplyCount>댓글 {replyCount}</ReplyCount>
-        <Comment />
-      </PostContainer>
-    </Background>
+        {/* <ReplyCount>댓글 {replyCount}</ReplyCount>
+        <Comment /> */}
+      </>
+    );
+  }
+
+  return (
+    <>
+      {isModalOpen && (
+        <ModalBasic
+          title="게시글 삭제"
+          content="이 글을 삭제하시겠습니까?"
+          btnText="삭제"
+          onCloseModal={handleStopDelete}
+          getFunction={handleDelete}
+        />
+      )}
+      <Background>
+        <PostContainer style={{ height: '100%' }}>{content}</PostContainer>
+      </Background>
+    </>
   );
 }
 

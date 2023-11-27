@@ -26,3 +26,17 @@ export const LOCATION_CATEGORY = [
   '중구',
   '중랑구',
 ];
+
+export const PRODUCT_CATEGORY = [
+  '분실물 종류',
+  '이어폰',
+  '지갑',
+  '휴대폰',
+  '신용카드',
+  '가방',
+  '귀금속',
+  '의류',
+  '전자기기',
+  '시계',
+  '기타',
+];

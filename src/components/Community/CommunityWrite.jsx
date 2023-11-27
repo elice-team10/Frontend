@@ -1,15 +1,15 @@
 import { useMutation } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { LOCATION_CATEGORY } from '../../config/constants';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { LOCATION_CATEGORY, PRODUCT_CATEGORY } from '../../config/constants';
 import styled from 'styled-components';
 import theme from '../../config/theme';
-import Calander from '../UI/DatePicker';
 import CustomizedSwitches from '../UI/SwitchButton';
 import ImageInput from '../UI/ImageInput';
-import { createNewEvent } from '../../api/http';
-import { useQuery } from '@tanstack/react-query';
+import { createNewEvent, queryClient } from '../../api/http';
 import useAuth from '../../hooks/useAuth';
+import ErrorBlock from '../UI/ErrorBlock';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Background = styled.div`
   background-color: #eee;
@@ -48,18 +48,11 @@ const Title = styled.input`
   }
 `;
 
-const DividerLine = styled.div`
-  width: 62rem;
-  height: 0.009rem;
-  background-color: ${theme.colors.border};
-  position: absolute;
-  left: 0;
-`;
-
 const ToolbarContainer = styled.div`
   display: flex;
   height: 7rem;
   align-items: center;
+  justify-content: center;
 `;
 
 const ContentContainer = styled.div`
@@ -126,7 +119,7 @@ const StyledSelect = styled.select`
   letter-spacing: 0.00938em;
   color: ${theme.colors.text};
   box-sizing: border-box;
-  margin: 12px;
+  margin-right: 12px;
   outline: none;
   &:hover {
     border: 1px solid ${theme.colors.text};
@@ -158,7 +151,7 @@ const GradationBox = styled.div`
   border-radius: 12px;
 `;
 
-function CommunityWrite() {
+function CommunityWrite({ inputData, onEditSubmit }) {
   const [title, setTitle] = useState('');
   const [location, setLocation] = useState('');
   const [date, setDate] = useState('');
@@ -166,18 +159,37 @@ function CommunityWrite() {
   const [content, setContent] = useState('');
   const [nickname, setNickname] = useState('');
   const [boardCategory, setBoardCategory] = useState(0);
-
+  const [picture, setPicture] = useState(null);
+  const [productCategory, setProductCategory] = useState('');
   const { auth } = useAuth();
+  // 수정 버튼 상태
+  const [isEditMode, setIsEditMode] = useState(false);
 
+  useEffect(() => {
+    if (inputData) {
+      setTitle(inputData.title || '');
+      setLocation(inputData.event_location || '');
+      setDate(inputData.event_date || '');
+      setComplete(inputData.isFound || false);
+      setContent(inputData.content || '');
+      setBoardCategory(inputData.board_category || 0);
+      setPicture(inputData.picture || null);
+      setProductCategory(inputData.product_category || '');
+
+      setIsEditMode(true);
+    }
+  }, [inputData]);
+
+  // 이미지 파일 업로드
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-    setFile(selectedFile);
+    setPicture(selectedFile);
   };
-
+  // 완료 미완료 선택
   const handleSwitch = (isCompleted) => {
     setComplete(isCompleted);
   };
-
+  // 게시판 카테고리 선택
   const urlLocation = useLocation();
   const searchParams = new URLSearchParams(urlLocation.search);
   const boardCategoryFromQuery = searchParams.get('board_category');
@@ -188,78 +200,133 @@ function CommunityWrite() {
     }
   }, [boardCategoryFromQuery]);
 
-  const { mutate } = useMutation({
+  const navigate = useNavigate();
+  //게시판 작성 데이터 변경
+  const { mutate, isPending, isError, error } = useMutation({
     mutationFn: createNewEvent,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['events'] });
+      navigate('/community');
+    },
   });
-
+  // 게시판 작성 데이터 전송 formdata
   function handleSubmit(event) {
     event.preventDefault();
+    console.log('event', title);
+    const formData = new FormData();
+    formData.append('board_category', boardCategory);
+    formData.append('product_category', productCategory);
+    formData.append('event_date', date);
+    formData.append('event_location', location);
+    formData.append('nickname', auth.nickname);
+    formData.append('title', title);
+    formData.append('content', content);
+    formData.append('isFound', complete);
+    formData.append('picture', picture);
 
-    const formData = {
-      title,
-      location,
-      date,
-      complete,
-      content,
-      nickname: auth.nickname,
-      board_category: boardCategory,
-    };
+    if (isEditMode) {
+      // 수정 모드인 경우, onEditSubmit 콜백 호출
+      console.log('event2', title);
 
-    console.log(formData);
-    mutate(formData);
+      const updatedFormData = new FormData();
+      updatedFormData.append('board_category', boardCategory);
+      updatedFormData.append('product_category', productCategory);
+      updatedFormData.append('event_date', date);
+      updatedFormData.append('event_location', location);
+      updatedFormData.append('nickname', auth.nickname);
+      updatedFormData.append('title', title);
+      updatedFormData.append('content', content);
+      updatedFormData.append('isFound', complete);
+      updatedFormData.append('picture', picture);
+
+      onEditSubmit(updatedFormData);
+    } else {
+      // 등록 모드인 경우, mutate 함수 호출
+      mutate(formData);
+    }
   }
 
   return (
     <Background>
-      {/* <Header /> */}
       <PostContainer onSubmit={handleSubmit}>
-        <TitleContainer>
-          <Title
-            type="text"
-            placeholder="제목을 입력해주세요."
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
+        {isPending && <CircularProgress sx={{ color: '#ff6700' }} />}
+        {!isPending && (
+          <>
+            <TitleContainer>
+              <Title
+                type="text"
+                placeholder="제목을 입력해주세요."
+                value={title}
+                onChange={(event) => setTitle(event.target.value)}
+              />
+              <GradationBox />
+            </TitleContainer>
+            <ToolbarContainer>
+              <StyledSelect
+                value={productCategory}
+                onChange={(event) => setProductCategory(event.target.value)}
+              >
+                {PRODUCT_CATEGORY.map((area) => (
+                  <option key={area} value={area}>
+                    {area}
+                  </option>
+                ))}
+              </StyledSelect>
+              <StyledSelect
+                value={location}
+                onChange={(event) => setLocation(event.target.value)}
+              >
+                {LOCATION_CATEGORY.map((area) => (
+                  <option key={area} value={area}>
+                    {area}
+                  </option>
+                ))}
+              </StyledSelect>
+              <CalInput
+                type="date"
+                value={date}
+                onChange={(event) => setDate(event.target.value)}
+              />
+              <ImageInput
+                defaultValue={inputData ? inputData.picture : picture}
+                onChange={handleFileChange}
+              />
+            </ToolbarContainer>
+            <CustomizedSwitches
+              defaultValue={inputData ? inputData.isFound : false}
+              onChangeSwitch={handleSwitch}
+            />
+            <ContentContainer>
+              <Content
+                cols="50"
+                rows="10"
+                placeholder="찾는(은) 물건의 위치와 장소, 그리고 날짜를 상세하게 작성할수록 찾을 확률이 높아집니다!"
+                value={content}
+                onChange={(event) => setContent(event.target.value)}
+              ></Content>
+            </ContentContainer>
+            <ButtonContainer>
+              {isEditMode ? (
+                <SubmitButton type="submit" onClick={handleSubmit}>
+                  수정
+                </SubmitButton>
+              ) : (
+                <SubmitButton type="submit">등록</SubmitButton>
+              )}
+              <BoardLink to="/community">
+                <SubmitButton $background="white" color="#7C9299">
+                  취소
+                </SubmitButton>
+              </BoardLink>
+            </ButtonContainer>
+          </>
+        )}
+        {isError && (
+          <ErrorBlock
+            title="글 등록을 실패했습니다."
+            message={error.info?.message || '잠시후 다시 작성 부탁드립니다.'}
           />
-          <GradationBox />
-        </TitleContainer>
-        <ToolbarContainer>
-          <StyledSelect
-            value={location}
-            onChange={(event) => setLocation(event.target.value)}
-          >
-            {LOCATION_CATEGORY.map((area) => (
-              <option key={area} value={area}>
-                {area}
-              </option>
-            ))}
-          </StyledSelect>
-          <CalInput
-            type="date"
-            value={date}
-            onChange={(event) => setDate(event.target.value)}
-          />
-          {/* <Calander/> */}
-          <ImageInput onChange={handleFileChange} />
-        </ToolbarContainer>
-        <CustomizedSwitches onChangeSwitch={handleSwitch} />
-        <ContentContainer>
-          <Content
-            cols="50"
-            rows="10"
-            placeholder="찾는(은) 물건의 위치와 장소, 그리고 날짜를 상세하게 작성할수록 찾을 확률이 높아집니다!"
-            value={content}
-            onChange={(event) => setContent(event.target.value)}
-          ></Content>
-          {/* <Editor /> */}
-        </ContentContainer>
-        <ButtonContainer>
-          <SubmitButton type="submit">등록</SubmitButton>
-          <BoardLink to="/community">
-            <SubmitButton $background="white" color="#7C9299">
-              취소
-            </SubmitButton>
-          </BoardLink>
-        </ButtonContainer>
+        )}
       </PostContainer>
     </Background>
   );

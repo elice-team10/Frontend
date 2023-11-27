@@ -5,6 +5,7 @@ import CommunityTab from './CommunityTab';
 import CommunityCard from './CommunityCard';
 import { fetchEvents } from '../../api/http';
 import ErrorBlock from '../UI/ErrorBlock';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Background = styled.div`
   background-color: #eee;
@@ -17,9 +18,9 @@ const CommunityContainer = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  justify-content: center;
+  // justify-content: center;
   margin: auto;
-  // padding: 5rem 0;
+  padding: 5rem 0;
 `;
 
 const LostContainer = styled.div`
@@ -52,7 +53,7 @@ function CommunityBoard() {
   let content;
 
   if (isLoading) {
-    content = <div>Loading...</div>;
+    content = <CircularProgress sx={{ color: '#ff6700' }} />;
   }
 
   if (isError) {
@@ -68,7 +69,7 @@ function CommunityBoard() {
     const lostItem = data.filter((event) => event.board_category === 0);
     const foundItem = data.filter((event) => event.board_category === 1);
     console.log(data);
-    
+
     content = (
       <>
         {currentTab === '찾아요' ? (
@@ -84,6 +85,7 @@ function CommunityBoard() {
                 date={item.event_date}
                 nickname={item.nickname}
                 replyCount={'0'}
+                postId={item._id}
               />
             ))}
           </LostContainer>
@@ -100,6 +102,7 @@ function CommunityBoard() {
                 date={item.event_date}
                 nickname={item.nickname}
                 replyCount={'0'}
+                postId={item._id}
               />
             ))}
           </FoundContainer>
