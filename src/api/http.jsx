@@ -5,7 +5,7 @@ export const queryClient = new QueryClient();
 
 // 게시판 정보 가져오는 함수
 export async function fetchEvents(endpoint) {
-  const response = await axiosPrivate().get(endpoint, { withCredentials: true });
+  const response = await api.get(endpoint, { withCredentials: true });
 
   if (response.status !== 200) {
     const error = new Error('게시판 정보를 가져오는데 실패했습니다.');
@@ -21,7 +21,7 @@ export async function fetchEvents(endpoint) {
 
 // 작성된 게시판 텍스트 정보를 보내는 함수
 export async function createNewEvent(eventData) {
-  const response = await api.post('/post', eventData, {
+  const response = await axiosPrivate().post('/post', eventData, {
     headers: { 'Content-Type': 'multipart/form-data' },
     withCredentials: true,
   });
@@ -57,7 +57,7 @@ export async function deleteEvent(postId) {
 // 게시글 업데이트 함수
 export async function updateEvent({postId, eventData}) {
   console.log('Sending update request with postId and eventData:', postId, eventData);
-  const response = await api.put(`/post/${postId}`, eventData, {
+  const response = await axiosPrivate().put(`/post/${postId}`, eventData, {
     headers: { 'Content-Type': 'multipart/form-data' },
     withCredentials: true,
   });

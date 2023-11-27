@@ -18,9 +18,9 @@ const CommunityContainer = styled.div`
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
-  justify-content: center;
+  // justify-content: center;
   margin: auto;
-  // padding: 5rem 0;
+  padding: 5rem 0;
 `;
 
 const LostContainer = styled.div`
