@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Box, LinearProgress, CircularProgress } from '@mui/material';
 import { useSearch } from '../../context/SearchProvider';
 import axios from 'axios';
-import { fetchSubwayItems, fetchItems } from './fetchItems';
+import { fetchSubwayItems, fetchLostItems } from './fetchItems';
 
 const HomeContainer = styled.div`
   width: 1200px;
@@ -69,109 +69,6 @@ const SearchInput = styled.input`
   // }
 `;
 
-export async function fetchSubwayItems(productName, place, page) {
-  const url =
-    'http://apis.data.go.kr/1320000/LosPtfundInfoInqireService/getPtLosfundInfoAccTpNmCstdyPlace'; // 경찰청외 포털기관 (지하철, 공항..)
-  const serviceKey = decodeURIComponent(
-    'ANqqJt8CTWuvlA%2BWsV9WzIpKzY3RQAarn%2F2QkJD1AN3FYzZS6zMsDuq%2B8jDbXE6fXW8u50ZbGWdAWYLEzXK2TQ%3D%3D', // Service key
-  );
-  const queryParams = {
-    serviceKey, // 서비스 키
-    PRDT_NM: productName, // 상품명
-    DEP_PLACE: place, // 보관 장소
-    pageNo: page, // 페이지 번호
-    numOfRows: '10', // 행 수
-  };
-
-  try {
-    const response = await axios.get(url, { params: queryParams });
-
-    // XML 파싱을 위한 파서 생성
-    // const parser = new XMLParser();
-    // const parsedResponse = parser.parse(response.data);
-    console.log(response);
-    const lostItems = response.data.response.body.items.item;
-    const numOfRows = response.data.response.body.numOfRows;
-    const pageNo = response.data.response.body.pageNo;
-    const totalCount = response.data.response.body.totalCount;
-
-    const arr = [];
-    for (const lostItem of lostItems) {
-      const item = {
-        id: lostItem.atcId,
-        content: lostItem.fdSbjt,
-        name: lostItem.fdPrdtNm,
-        imageUrl: lostItem.fdFilePathImg,
-        date: lostItem.fdYmd,
-        location: lostItem.depPlace,
-      };
-
-      arr.push(item);
-    }
-    // 결과 출력
-    console.log('Status:', response.status);
-    console.log('Headers:', response.headers);
-    console.log(
-      `지하철: Num of Rows:${numOfRows}, Page No. : ${pageNo}, Total Count : ${totalCount}`,
-    );
-    return arr;
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
-export async function fetchLostItems(productName, place, page) {
-  const url =
-    'http://apis.data.go.kr/1320000/LosfundInfoInqireService/getLosfundInfoAccTpNmCstdyPlace'; // 경찰청 포털기관
-  const serviceKey = decodeURIComponent(
-    'ANqqJt8CTWuvlA%2BWsV9WzIpKzY3RQAarn%2F2QkJD1AN3FYzZS6zMsDuq%2B8jDbXE6fXW8u50ZbGWdAWYLEzXK2TQ%3D%3D', // 경찰청 포털기관 Service Key
-  );
-  const queryParams = {
-    serviceKey, // 서비스 키
-    PRDT_NM: productName, // 상품명
-    DEP_PLACE: place, // 보관 장소
-    pageNo: page, // 페이지 번호
-    numOfRows: '10', // 행 수
-  };
-
-  try {
-    const response = await axios.get(url, { params: queryParams });
-
-    // XML 파싱을 위한 파서 생성
-    // const parser = new XMLParser();
-    // const parsedResponse = parser.parse(response.data);
-    console.log(response);
-    const lostItems = response.data.response.body.items.item;
-    const numOfRows = response.data.response.body.numOfRows;
-    const pageNo = response.data.response.body.pageNo;
-    const totalCount = response.data.response.body.totalCount;
-
-    const arr = [];
-    for (const lostItem of lostItems) {
-      const item = {
-        id: lostItem.atcId,
-        content: lostItem.fdSbjt,
-        name: lostItem.fdPrdtNm,
-        imageUrl: lostItem.fdFilePathImg,
-        date: lostItem.fdYmd,
-        location: lostItem.depPlace,
-      };
-
-      arr.push(item);
-    }
-    // 결과 출력
-    console.log('Status:', response.status);
-    console.log('Headers:', response.headers);
-    console.log('Parsed Body:', arr);
-    console.log(
-      `Num of Rows:${numOfRows}, Page No. : ${pageNo}, Total Count : ${totalCount}`,
-    );
-    return arr;
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
 const HomeSearchBar = () => {
   const {
     searchTerm,
@@ -185,14 +82,20 @@ const HomeSearchBar = () => {
   const [loading, setLoading] = useState(false); // 로딩 상태
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // searchTerm, subwayLine, district, page 중 하나라도 변경될 때 실행됩니다.
+    console.log(searchTerm, subwayLine, district, page);
+  }, [searchTerm, subwayLine, district, page]);
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true); // 로딩 시작
 
+    setResult([]);
     const requests = [];
 
     // 셀렉터를 선택하지 않으면 모든 api에 대한 결과를 보여줍니다.
-    if ((district === '') & (subwayLine === '')) {
+    if (district === '' && subwayLine === '') {
       requests.push(fetchLostItems(searchTerm, '', page));
       requests.push(fetchSubwayItems(searchTerm, '', page));
     }

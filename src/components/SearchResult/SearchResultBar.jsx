@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import Chip from '@mui/material/Chip';
 import Card from '@mui/material/Card';
@@ -19,6 +19,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import notfound from '../../assets/notfound.jpg';
 import ResultCard from './ResultCard';
 import { useSearch } from '../../context/SearchProvider';
+import { fetchSubwayItems, fetchLostItems } from '../Home/fetchItems';
 
 const LoadButton = styled.button`
   background:  linear-gradient(135deg, #ffa500, #ff7f50, #ff6700);
@@ -55,18 +56,57 @@ function SearchResultBar() {
   const [selectedChip, setSelectedChip] = useState(null);
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const { result, page, totalCount } = useSearch('');
+  const {
+    searchTerm,
+    setSearchTerm,
+    subwayLine,
+    district,
+    page,
+    setPage,
+    setResult,
+    result,
+  } = useSearch('');
 
-  const handleLoadMore = () => {
+  useEffect(() => {
+    // result 배열이 업데이트 될 때마다 searchResults 상태를 업데이트
+    setSearchResults(result);
+  }, [result]);
+
+  useEffect(() => {
+    // searchTerm, subwayLine, district, page 중 하나라도 변경될 때 실행됩니다.
+    console.log(searchTerm, subwayLine, district, page);
+  }, [searchTerm, subwayLine, district, page]);
+
+  const handleLoadMore = async () => {
     setLoading(true);
-    // Simulate loading more data
-    setTimeout(() => {
-      setItemsToShow([
-        ...itemsToShow,
-        ...itemsData.slice(itemsToShow.length, itemsToShow.length + 9),
-      ]);
-      setLoading(false);
-    }, 1000);
+    setPage((current) => current + 1);
+
+    const requests = [];
+
+    // 셀렉터를 선택하지 않으면 모든 api에 대한 결과를 보여줍니다.
+    if (district === '' && subwayLine === '') {
+      requests.push(fetchLostItems(searchTerm, '', page));
+      requests.push(fetchSubwayItems(searchTerm, '', page));
+    }
+
+    if (district !== '') {
+      requests.push(fetchLostItems(searchTerm, district, page));
+    }
+
+    if (subwayLine !== '') {
+      requests.push(fetchSubwayItems(searchTerm, subwayLine, page));
+    }
+
+    try {
+      const responses = await Promise.all(requests);
+
+      const flattenedResults = responses.flat(); // 중첩된 배열을 하나의 배열로 펼침
+      setResult((prevResult) => [...prevResult, ...flattenedResults]);
+
+      setLoading(false); // 로딩 종료
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleChipClick = (chipKey) => {
@@ -128,7 +168,7 @@ function SearchResultBar() {
       {result.length > 0 && (
         <Grid container spacing={2}>
           {searchResults.map((item, index) => (
-            <Grid item xs={4} key={index}>
+            <Grid item xs={3} key={index}>
               <ResultCard {...item} />
             </Grid>
           ))}

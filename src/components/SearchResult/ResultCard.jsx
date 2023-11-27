@@ -83,6 +83,11 @@ const Photo = styled.img`
   object-fit: cover; // 이미지 비율 유지
 `;
 
+const LargePhoto = styled.img`
+  width: 100%;
+  object-fit: cover;
+`;
+
 const CardContainer = styled.div`
   display: flex;
   align-items: center;
@@ -156,7 +161,7 @@ const style = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: '#fffaf0',
-  border: '2px solid #000',
+  border: 'none',
   boxShadow: 24,
   borderRadius: '12px',
   maxHeight: '90vh', // 최대 높이 조정
@@ -172,7 +177,12 @@ function ItemModal({ open, onClose, data }) {
           {' '}
           {/* 마진 추가 */}
           <PhotoContainer>
-            <Photo src={data.imageUrl} />
+            <Photo
+              src={data.imageUrl}
+              onClick={() => {
+                window.open(data.imageUrl, '_blank');
+              }}
+            />
           </PhotoContainer>
         </Box>
 

@@ -10,7 +10,7 @@ export async function fetchSubwayItems(productName, place, page) {
     serviceKey, // 서비스 키
     PRDT_NM: productName, // 상품명
     DEP_PLACE: place, // 보관 장소
-    pageNo: page, // 페이지 번호
+    pageNo: 3, // 페이지 번호
     numOfRows: '10', // 행 수
   };
 
