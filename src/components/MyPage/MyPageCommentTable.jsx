@@ -90,13 +90,28 @@ export default function MyPageCommentTable() {
     getUserCommentData();
   }, []);
 
-  function createData(commentId, commentDate, commentContent) {
-    return { commentId, commentDate, commentContent };
+  function createData(commentId, postId, commentDate, commentContent) {
+    return {
+      commentId,
+      postId,
+      commentDate,
+      commentContent,
+    };
   }
 
   const rows = commentData.map(
-    ({ _id: commentId, createdAt: commentDate, content: commentContent }) =>
-      createData(commentId, formatDate(commentDate), commentContent),
+    ({
+      _id: commentId,
+      postId: postId,
+      createdAt: commentDate,
+      content: commentContent,
+    }) =>
+      createData(
+        commentId,
+        postId?._id,
+        formatDate(commentDate),
+        commentContent,
+      ),
   );
 
   const handleChangePage = (event, newPage) => {
@@ -181,7 +196,7 @@ export default function MyPageCommentTable() {
                             cursor: 'pointer',
                           }}
                           onClick={() =>
-                            navigate(`/community/post/${row.commentId}`)
+                            navigate(`/community/post/${row.postId}`)
                           }
                         >
                           {column.format && typeof value === 'number'
