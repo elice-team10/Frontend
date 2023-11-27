@@ -4,7 +4,6 @@ import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX } from '../config/regex';
-import background from '../assets/background.webp';
 import api from '../api/axios';
 import AuthContainer from '../components/Auth/AuthContainer';
 import { CheckLoggedIn } from '../utils/CheckLoggedIn';
@@ -74,7 +73,7 @@ const ForgotPassword = () => {
       setMessage('유효한 이메일 주소를 입력하세요.');
       return;
     }
-
+    console.log(email);
     try {
       const res = await api.post(
         RESET_PASSWORD_URL,
@@ -85,13 +84,8 @@ const ForgotPassword = () => {
         },
       );
 
-      // TODO: 비밀번호 찾기 마무리
-      console.log(res);
-
       setIsError(false);
-
-      // setMessage('임시 비밀번호를 이메일로 전송했습니다.');
-      setMessage(res.data.message);
+      setMessage('새 비밀번호를 이메일로 보냈습니다.');
     } catch (error) {
       console.error(' 오류 발생: ', error);
       setIsError(true);
