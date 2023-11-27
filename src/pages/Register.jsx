@@ -15,7 +15,7 @@ const RegisterContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 9rem);
   background: url(${background});
 `;
 

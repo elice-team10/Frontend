@@ -15,7 +15,7 @@ const LoginContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 90px);
+  height: calc(100vh - 9rem);
   background: url(${background});
 `;
 
@@ -153,14 +153,10 @@ const Login = () => {
     <LoginContainer>
       <LoginFormContainer>
         {/* <Title src={title} /> */}
-
         {/* <HeaderTitle style={{ color: '#ff5000' }}>Lost & Found</HeaderTitle> */}
-
-        {/* TODO: 예쁜 화살표 아이콘을 찾아 넣어서, 뒤로 가기 기능 넣기(로그인, 회원가입, 비밀번호 찾기) */}
-        {/* Link to='/' replace 또는 onClick 이벤트로 navigate(-1, { replace: true }) */}
         <HeaderTitle>로그인</HeaderTitle>
         <LoginForm onSubmit={handleSubmit}>
-          <FormLabel htmlFor="email">이메일</FormLabel>
+          {/* <FormLabel htmlFor="email">이메일</FormLabel> */}
           <AuthFormInput
             id="email"
             type="text"
@@ -168,7 +164,7 @@ const Login = () => {
             value={email}
             onInputChange={handleInputChange}
           />
-          <FormLabel htmlFor="password">비밀번호</FormLabel>
+          {/* <FormLabel htmlFor="password">비밀번호</FormLabel> */}
           <AuthFormInput
             id="password"
             type="password"
