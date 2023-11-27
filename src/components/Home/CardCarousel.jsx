@@ -13,6 +13,8 @@ import jewerly from '../../assets/jewerly.jpg';
 import clothes from '../../assets/clothes.jpg';
 import laptop from '../../assets/laptop.jpg';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useSearch } from '../../context/SearchProvider';
 
 const CarouselText = styled.span`
   margin-top: 5rem;
@@ -111,7 +113,7 @@ async function fetchItemCategory(categoryCode, categoryCode2 = null) {
     PRDT_CL_CD_01: categoryCode, // 상품명
     N_FD_LCT_CD: 'LCA000',
     pageNo: 1, // 페이지 번호
-    numOfRows: '10', // 행 수
+    numOfRows: '20', // 행 수
   };
 
   if (categoryCode2) {
@@ -137,16 +139,10 @@ async function fetchItemCategory(categoryCode, categoryCode2 = null) {
         content: lostItem.fdSbjt,
         name: lostItem.fdPrdtNm,
         imageUrl: lostItem.fdFilePathImg,
-        dateOfLoss: lostItem.fdYmd,
+        date: lostItem.fdYmd,
         location: lostItem.depPlace,
         productCategory: lostItem.prdtClNm,
       };
-
-      // Add image to results
-      // if (item.imageUrl) {
-      //   item.image = await fetch(item.imageUrl);
-      //   item.image = await item.image.buffer();
-      // }
 
       results.push(item);
     }
@@ -169,12 +165,30 @@ const CardCarousel = () => {
   const [carouselTransition, setCarouselTransition] = useState(
     'transform 0.3s ease-in-out',
   );
+  const { setResult, result } = useSearch('');
+  const navigate = useNavigate();
 
-  const handleClick = (card) => {
+  const handleClick = async (card) => {
+    //setLoading(true); // 로딩 시작
+    setResult([]);
+    const requests = [];
     if (card.categoryCode2) {
-      fetchItemCategory(card.categoryCode, card.categoryCode2);
+      requests.push(fetchItemCategory(card.categoryCode, card.categoryCode2));
     } else {
-      fetchItemCategory(card.categoryCode);
+      requests.push(fetchItemCategory(card.categoryCode));
+    }
+
+    try {
+      const responses = await Promise.all(requests);
+      if (responses) {
+        const flattenedResults = responses.flat(); // 중첩된 배열을 하나의 배열로 펼침
+        setResult(flattenedResults);
+      }
+
+      //setLoading(false); // 로딩 종료
+      navigate('/search'); // 리다이렉트
+    } catch (error) {
+      console.log(error);
     }
   };
 

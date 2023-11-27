@@ -6,8 +6,12 @@ import AdminFoundBoard from './AdminFoundBoard';
 import AdminFoundComment from './AdminFoundComment';
 import AdminLostBoard from './AdminLostBoard';
 import AdminLostComment from './AdminLostComment';
+<<<<<<< HEAD
+import api from '../../api/axios';
+=======
 import { axiosPrivate } from '../../api/axios';
 import ModalBasic from '../UI/Modal';
+>>>>>>> 6f917a8538044c49780f4a282b777abaa5acb828
 
 const AdminNavContainer = styled.div`
   display: flex;
