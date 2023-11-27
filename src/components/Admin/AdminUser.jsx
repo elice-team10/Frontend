@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useImperativeHandle, forwardRef  } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
-import api from '../../api/axios';
+import { axiosPrivate } from '../../api/axios';
 
 const columns = [
   { field: '_id', headerName: '회원 번호', width: 230 },
@@ -11,22 +11,24 @@ const columns = [
     field: 'status',
     headerName: '회원 상태',
     width: 230,
+    renderCell: (params) => (
+      <span>{params.value === 0 ? "관리자" : "일반 회원"}</span>
+    ),
   },
   {
     field: 'createdAt',
-    headerName: '회원 가입일',
+    headerName: '가입 시기',
     width: 228,
   },
 ];
 
-export default function AdminUser({ onSelectionChange }) {
+const AdminUser = ({ onSelectionChange }, ref) => {
   const [user, setUser] = useState([]);
 
   const getUser = async () => {
     try {
-      const response = await api.get('/user');
+      const response = await axiosPrivate().get('/user');
       setUser(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error('Error fetching data: ', error);
     }
@@ -35,6 +37,10 @@ export default function AdminUser({ onSelectionChange }) {
   useEffect(() => {
     getUser();
   }, []);
+
+  useImperativeHandle(ref, () => ({
+    getUser,
+  }));
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
@@ -72,4 +78,6 @@ export default function AdminUser({ onSelectionChange }) {
       />
     </div>
   );
-}
+};
+
+export default forwardRef(AdminUser);

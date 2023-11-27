@@ -13,6 +13,7 @@ import { useNavigate, useParams } from 'react-router';
 import CircularProgress from '@mui/material/CircularProgress';
 import ErrorBlock from '../UI/ErrorBlock';
 import { useState } from 'react';
+import ModalBasic from '../UI/Modal';
 
 const Background = styled.div`
   background-color: #eee;
@@ -156,7 +157,7 @@ const ReplyCount = styled.p`
 `;
 
 function CommunityDetail() {
-  // const [isDelete, setIsDelete] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -171,23 +172,26 @@ function CommunityDetail() {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['events'],
+        refetchType: 'none',
       });
       navigate('/community');
     },
   });
 
-  // 삭제 질문 모달 추가 예정
-  // const handleStartDelete = () => {
-  //   setIsDelete(true);
-  // }
+  // 삭제 질문 모달
+  const handleStartDelete = () => {
+    console.log('Before setIsModalOpen(true):', isModalOpen);
+    setIsModalOpen(true);
+    console.log('After setIsModalOpen(true):', isModalOpen);
+  };
 
-  // const handleStopDelete = () => {
-  //   setIsDelete(false);
-  // }
+  const handleStopDelete = () => {
+    setIsModalOpen(false);
+    console.log(isModalOpen);
+  };
 
   const handleDelete = () => {
     mutate(params.id);
-    navigate('/community');
   };
 
   const handleEdit = () => {
@@ -212,6 +216,11 @@ function CommunityDetail() {
   if (data) {
     content = (
       <>
+        <ButtonContainer>
+          <StyledArrowIcon fontSize="3.5rem" onClick={() => navigate(-1)} />
+          <button onClick={handleEdit}>수정</button>
+          <button onClick={handleStartDelete}>삭제</button>
+        </ButtonContainer>
         <ContentContainer>
           <PhotoContainer>
             {data.picture ? (
@@ -246,16 +255,20 @@ function CommunityDetail() {
   }
 
   return (
-    <Background>
-      <PostContainer style={{ height: '100%' }}>
-      <ButtonContainer>
-        <StyledArrowIcon fontSize="3.5rem" onClick={() => navigate(-1)} />
-        <button onClick={handleEdit}>수정</button>
-        <button onClick={handleDelete}>삭제</button>
-      </ButtonContainer>
-      {content}
-      </PostContainer>
-    </Background>
+    <>
+      {isModalOpen && (
+        <ModalBasic
+          title="게시글 삭제"
+          content="이 글을 삭제하시겠습니까?"
+          btnText="삭제"
+          onCloseModal={handleStopDelete}
+          getFunction={handleDelete}
+        />
+      )}
+      <Background>
+        <PostContainer style={{ height: '100%' }}>{content}</PostContainer>
+      </Background>
+    </>
   );
 }
 

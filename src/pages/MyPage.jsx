@@ -8,6 +8,8 @@ import MyPageChangePassword from '../components/MyPage/MyPageChangePassword';
 import { NICKNAME_REGEX, EMAIL_REGEX } from '../config/regex';
 import useAuth from '../hooks/useAuth';
 import { axiosPrivate } from '../api/axios';
+import useLogout from '../hooks/useLogout';
+import ModalBasic from '../components/UI/Modal';
 
 const MyPageContainer = styled.div`
   display: flex;
@@ -90,7 +92,9 @@ const StyledDeactivateLink = styled(Link)`
 const tabs = ['회원 정보수정/탈퇴', '나의 게시물', '나의 댓글'];
 
 const MyPage = () => {
-  const { auth } = useAuth();
+  const navigate = useNavigate();
+  const logout = useLogout();
+  const { auth, updateAuth } = useAuth();
 
   const [currTab, setCurrTab] = useState('회원 정보수정/탈퇴');
   const [nickname, setNickname] = useState(auth?.nickname);
@@ -101,7 +105,10 @@ const MyPage = () => {
   const [isEmailEditMode, setIsEmailEditMode] = useState(false);
   const [errorMsgNickname, setErrorMsgNickname] = useState('');
   const [errorMsgEmail, setErrorMsgEmail] = useState('');
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
+    useState(false);
+  const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
+    useState(false);
 
   useEffect(() => {
     async function getUserInfo() {
@@ -123,7 +130,7 @@ const MyPage = () => {
     setCurrTab(tab);
   };
 
-  const handleNicknameConfirm = () => {
+  const handleNicknameConfirm = async () => {
     // 닉네임 데이터 업데이트 요청
     // 닉네임 유효성 검사
     if (tempNickname.length < 2 || tempNickname.length > 10) {
@@ -140,15 +147,23 @@ const MyPage = () => {
       return;
     }
 
-    // TODO: axios 닉네임 변경 Post 요청
+    try {
+      const response = await axiosPrivate().put('/user', {
+        nickname: tempNickname,
+      });
 
-    // 닉네임 유효성 검사 통과 -> 상태 업데이트
-    setNickname(tempNickname);
-    setErrorMsgNickname('');
-    setIsNicknameEditMode(false);
+      // 닉네임 유효성 검사 통과 -> 로컬 스토리지 데이터 업데이트
+      updateAuth({ nickname: tempNickname });
+
+      setNickname(tempNickname);
+      setErrorMsgNickname('');
+      setIsNicknameEditMode(false);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const handleEmailConfirm = () => {
+  const handleEmailConfirm = async () => {
     // 이메일 데이터 업데이트 요청
     // 이메일 유효성 검사 필요
     if (!EMAIL_REGEX.test(tempEmail)) {
@@ -156,12 +171,34 @@ const MyPage = () => {
       return;
     }
 
-    // TODO: axios 이메일 변경 Post 요청
+    try {
+      const response = await axiosPrivate().put('/user', {
+        email: tempEmail,
+      });
 
-    // 이메일 유효성 검사 통과 -> 상태 업데이트
-    setEmail(tempEmail);
-    setErrorMsgEmail('');
-    setIsEmailEditMode(false);
+      // 닉네임 유효성 검사 통과 -> 로컬 스토리지 데이터 업데이트
+      updateAuth({ email: tempNickname });
+
+      // 이메일 유효성 검사 통과 -> 상태 업데이트
+      setEmail(tempEmail);
+      setErrorMsgEmail('');
+      setIsEmailEditMode(false);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await axiosPrivate().delete('/user');
+      console.log(response);
+
+      alert('이용해주셔서 감사합니다.');
+      logout();
+      navigate('/', { replace: true });
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleClickEditNickname = () => {
@@ -194,12 +231,20 @@ const MyPage = () => {
     setIsEmailEditMode(false);
   };
 
-  const openModal = () => {
-    setIsModalOpen(true);
+  const handleOpenPasswordChangeModal = () => {
+    setIsPasswordChangeModalOpen(true);
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
+  const handleClosePasswordChangeModal = () => {
+    setIsPasswordChangeModalOpen(false);
+  };
+
+  const handleOpenDeleteAccountModal = () => {
+    setIsDeleteAccountModalOpen(true);
+  };
+
+  const handleCloseDeleteAccountModal = () => {
+    setIsDeleteAccountModalOpen(false);
   };
 
   return (
@@ -219,10 +264,10 @@ const MyPage = () => {
             ))}
           </NavigationList>
         </NavAside>
-        {isModalOpen && (
+        {isPasswordChangeModalOpen && (
           <MyPageChangePassword
-            isModalOpen={isModalOpen}
-            onCloseModal={closeModal}
+            isModalOpen={isPasswordChangeModalOpen}
+            onCloseModal={handleClosePasswordChangeModal}
           />
         )}
 
@@ -254,12 +299,24 @@ const MyPage = () => {
                 errorMsg={errorMsgEmail}
               />
             </UserInfoCard>
+
             <ActionLinksContainer>
-              <StyledChangePasswordLink onClick={openModal}>
+              <StyledChangePasswordLink onClick={handleOpenPasswordChangeModal}>
                 비밀번호 변경
               </StyledChangePasswordLink>
-              <StyledDeactivateLink>회원 탈퇴</StyledDeactivateLink>
+              <StyledDeactivateLink onClick={handleOpenDeleteAccountModal}>
+                회원 탈퇴
+              </StyledDeactivateLink>
             </ActionLinksContainer>
+            {isDeleteAccountModalOpen && (
+              <ModalBasic
+                title="Lost And Found 계정 탈퇴"
+                content="회원 탈퇴 하시겠습니까?"
+                btnText="확인"
+                getFunction={handleDeleteAccount}
+                onCloseModal={handleCloseDeleteAccountModal}
+              />
+            )}
           </UserInfoPanel>
         )}
         {currTab === '나의 게시물' && <MyPageUserPostTable />}
