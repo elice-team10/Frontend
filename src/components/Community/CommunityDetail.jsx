@@ -157,7 +157,7 @@ const ReplyCount = styled.p`
 `;
 
 function CommunityDetail() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -170,38 +170,46 @@ function CommunityDetail() {
   const { mutate } = useMutation({
     mutationFn: deleteEvent,
     onSuccess: () => {
+      console.log('Delete event succeeded');
       queryClient.invalidateQueries({
-        queryKey: ['events'],
-        refetchType: 'none',
+        queryKey: ['events']
       });
       navigate('/community');
     },
+    onError: (error) => {
+      console.error('Delete event failed:', error);
+    }
   });
 
   // 삭제 질문 모달
-  const handleStartDelete = () => {
-    console.log('Before setIsModalOpen(true):', isModalOpen);
-    setIsModalOpen(true);
-    console.log('After setIsModalOpen(true):', isModalOpen);
-  };
+  // const handleStartDelete = () => {
+  //   console.log('Before setIsModalOpen(true):', isModalOpen);
+  //   setIsModalOpen(true);
+  //   console.log('After setIsModalOpen(true):', isModalOpen);
+  // };
 
-  const handleStopDelete = () => {
-    setIsModalOpen(false);
-    console.log(isModalOpen);
-  };
+  // const handleStopDelete = () => {
+  //   setIsModalOpen(false);
+  //   console.log(isModalOpen);
+  // };
 
   const handleDelete = () => {
-    mutate(params.id);
+    console.log('handleDelete called');
+    mutate({ postId: params.id, userId: data.userId._id });
+    navigate('/community');
   };
 
   const handleEdit = () => {
-    navigate(`/community/post/${params.id}/edit`);
+    navigate(`/community/post/${params.id}/edit`, {
+      state: { userId: data.userId._id },
+    });
   };
 
   let content;
 
   if (isPending) {
     content = <CircularProgress sx={{ color: '#ff6700' }} />;
+    // content = <ToastAlert icon="success" title="글이 삭제되었습니다." />;
   }
 
   if (isError) {
@@ -216,25 +224,20 @@ function CommunityDetail() {
   if (data) {
     content = (
       <>
-        <ButtonContainer>
-          <StyledArrowIcon fontSize="3.5rem" onClick={() => navigate(-1)} />
-          <button onClick={handleEdit}>수정</button>
-          <button onClick={handleStartDelete}>삭제</button>
-        </ButtonContainer>
         <ContentContainer>
           <PhotoContainer>
-            {data.picture ? (
+            {data.picture === 'null' ? (
+              <WallpaperOutlinedIcon fontSize="large" />
+            ) : (
               <img
                 src={`http://kdt-sw-6-team10.elicecoding.com${data.picture}`}
               />
-            ) : (
-              <WallpaperOutlinedIcon fontSize="large" />
             )}
           </PhotoContainer>
           <Badge label={`${data.isFound ? '완료' : '미완료'}`} size="small" />
           {/* 장소 날짜 컨테이너 */}
           <PositionContainer>
-            <Name>{data.nickname}</Name>
+            <Name>{data.userId.nickname}</Name>
             <LocationIcon />
             <Location>{`서울시 ${data.event_location}`}</Location>
             <DateIcon />
@@ -256,7 +259,7 @@ function CommunityDetail() {
 
   return (
     <>
-      {isModalOpen && (
+      {/* {isModalOpen && (
         <ModalBasic
           title="게시글 삭제"
           content="이 글을 삭제하시겠습니까?"
@@ -264,9 +267,16 @@ function CommunityDetail() {
           onCloseModal={handleStopDelete}
           getFunction={handleDelete}
         />
-      )}
+      )} */}
       <Background>
-        <PostContainer style={{ height: '100%' }}>{content}</PostContainer>
+        <PostContainer style={{ height: '100%' }}>
+          <ButtonContainer>
+            <StyledArrowIcon fontSize="3.5rem" onClick={() => navigate(-1)} />
+            <button onClick={handleEdit}>수정</button>
+            <button onClick={handleDelete}>삭제</button>
+          </ButtonContainer>
+          {content}
+        </PostContainer>
       </Background>
     </>
   );
