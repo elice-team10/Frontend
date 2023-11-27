@@ -10,7 +10,6 @@ const AdminContainer = styled.div`
 `;
 
 const AdminTitleBox = styled.div`
-  width: 1200px;
   text-align: center;
   margin: 70px 0 30px 0;
   font-weight: bold;
