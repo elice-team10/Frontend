@@ -73,9 +73,7 @@ export default function MyPageUserPostTable() {
     async function getUserPostData() {
       setIsLoading(true);
       try {
-        const response = await axiosPrivate().get(
-          `/post/${auth.nickname}/?page=${undefined}&pageSize=${undefined}`,
-        );
+        const response = await axiosPrivate().get(`/post/page`);
 
         console.log(auth);
         console.log(response.data);

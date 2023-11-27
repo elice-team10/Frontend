@@ -65,9 +65,7 @@ export default function MyPageCommentTable() {
     async function getUserPostData() {
       setIsLoading(true);
       try {
-        const response = await axiosPrivate().get(
-          `/comment/?page=${undefined}&pageSize=${undefined}`,
-        );
+        const response = await axiosPrivate().get(`/comment`);
         console.log(response.data);
         setCommentData(response.data);
         setIsLoading(false);
@@ -89,7 +87,6 @@ export default function MyPageCommentTable() {
   );
 
   const handleChangePage = (event, newPage) => {
-    setRowsPerPage(+event.target.value);
     setPage(newPage);
   };
 
