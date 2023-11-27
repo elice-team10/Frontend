@@ -1,16 +1,18 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  CircularProgress,
+} from '@mui/material';
 import theme from '../../config/theme';
 import styled from 'styled-components';
 import { StyledEngineProvider } from '@mui/styled-engine';
-import CircularProgress from '@mui/material/CircularProgress';
 import { axiosPrivate } from '../../api/axios';
 import MyPageNoContent from './MyPageNoContent';
 import useAuth from '../../hooks/useAuth';
@@ -35,14 +37,6 @@ const columns = [
   },
 ];
 
-const MyTablePagination = styled(TablePagination)`
-  div,
-  p,
-  svg {
-    font-size: ${theme.fontSizes.medium};
-  }
-`;
-
 const CenteredCircularProgress = styled('div')({
   display: 'flex',
   alignItems: 'center',
@@ -50,6 +44,26 @@ const CenteredCircularProgress = styled('div')({
   height: '80vh',
   flex: 1,
 });
+
+const MyPaper = styled(Paper)`
+  @media (max-width: 64em) {
+    margin-top: 0rem !important;
+  }
+`;
+
+const MyTableCell = styled(TableCell)`
+  @media (max-width: 64em) {
+    font-size: ${theme.fontSizes.small} !important;
+  }
+`;
+
+const MyTablePagination = styled(TablePagination)`
+  div,
+  p,
+  svg {
+    font-size: ${theme.fontSizes.medium};
+  }
+`;
 
 export default function MyPageCommentTable() {
   const navigate = useNavigate();
@@ -62,8 +76,7 @@ export default function MyPageCommentTable() {
 
   React.useEffect(() => {
     setIsLoading(true);
-    async function getUserPostData() {
-      setIsLoading(true);
+    async function getUserCommentData() {
       try {
         const response = await axiosPrivate().get(`/comment`);
         console.log(response.data);
@@ -74,7 +87,7 @@ export default function MyPageCommentTable() {
       }
     }
 
-    getUserPostData();
+    getUserCommentData();
   }, []);
 
   function createData(commentId, commentDate, commentContent) {
@@ -106,12 +119,12 @@ export default function MyPageCommentTable() {
   ) : commentData.length === 0 ? (
     <MyPageNoContent text={'작성한 댓글이 없습니다.'} />
   ) : (
-    <Paper
+    <MyPaper
       sx={{
         boxShadow: 'none',
         borderRadius: 0,
         flexGrow: '1',
-        padding: '6rem 0 0 8rem',
+        mt: '1.2rem',
         overflow: 'hidden',
       }}
     >
@@ -124,7 +137,7 @@ export default function MyPageCommentTable() {
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
+                <MyTableCell
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
@@ -135,7 +148,7 @@ export default function MyPageCommentTable() {
                   }}
                 >
                   {column.label}
-                </TableCell>
+                </MyTableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -154,7 +167,7 @@ export default function MyPageCommentTable() {
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell
+                        <MyTableCell
                           key={column.id}
                           align={column.align}
                           sx={{
@@ -174,7 +187,7 @@ export default function MyPageCommentTable() {
                           {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
-                        </TableCell>
+                        </MyTableCell>
                       );
                     })}
                   </TableRow>
@@ -194,6 +207,6 @@ export default function MyPageCommentTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </StyledEngineProvider>
-    </Paper>
+    </MyPaper>
   );
 }

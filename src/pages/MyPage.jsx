@@ -12,38 +12,81 @@ import useLogout from '../hooks/useLogout';
 import ModalBasic from '../components/UI/Modal';
 
 const MyPageContainer = styled.div`
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  max-width: 120rem;
   display: flex;
-  padding: 1.2rem 9.6rem 0 9.6rem;
+  justify-content: space-between;
+  margin: 0 auto;
+  margin-top: 6.4rem;
+  gap: 9.6rem;
+
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    max-width: 102.4rem;
+    gap: 3.6rem;
+  }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    max-width: 76.8rem;
+    gap: 1.2rem;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    /* max-width: 54.4rem;
+    flex-direction: column; */
+  }
 `;
 
 const NavAside = styled.aside`
-  width: 22rem;
-  padding: 2.4rem;
-  flex-shrink: 0;
+  width: 24rem;
+
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    width: 22rem;
+  }
 `;
 
 const NavTitle = styled.h1`
   color: ${theme.colors.text};
   font-size: ${theme.fontSizes.title};
-`;
+  margin-bottom: 2.4rem;
 
-const UserInfoPanel = styled.div`
-  flex-grow: 1;
-  padding: 4.8rem 12.8rem 11.2rem 8rem;
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    font-size: ${theme.fontSizes.subtitle};
+  }
 `;
 
 const NavigationList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
   list-style: none;
-  padding: 0;
-  margin: 0;
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    /* display: flex; */
+  }
 `;
 
 const NavigationItem = styled.li`
   font-size: ${theme.fontSizes.subtitle};
   color: ${theme.colors.textLightgray};
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
   transition: all 250ms ease-in-out;
   cursor: pointer;
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    font-size: ${theme.fontSizes.large};
+  }
 
   ${(props) =>
     props.$active &&
@@ -58,23 +101,43 @@ const NavigationItem = styled.li`
   }
 `;
 
+const UserInfoPanel = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 4.8rem;
+  margin-top: 1.2rem;
+  padding-left: 1.6rem;
+`;
+
 const UserInfoCard = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
   background-color: #fff;
-  /* border: 1px solid #ccc; */
-  padding: 2rem;
   border-radius: 12px;
+
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    gap: 0;
+  }
 `;
 
 const Label = styled.label`
   color: ${theme.colors.text};
   font-weight: bold;
   font-size: ${theme.fontSizes.large};
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    font-size: ${theme.fontSizes.medium};
+  }
 `;
 
 const ActionLinksContainer = styled.div`
   display: flex;
   justify-content: end;
-  padding: 2rem;
+  /* padding: 2rem; */
 `;
 
 const StyledChangePasswordLink = styled(Link)`
@@ -332,7 +395,13 @@ export default MyPage;
  * MyPageNickname
  */
 const UserInfoContainer = styled.div`
+  padding: 1.2rem 0;
   border-bottom: 1px solid ${theme.colors.textLightgray};
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    padding: 0.6rem 0;
+  }
 `;
 
 const UserInfoBox = styled.div`
@@ -349,14 +418,23 @@ const UserNicknameBox = styled.div`
 
 const UserNickname = styled.p`
   font-size: ${theme.fontSizes.medium};
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    font-size: ${theme.fontSizes.small};
+  }
 `;
 
 const EditInput = styled.input`
   width: 100%;
-  padding: 1.6rem 0;
   font-size: ${theme.fontSizes.medium};
   outline: none;
   border: none;
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    font-size: ${theme.fontSizes.small};
+  }
 `;
 
 const EditButton = styled.button`
@@ -375,7 +453,6 @@ const EditButton = styled.button`
 `;
 
 const ErrorMessage = styled.span`
-  padding-left: 0.8rem;
   font-size: ${theme.fontSizes.small};
   color: ${theme.colors.error};
 `;
@@ -426,6 +503,11 @@ function MyPageNickname({
 
 const UserEmail = styled.p`
   font-size: ${theme.fontSizes.medium};
+
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    font-size: ${theme.fontSizes.small};
+  }
 `;
 
 function MyPageEmail({

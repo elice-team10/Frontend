@@ -1,56 +1,49 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TablePagination,
+  TableRow,
+  CircularProgress,
+} from '@mui/material';
 import theme from '../../config/theme';
 import styled from 'styled-components';
 import { StyledEngineProvider } from '@mui/styled-engine';
-import CircularProgress from '@mui/material/CircularProgress';
 import { axiosPrivate } from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
-import { plPL } from '@mui/x-data-grid';
 import MyPageNoContent from './MyPageNoContent';
 import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../utils/FormatDate';
 
 const columns = [
   { id: 'postId', label: '게시물 번호', minWidth: '9rem', align: 'center' },
-  { id: 'postDate', label: '게시일', minWidth: '9rem', align: 'center' },
+  { id: 'postDate', label: '게시일', minWidth: '10rem', align: 'center' },
   {
     id: 'postTitle',
     label: '제목',
-    minWidth: '5rem',
+    minWidth: '12rem',
     align: 'center',
     format: (value) => value.toLocaleString('ko-KR'),
   },
   {
     id: 'findOrPick',
     label: '찾아요/주었어요',
-    minWidth: '13rem',
+    minWidth: '11rem',
     align: 'center',
     format: (value) => value.toLocaleString('ko-KR'),
   },
   {
     id: 'completedStatus',
     label: '완료 상태',
-    minWidth: '13rem',
+    minWidth: '11rem',
     align: 'center',
     format: (value) => value.toFixed(2),
   },
 ];
-
-const MyTablePagination = styled(TablePagination)`
-  div,
-  p,
-  svg {
-    font-size: ${theme.fontSizes.medium};
-  }
-`;
 
 const CenteredCircularProgress = styled('div')({
   display: 'flex',
@@ -59,6 +52,26 @@ const CenteredCircularProgress = styled('div')({
   height: '80vh',
   flex: 1,
 });
+
+const MyPaper = styled(Paper)`
+  @media (max-width: 64em) {
+    margin-top: 0rem !important;
+  }
+`;
+
+const MyTableCell = styled(TableCell)`
+  @media (max-width: 64em) {
+    font-size: ${theme.fontSizes.small} !important;
+  }
+`;
+
+const MyTablePagination = styled(TablePagination)`
+  div,
+  p,
+  svg {
+    font-size: ${theme.fontSizes.medium};
+  }
+`;
 
 export default function MyPageUserPostTable() {
   const navigate = useNavigate();
@@ -71,7 +84,6 @@ export default function MyPageUserPostTable() {
   React.useEffect(() => {
     setIsLoading(true);
     async function getUserPostData() {
-      setIsLoading(true);
       try {
         const response = await axiosPrivate().get(`/post/page`);
 
@@ -135,13 +147,13 @@ export default function MyPageUserPostTable() {
   ) : postData.length === 0 ? (
     <MyPageNoContent text={'작성한 게시물이 없습니다.'} />
   ) : (
-    <Paper
+    <MyPaper
       sx={{
         boxShadow: 'none',
         borderRadius: 0,
         flexGrow: '1',
-        padding: '6rem 0 0 8rem',
         overflow: 'hidden',
+        mt: '1.2rem',
       }}
     >
       <TableContainer sx={{ maxHeight: 680 }}>
@@ -149,7 +161,7 @@ export default function MyPageUserPostTable() {
           <TableHead>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
+                <MyTableCell
                   key={column.id}
                   align={column.align}
                   style={{ minWidth: column.minWidth }}
@@ -160,7 +172,7 @@ export default function MyPageUserPostTable() {
                   }}
                 >
                   {column.label}
-                </TableCell>
+                </MyTableCell>
               ))}
             </TableRow>
           </TableHead>
@@ -179,7 +191,7 @@ export default function MyPageUserPostTable() {
                     {columns.map((column) => {
                       const value = row[column.id];
                       return (
-                        <TableCell
+                        <MyTableCell
                           key={column.id}
                           align={column.align}
                           sx={{
@@ -199,7 +211,7 @@ export default function MyPageUserPostTable() {
                           {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value}
-                        </TableCell>
+                        </MyTableCell>
                       );
                     })}
                   </TableRow>
@@ -219,6 +231,6 @@ export default function MyPageUserPostTable() {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </StyledEngineProvider>
-    </Paper>
+    </MyPaper>
   );
 }
