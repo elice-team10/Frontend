@@ -24,25 +24,25 @@ const ChangePasswordModalWrapper = styled.section`
 const ChangePasswordModalContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  padding: 4.8rem 2.4rem 4.8rem 2.4rem !important;
   border-radius: 12px;
-  background-color: #fff;
+  background-color: #eee;
 `;
 
 const ChangePasswordForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0.6rem;
 `;
 
 const HeaderTitle = styled.h1`
   align-self: center;
-  margin-bottom: 4.8rem;
+  margin-bottom: 4.8rem !important;
   font-size: ${theme.fontSizes.subtitle};
 `;
 
 const ErrorMessage = styled.span`
-  padding-left: 0.8rem;
+  padding-left: 0.8rem !important;
   font-size: ${theme.fontSizes.small};
   color: ${theme.colors.error};
 `;
