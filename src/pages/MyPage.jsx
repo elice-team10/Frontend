@@ -108,6 +108,11 @@ const UserInfoPanel = styled.div`
   gap: 4.8rem;
   margin-top: 1.2rem;
   padding-left: 1.6rem;
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    margin-top: 0.6rem;
+  }
 `;
 
 const UserInfoCard = styled.div`

@@ -46,6 +46,7 @@ const CenteredCircularProgress = styled('div')({
 });
 
 const MyPaper = styled(Paper)`
+  /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
     margin-top: 0rem !important;
   }
@@ -62,6 +63,14 @@ const MyTablePagination = styled(TablePagination)`
   p,
   svg {
     font-size: ${theme.fontSizes.medium};
+  }
+
+  @media (max-width: 64em) {
+    div,
+    p,
+    svg {
+      font-size: ${theme.fontSizes.small} !important;
+    }
   }
 `;
 
