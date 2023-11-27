@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import lafLogo from '../../assets/laf_logo.png';
 import SearchIcon from '@mui/icons-material/Search';
-import { useNavigate } from 'react-router-dom';
-//import { XMLParser } from 'fast-xml-parser';
+import { Box, LinearProgress, CircularProgress } from '@mui/material';
+import { useSearch } from '../../context/SearchProvider';
 import axios from 'axios';
+import { fetchSubwayItems, fetchLostItems } from './fetchItems';
 
 const HomeContainer = styled.div`
   width: 1200px;
@@ -67,73 +69,62 @@ const SearchInput = styled.input`
   // }
 `;
 
-async function fetchLostItems(productName, place, page) {
-  const url =
-    'http://apis.data.go.kr/1320000/LosfundInfoInqireService/getLosfundInfoAccTpNmCstdyPlace';
-  const serviceKey = decodeURIComponent(
-    'ANqqJt8CTWuvlA%2BWsV9WzIpKzY3RQAarn%2F2QkJD1AN3FYzZS6zMsDuq%2B8jDbXE6fXW8u50ZbGWdAWYLEzXK2TQ%3D%3D',
-  );
-  const queryParams = {
-    serviceKey, // 서비스 키
-    PRDT_NM: productName, // 상품명
-    DEP_PLACE: place, // 보관 장소
-    pageNo: page, // 페이지 번호
-    numOfRows: '10', // 행 수
-  };
-
-  try {
-    const response = await axios.get(url, { params: queryParams });
-
-    // XML 파싱을 위한 파서 생성
-    // const parser = new XMLParser();
-    // const parsedResponse = parser.parse(response.data);
-
-    const lostItems = response.data.response.body.items.item;
-    const numOfRows = response.data.response.body.numOfRows;
-    const pageNo = response.data.response.body.pageNo;
-    const totalCount = response.data.response.body.totalCount;
-
-    const results = [];
-    for (const lostItem of lostItems) {
-      const item = {
-        id: lostItem.atcId,
-        content: lostItem.fdSbjt,
-        name: lostItem.fdPrdtNm,
-        imageUrl: lostItem.fdFilePathImg,
-        dateOfLoss: lostItem.fdYmd,
-        location: lostItem.depPlace,
-        productCategory: lostItem.prdtClNm,
-      };
-
-      // Add image to results
-      // if (item.imageUrl) {
-      //   item.image = await fetch(item.imageUrl);
-      //   item.image = await item.image.buffer();
-      // }
-
-      results.push(item);
-    }
-    // 결과 출력
-    console.log('Status:', response.status);
-    console.log('Headers:', response.headers);
-    console.log('Parsed Body:', results);
-    console.log(
-      `Num of Rows:${numOfRows}, Page No. : ${pageNo}, Total Count : ${totalCount}`,
-    );
-    return results;
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
 const HomeSearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [searchPlace, setSearchPlace] = useState('');
+  const {
+    searchTerm,
+    setSearchTerm,
+    subwayLine,
+    district,
+    page,
+    setResult,
+    result,
+  } = useSearch('');
+  const [loading, setLoading] = useState(false); // 로딩 상태
+  const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
-    event.preventDefault(); // 폼 제출 기본 동작 방지
-    fetchLostItems(searchTerm, searchPlace, 2); // 검색어로 fetchLostItems 실행
+  useEffect(() => {
+    // searchTerm, subwayLine, district, page 중 하나라도 변경될 때 실행됩니다.
+    console.log(searchTerm, subwayLine, district, page);
+  }, [searchTerm, subwayLine, district, page]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true); // 로딩 시작
+
+    setResult([]);
+    const requests = [];
+
+    // 셀렉터를 선택하지 않으면 모든 api에 대한 결과를 보여줍니다.
+    if (district === '' && subwayLine === '') {
+      requests.push(fetchLostItems(searchTerm, '', page));
+      requests.push(fetchSubwayItems(searchTerm, '', page));
+    }
+
+    if (district !== '') {
+      requests.push(fetchLostItems(searchTerm, district, page));
+    }
+
+    if (subwayLine !== '') {
+      requests.push(fetchSubwayItems(searchTerm, subwayLine, page));
+    }
+
+    try {
+      const responses = await Promise.all(requests);
+      if (responses) {
+        const flattenedResults = responses.flat(); // 중첩된 배열을 하나의 배열로 펼침
+        setResult(flattenedResults);
+      }
+
+      setLoading(false); // 로딩 종료
+      navigate('/search'); // 리다이렉트
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+  useEffect(() => {
+    console.log('Results updated:', result);
+  }, [result]);
 
   return (
     <HomeContainer>
@@ -145,9 +136,17 @@ const HomeSearchBar = () => {
       />
       <HomeSearchBarContainer>
         <SearchBox onSubmit={handleSubmit}>
+          {loading ? (
+            <Box sx={{ display: 'flex', marginLeft: '10px' }}>
+              <CircularProgress size={30} sx={{ color: '#ff6700' }} />
+            </Box>
+          ) : (
+            ''
+          )}
+
           <SearchInput
             type="text"
-            placeholder="무엇을 잃어버렸나요?"
+            placeholder={loading ? '검색중' : '무엇을 잃어버렸나요?'}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

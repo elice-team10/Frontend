@@ -39,11 +39,11 @@ const LoadButton = styled.button`
 `;
 
 const GradationBox = styled.div`
-width: 103rem;
-height: 1rem;
-background: linear-gradient(135deg, #ffa500, #ff7f50, #ff6700);
-margin: 2rem 0;
-border-radius: 12px;
+  width: 103rem;
+  height: 1rem;
+  background: linear-gradient(135deg, #ffa500, #ff7f50, #ff6700);
+  margin: 2rem 0;
+  border-radius: 12px;
 `;
 
 const LoadButtonContainer = styled.div`
@@ -57,6 +57,58 @@ function SearchResultDetail() {
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [itemsToShow, setItemsToShow] = useState(searchResults.slice(0, 9));
+  const { result1, result2 } = useSearch('');
+
+  async function fetchItemById(id) {
+    const url =
+      'http://apis.data.go.kr/1320000/LosfundInfoInqireService/getLosfundDetailInfo'; // 경찰청 포털기관
+    const serviceKey = decodeURIComponent(
+      'ANqqJt8CTWuvlA%2BWsV9WzIpKzY3RQAarn%2F2QkJD1AN3FYzZS6zMsDuq%2B8jDbXE6fXW8u50ZbGWdAWYLEzXK2TQ%3D%3D', // 경찰청 포털기관 Service Key
+    );
+    const queryParams = {
+      serviceKey, // 서비스 키
+      ATC_ID: id, // ID
+    };
+
+    try {
+      const response = await axios.get(url, { params: queryParams });
+
+      const lostItems = response.data.response.body.items.item;
+      const numOfRows = response.data.response.body.numOfRows;
+      const pageNo = response.data.response.body.pageNo;
+      const totalCount = response.data.response.body.totalCount;
+
+      const results = [];
+      for (const lostItem of lostItems) {
+        const item = {
+          id: lostItem.atcId,
+          content: lostItem.fdSbjt,
+          name: lostItem.fdPrdtNm,
+          imageUrl: lostItem.fdFilePathImg,
+          dateOfLoss: lostItem.fdYmd,
+          location: lostItem.depPlace,
+          productCategory: lostItem.prdtClNm,
+        };
+
+        // Add image to results
+        // if (item.imageUrl) {
+        //   item.image = await fetch(item.imageUrl);
+        //   item.image = await item.image.buffer();
+        // }
+        results.push(item);
+      }
+      // 결과 출력
+      console.log('Status:', response.status);
+      console.log('Headers:', response.headers);
+      console.log('Parsed Body:', results);
+      console.log(
+        `Num of Rows:${numOfRows}, Page No. : ${pageNo}, Total Count : ${totalCount}`,
+      );
+      return results;
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
 
   const handleLoadMore = () => {
     setLoading(true);
@@ -74,127 +126,7 @@ function SearchResultDetail() {
     setSelectedChip(chipKey);
     // TODO: 검색 결과를 가져오는 로직을 여기에 구현
     // 예를 들어, API 호출 등을 통해 검색 결과를 설정할 수 있습니다.
-    setSearchResults([
-      // 검색 결과 데이터의 예시
-      {
-        title: '에어팟',
-        foundAt: '버스정류장',
-        location: '시청역에서 보관중',
-        date: '1일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: notfound,
-      },
-      {
-        title: '에어팟 프로',
-        foundAt: '택시',
-        location: '용산역에서 보관중',
-        date: '1일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: airpods,
-      },
-      {
-        title: '에어팟 맥스',
-        foundAt: '택시',
-        location: '신도림경찰서에서 보관중',
-        date: '2일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      {
-        title: '빨간 에어팟',
-        foundAt: '성수낙낙',
-        location: '성동경찰서에서 보관중',
-        date: '2일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: notfound,
-      },
-      {
-        title: '검정 에어팟',
-        foundAt: '강남사거리',
-        location: '강남역에서 보관중',
-        date: '4일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: airpods,
-      },
-      {
-        title: '에어팟 6',
-        foundAt: '강남역 8번 출구',
-        location: '강남역에서 보관중',
-        date: '4일전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: notfound,
-      },
-      {
-        title: '에어팟 7',
-        foundAt: '어느 뒷골목',
-        location: '용산지구대에서 보관중',
-        date: '1주일 전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      {
-        title: '짝퉁 에어팟',
-        foundAt: '보도블럭',
-        location: '강남역에서 보관중',
-        date: '한 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: notfound,
-      },
-      {
-        title: '에어팟 9',
-        foundAt: '강남역 11번출구',
-        location: '강남역에서 보관중',
-        date: '두 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: notfound,
-      },
-      {
-        title: '에어팟 10',
-        foundAt: '강남역 지하상가',
-        location: '강남역에서 보관중',
-        date: '두 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      {
-        title: '에어팟 11',
-        foundAt: '강남역 지하상가',
-        location: '강남역에서 보관중',
-        date: '두 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      {
-        title: '에어팟 12',
-        foundAt: '강남역 지하상가',
-        location: '강남역에서 보관중',
-        date: '두 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      {
-        title: '에어팟 13',
-        foundAt: '강남역 지하상가',
-        location: '강남역에서 보관중',
-        date: '두 달전',
-        content:
-          '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-        img: iphone,
-      },
-      // ... 추가 결과
-    ]);
+    setSearchResults([]);
   };
 
   const navigate = useNavigate();
@@ -206,7 +138,7 @@ function SearchResultDetail() {
           <ArrowBackIosIcon style={{ color: '#ff6700', fontSize: '2.5rem' }} />
         </IconButton>
       </Stack>
-      <GradationBox/>
+      <GradationBox />
     </div>
   );
 }

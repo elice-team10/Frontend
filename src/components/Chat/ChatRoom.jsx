@@ -45,17 +45,21 @@ const HeaderNickname = styled.p`
 `;
 
 const MessageList = styled.div`
-  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   overflow-y: scroll;
   padding: 10px;
 `;
 
 const Message = styled.div`
   margin-bottom: 10px;
-  padding: 5px 10px;
+  font-size: ${theme.fontSizes.medium};
+  padding: 8px 12px;
   border-radius: 10px;
-  background-color: ${(props) => (props.mine ? '#DCF8C6' : '#FFFFFF')};
-  align-self: ${(props) => (props.mine ? 'flex-end' : 'flex-start')};
+  color: ${(props) => (props.$mine ? 'white' : '${theme.colors.text}')};
+  background-color: ${(props) => (props.$mine ? 'rgba(255, 103, 0, 0.9)' : 'rgba(0, 190, 0, 0.9)')};
+  align-self: ${(props) => (props.$mine ? 'flex-end' : 'flex-start')};
 `;
 
 const MessageInput = styled.div`
@@ -99,10 +103,55 @@ const ChatRoom = () => {
 
   const handleMessageChange = (e) => {
     setNewMessage(e.target.value);
+    console.log(newMessage);
   };
 
   const handleSendMessage = () => {
     // 메시지 전송 로직
+    if (newMessage !== '') {
+      // 새로운 메시지 객체 생성
+      const newMsgObj = {
+        content: newMessage,
+        sender: 'me', // 현재 사용자를 나타내는 문자열, 필요에 따라 변경 가능
+        // 추가적인 메시지 정보 (예: timestamp)를 여기에 포함할 수 있습니다.
+      };
+      // 기존 메시지에 새 메시지 추가
+      setMessages([...messages, newMsgObj]);
+      // 입력 필드 초기화
+      setNewMessage('');
+    }
+
+    // useEffect(() => {
+    //   const fetchChat = async () => {
+    //     try {
+    //       const response = await axiosPrivate().get(`/api/chat/:userId1/:userId2`);
+    //       // 적절한 채팅방 데이터 설정
+    //       // setMessages(response.data.chat);
+    //     } catch (error) {
+    //       console.error("Failed to fetch chat", error);
+    //     }
+    //   };
+    
+    //   fetchChat();
+    // }, [currentUserNickname]);
+
+    // const handleSendMessage = async () => {
+    //   if (newMessage !== '') {
+    //     try {
+    //       const response = await axiosPrivate().patch(`/api/chat/:userId1/:userId2`, {
+    //         newMessage: {
+    //           content: newMessage,
+    //           sender: currentUser, // 현재 사용자의 닉네임
+    //           timestamp: new Date() // 현재 시간
+    //         }
+    //       });
+    //       setMessages(response.data.chat);
+    //       setNewMessage('');
+    //     } catch (error) {
+    //       console.error("Failed to send message", error);
+    //     }
+    //   }
+    // };
   };
   return (
     <ChatRoomcontainer>
@@ -114,7 +163,7 @@ const ChatRoom = () => {
         </ChatHeader>
         <MessageList>
           {messages.map((message, index) => (
-            <Message key={index} mine={message.sender === 'me'}>
+            <Message key={index} $mine={message.sender === 'me'}>
               {message.content}
             </Message>
           ))}

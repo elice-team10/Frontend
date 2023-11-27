@@ -12,12 +12,9 @@ const Container = styled.div`
 
 const SearchResult = () => {
   return (
-    <>
-      <Header />
-      <Container>
-        <SearchResultBar />
-      </Container>
-    </>
+    <Container>
+      <SearchResultBar />
+    </Container>
   );
 };
 

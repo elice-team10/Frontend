@@ -1,27 +1,72 @@
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import theme from '../../config/theme';
-import Chip from '@mui/material/Chip';
 import PlaceIcon from '@mui/icons-material/Place';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import SearchIcon from '@mui/icons-material/Search';
 import notfound from '../../assets/notfound.jpg';
+import axios from 'axios';
+import { Box, Modal, Chip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
+async function fetchItemById(id) {
+  const url =
+    id[0] === 'F'
+      ? 'http://apis.data.go.kr/1320000/LosfundInfoInqireService/getLosfundDetailInfo'
+      : ' http://apis.data.go.kr/1320000/LosPtfundInfoInqireService/getPtLosfundDetailInfo';
+
+  // ID : "F..." -> 경찰청 api,
+  // ID: "V..." -> 지하철 api
+
+  const serviceKey = decodeURIComponent(
+    'ANqqJt8CTWuvlA%2BWsV9WzIpKzY3RQAarn%2F2QkJD1AN3FYzZS6zMsDuq%2B8jDbXE6fXW8u50ZbGWdAWYLEzXK2TQ%3D%3D', // 경찰청 포털기관 Service Key
+  );
+  const queryParams = {
+    serviceKey, // 서비스 키
+    ATC_ID: id, // ID
+    FD_SN: 1,
+  };
+
+  try {
+    const response = await axios.get(url, { params: queryParams });
+    console.log(response);
+
+    const lostItem = response.data.response.body.item;
+
+    const item = {
+      id: lostItem.atcId,
+      status: lostItem.csteSteNm,
+      name: lostItem.fdPrdtNm,
+      imageUrl: lostItem.fdFilePathImg,
+      dateOfLoss: lostItem.fdYmd,
+      location: lostItem.depPlace,
+      foundAt: lostItem.fdPlace,
+      tel: lostItem.tel,
+      contentDetail: lostItem.uniq,
+    };
+
+    console.log(item);
+    return item;
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
 const Card = styled.div`
-  background-color: rgba(124,146,153,0.2);
+  background-color: rgba(124, 146, 153, 0.2);
   border: none; // 변경
   border-radius: 12px;
-  width: 29.6rem; 
+  width: 29.6rem;
   height: 35rem;
   // box-sizing: border-box;
   padding: 2.8rem 2.4rem 0;
   position: relative;
   top: 0;
-  transition: all .2s ease-in;
+  transition: all 0.2s ease-in;
 
   &:hover {
     top: -2px;
-    box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
   }
 `;
 
@@ -35,8 +80,13 @@ const PhotoContainer = styled.div`
 const Photo = styled.img`
   width: 14rem;
   height: 14rem;
-   object-fit: cover;  // 이미지 비율 유지
-`
+  object-fit: cover; // 이미지 비율 유지
+`;
+
+const LargePhoto = styled.img`
+  width: 100%;
+  object-fit: cover;
+`;
 
 const CardContainer = styled.div`
   display: flex;
@@ -51,19 +101,9 @@ const TitleContainer = styled.div`
 `;
 
 const Title = styled.h3`
-  //font-weight: bold;
   font-size: ${theme.fontSizes.medium};
   color: ${theme.colors.text};
-`;
-
-const Badge = styled(Chip)`
-  && {
-    background-color: #ff6700; 
-    opacity: 0.9;
-    color: ${theme.colors.textWhite};
-    font-size: 1.2rem;
-    width: 5rem;
-  }
+  margin-bottom: 8px;
 `;
 
 const Content = styled.p`
@@ -72,6 +112,11 @@ const Content = styled.p`
   line-height: 2rem;
   height: 4rem;
   margin-bottom: 1rem;
+`;
+
+const StyledSpan = styled.span`
+  font-size: ${theme.fontSizes.small};
+  color: ${theme.colors.text};
 `;
 
 const Location = styled.p`
@@ -109,41 +154,115 @@ const DividerLine = styled.div`
   left: 0;
 `;
 
-ResultCard.defaultProps = {
-  title: '에어팟',
-  type: '경찰서',
-  content:
-    '송도달빛축제공원역(인천지하철1호선)에서는 [23.09.27] [삼성 버즈 케이스, 버즈 오른쪽 무선이어폰(화이트(흰)색)]을 습득/보관 하였습니다.',
-  location: '성동구',
-  foundAt: '택시 안',
-  date: '23-11-14',
-
+const style = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: 400,
+  bgcolor: '#fffaf0',
+  border: 'none',
+  boxShadow: 24,
+  borderRadius: '12px',
+  maxHeight: '90vh', // 최대 높이 조정
+  overflowY: 'auto', // 내용이 많을 경우 스크롤
+  p: 3,
 };
 
-function ResultCard({ title, type, content, location, date, foundAt }) {
-  let navigate = useNavigate();
-  
+function ItemModal({ open, onClose, data }) {
+  return (
+    <Modal open={open} onClose={onClose}>
+      <Box sx={style}>
+        <Box sx={{ mb: 2 }}>
+          {' '}
+          {/* 마진 추가 */}
+          <PhotoContainer>
+            <Photo
+              src={data.imageUrl}
+              onClick={() => {
+                window.open(data.imageUrl, '_blank');
+              }}
+            />
+          </PhotoContainer>
+        </Box>
+
+        <DividerLine />
+
+        <Box sx={{ my: 2 }}>
+          <TitleContainer>
+            <Title>{data.name}</Title>
+          </TitleContainer>
+        </Box>
+
+        <Box sx={{ mb: 2 }}>
+          <Content>{data.contentDetail}</Content>
+          <br />
+          <br />
+          <br />
+          <StyledSpan>{data.foundAt}에서 발견</StyledSpan>
+          <br />
+          <StyledSpan>연락처: {data.tel}</StyledSpan>
+          <br />
+          <StyledSpan>ID: {data.id}</StyledSpan>
+          <br />
+          <StyledSpan>상태: {data.status}</StyledSpan>
+        </Box>
+
+        <Box sx={{ display: 'flex', alignItems: 'center', my: 2 }}>
+          <LocationIcon />
+          <Location>{data.location}</Location>
+          <DateIcon />
+          <Date>{data.dateOfLoss}</Date>
+        </Box>
+      </Box>
+    </Modal>
+  );
+}
+
+function ResultCard({ name, content, imageUrl, location, date, id }) {
+  const [modalData, setModalData] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleClick = async () => {
+    try {
+      const data = await fetchItemById(id);
+      setModalData(data); // 데이터 설정
+      setIsModalOpen(true); // 모달 열기
+    } catch (error) {
+      console.error('Error fetching item:', error);
+      // 에러 처리 로직
+    }
+  };
+
   return (
     <CardContainer>
-      <Card onClick={() => navigate('/community/detail')}>
+      <Card onClick={handleClick}>
         <PhotoContainer>
-          {/* <WallpaperOutlinedIcon fontSize="large" /> */}
-          <Photo src={notfound} />
+          <Photo src={imageUrl} />
         </PhotoContainer>
         <DividerLine />
         <TitleContainer>
-          <Title>{title}</Title>
-          <Badge label={`${type}`} size="small" />
+          <Title>{name}</Title>
         </TitleContainer>
-        <Location><SearchIcon/>{` ${foundAt}에서 발견`}</Location>
+        {/* <Location>
+          <SearchIcon />
+          {` ${location}에서 보관중`}
+        </Location> */}
         <Content>{content}</Content>
         <PositionContainer>
           <LocationIcon />
-          <Location>{`서울시 ${location}`}</Location>
+          <Location>{location}</Location>
           <DateIcon />
           <Date>{date}</Date>
         </PositionContainer>
       </Card>
+      {isModalOpen && (
+        <ItemModal
+          open={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          data={modalData}
+        />
+      )}
     </CardContainer>
   );
 }
