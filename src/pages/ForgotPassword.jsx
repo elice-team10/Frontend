@@ -6,8 +6,9 @@ import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
 import api from '../api/axios';
-import { isLoggedIn } from '../utils/Auth';
+import { CheckLoggedIn } from '../utils/CheckLoggedIn';
 import { useNavigate } from 'react-router-dom';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 
 const RESET_PASSWORD_URL = '/user/reset-password';
 
@@ -15,16 +16,25 @@ const ForgotPasswordContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  height: calc(100vh - 90px);
   background: url(${background});
 `;
 
 const ForgotPasswordFormContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 3.2rem 2rem 3rem 2rem; //바꿈
   border-radius: 12px;
   background-color: #eee; //바꿈
+`;
+
+const StyledArrowIcon = styled(ArrowBackIosIcon)`
+  position: absolute;
+  top: 3rem;
+  font-size: ${theme.fontSizes.subtitle} !important;
+  color: ${theme.colors.primary};
+  cursor: pointer;
 `;
 
 const ForgotPasswordForm = styled.form`
@@ -58,7 +68,7 @@ const ForgotPassword = () => {
   const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    if (isLoggedIn()) {
+    if (CheckLoggedIn()) {
       navigate('/');
     }
   }, [navigate]);
@@ -85,15 +95,12 @@ const ForgotPassword = () => {
       // TODO: 비밀번호 찾기 마무리
 
       setIsError(false);
-      console.log('임시 비밀번호를 이메일로 전송했습니다.');
+
       // setMessage('임시 비밀번호를 이메일로 전송했습니다.');
       setMessage(res.data.message);
-
-      setIsError(true);
-      console.error('임시 비밀번호 전송 실패');
-      setMessage('임시 비밀번호 전송 실패');
     } catch (error) {
       console.error(' 오류 발생: ', error);
+      setIsError(true);
       setMessage('이메일 전송 중 오류가 발생했습니다.');
     }
   };
@@ -105,6 +112,7 @@ const ForgotPassword = () => {
   return (
     <ForgotPasswordContainer>
       <ForgotPasswordFormContainer>
+        <StyledArrowIcon onClick={() => navigate(-1)} />
         <HeaderTitle>비밀번호 찾기</HeaderTitle>
         <ForgotPasswordForm onSubmit={handleSubmit}>
           {/* <FormLabel htmlFor="email">이메일</FormLabel> */}

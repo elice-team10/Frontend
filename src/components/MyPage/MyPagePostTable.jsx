@@ -10,137 +10,13 @@ import TableRow from '@mui/material/TableRow';
 import theme from '../../config/theme';
 import styled from 'styled-components';
 import { StyledEngineProvider } from '@mui/styled-engine';
-import api from '../../api/axios';
+import CircularProgress from '@mui/material/CircularProgress';
+import { axiosPrivate } from '../../api/axios';
 import useAuth from '../../hooks/useAuth';
-
-const fake_data = [
-  {
-    postId: 1,
-    postDate: '2023-01-01',
-    postTitle: '잃어버린 열쇠',
-    foundOrFind: '찾았어요',
-    completedStatus: '완료',
-  },
-  {
-    postId: 2,
-    postDate: '2023-01-05',
-    postTitle: '분실된 지갑',
-    foundOrFind: '찾아요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 3,
-    postDate: '2023-02-10',
-    postTitle: '실내에서 놓은 휴대폰 찾아요',
-    foundOrFind: '찾아요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 4,
-    postDate: '2023-02-15',
-    postTitle: '도서관에서 분실된 책',
-    foundOrFind: '찾아요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 5,
-    postDate: '2023-03-03',
-    postTitle: '운동화를 찾습니다',
-    foundOrFind: '찾아요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 6,
-    postDate: '2023-03-10',
-    postTitle: '분실된 자전거 열쇠',
-    foundOrFind: '찾았어요',
-    completedStatus: '완료',
-  },
-  {
-    postId: 7,
-    postDate: '2023-04-02',
-    postTitle: '잃어버린 지갑',
-    foundOrFind: '찾았어요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 8,
-    postDate: '2023-04-15',
-    postTitle: '도서관에서 분실된 노트북',
-    foundOrFind: '찾아요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 9,
-    postDate: '2023-05-01',
-    postTitle: '분실된 열쇠',
-    foundOrFind: '찾아요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 10,
-    postDate: '2023-05-10',
-    postTitle: '잃어버린 서류 가방',
-    foundOrFind: '찾았어요',
-    completedStatus: '완료',
-  },
-  {
-    postId: 11,
-    postDate: '2023-06-05',
-    postTitle: '분실된 학생증',
-    foundOrFind: '찾아요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 12,
-    postDate: '2023-06-15',
-    postTitle: '운동장에서 놓은 모자 찾아요',
-    foundOrFind: '찾아요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 13,
-    postDate: '2023-07-01',
-    postTitle: '분실된 휴대폰',
-    foundOrFind: '찾았어요',
-    completedStatus: '완료',
-  },
-  {
-    postId: 14,
-    postDate: '2023-07-10',
-    postTitle: '도서관에서 놓은 서적',
-    foundOrFind: '찾았어요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 15,
-    postDate: '2023-08-03',
-    postTitle: '분실된 카메라',
-    foundOrFind: '찾아요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 16,
-    postDate: '2023-08-15',
-    postTitle: '도서관에서 놓은 노트북 어댑터',
-    foundOrFind: '찾아요',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 17,
-    postDate: '2023-09-01',
-    postTitle: '분실된 신용카드',
-    foundOrFind: '미완료',
-    completedStatus: '미완료',
-  },
-  {
-    postId: 18,
-    postDate: '2023-09-10',
-    postTitle: '운동화를 찾아요',
-    foundOrFind: '찾았어요',
-    completedStatus: '완료',
-  },
-];
+import { plPL } from '@mui/x-data-grid';
+import MyPageNoContent from './MyPageNoContent';
+import { useNavigate } from 'react-router-dom';
+import { formatDate } from '../../utils/FormatDate';
 
 const columns = [
   { id: 'postId', label: '게시물 번호', minWidth: '9rem', align: 'center' },
@@ -148,34 +24,25 @@ const columns = [
   {
     id: 'postTitle',
     label: '제목',
-    minWidth: 200,
+    minWidth: '5rem',
     align: 'center',
     format: (value) => value.toLocaleString('ko-KR'),
   },
   {
-    id: 'foundOrFind',
-    label: '찾았어요/찾아요',
-    minWidth: 130,
+    id: 'findOrPick',
+    label: '찾아요/주었어요',
+    minWidth: '13rem',
     align: 'center',
     format: (value) => value.toLocaleString('ko-KR'),
   },
   {
     id: 'completedStatus',
     label: '완료 상태',
-    minWidth: 130,
+    minWidth: '13rem',
     align: 'center',
     format: (value) => value.toFixed(2),
   },
 ];
-
-function createData(postId, postDate, postTitle, foundOrFind, completedStatus) {
-  return { postId, postDate, postTitle, foundOrFind, completedStatus };
-}
-
-const rows = fake_data.map(
-  ({ postId, postDate, postTitle, foundOrFind, completedStatus }) =>
-    createData(postId, postDate, postTitle, foundOrFind, completedStatus),
-);
 
 const MyTablePagination = styled(TablePagination)`
   div,
@@ -185,29 +52,70 @@ const MyTablePagination = styled(TablePagination)`
   }
 `;
 
+const CenteredCircularProgress = styled('div')({
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  height: '80vh',
+  flex: 1,
+});
+
 export default function MyPageUserPostTable() {
+  const navigate = useNavigate();
   const { auth } = useAuth();
+  const [postData, setPostData] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
-    // isLoading(true);
+    setIsLoading(true);
     async function getUserPostData() {
+      setIsLoading(true);
       try {
-        const response = await api.get(`/post/${auth.nickname}`, {
-          withCredentials: true,
-        });
+        const response = await axiosPrivate().get(
+          `/post/${auth.nickname}/?page=${undefined}&pageSize=${undefined}`,
+        );
+
+        console.log(auth);
         console.log(response.data);
 
-        // setIsLoading(false);
+        setPostData(response.data);
+        setIsLoading(false);
       } catch (err) {
         console.error(err);
       }
     }
 
     getUserPostData();
-  }, [auth.nickname]);
+  }, []);
+
+  function createData(
+    postId,
+    postDate,
+    postTitle,
+    findOrPick,
+    completedStatus,
+  ) {
+    return { postId, postDate, postTitle, findOrPick, completedStatus };
+  }
+
+  const rows = postData.map(
+    ({
+      _id: postId,
+      createdAt: postDate,
+      title,
+      board_category: findOrPick,
+      isFound,
+    }) =>
+      createData(
+        postId,
+        formatDate(postDate),
+        title,
+        findOrPick === 0 ? '찾아요' : '주었어요',
+        isFound ? '완료' : '미완료',
+      ),
+  );
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -218,7 +126,17 @@ export default function MyPageUserPostTable() {
     setPage(0);
   };
 
-  return (
+  return isLoading ? (
+    <CenteredCircularProgress>
+      <CircularProgress
+        sx={{
+          color: '#ff6700',
+        }}
+      />
+    </CenteredCircularProgress>
+  ) : postData.length === 0 ? (
+    <MyPageNoContent text={'작성한 게시물이 없습니다.'} />
+  ) : (
     <Paper
       sx={{
         boxShadow: 'none',
@@ -274,7 +192,11 @@ export default function MyPageUserPostTable() {
                             maxWidth: 0,
                             overflow: 'hidden',
                             whiteSpace: 'nowrap',
+                            cursor: 'pointer',
                           }}
+                          onClick={() =>
+                            navigate(`/community/post/${row.postId}`)
+                          }
                         >
                           {column.format && typeof value === 'number'
                             ? column.format(value)
