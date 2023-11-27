@@ -6,7 +6,6 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
 import { useNavigate } from 'react-router-dom';
-import logoImg from '../../assets/로고10.png';
 
 const Card = styled.div`
   background-color: ${theme.colors.background};
@@ -163,19 +162,18 @@ function CommunityCard({
   date,
   nickname,
   replyCount,
+  postId,
 }) {
   let navigate = useNavigate();
 
-  console.log(picture);
-
   return (
     <CardContainer>
-      <Card onClick={() => navigate('/community/post')}>
+      <Card onClick={() => navigate(`/community/post/${postId}`)}>
         <PhotoContainer>
           {picture ? (
             <img src={`http://kdt-sw-6-team10.elicecoding.com${picture}`} />
           ) : (
-            <img src={logoImg} />
+            <WallpaperOutlinedIcon fontSize="large" />
           )}
           {/* <WallpaperOutlinedIcon fontSize="large" /> */}
         </PhotoContainer>

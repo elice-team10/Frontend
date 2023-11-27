@@ -41,8 +41,8 @@ const Input = styled.input`
   display: none;
 `;
 
-function ImageInput({ onChange }) {
-  const [placeholder, setPlaceholder] = useState('사진 등록');
+function ImageInput({ onChange, defaultValue }) {
+  const [placeholder, setPlaceholder] = useState(defaultValue ? defaultValue : '사진 등록');
   const imgRef = useRef(null);
 
   return (
