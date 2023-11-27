@@ -18,7 +18,7 @@ const MyUserIcon = styled(PersonIcon)`
   padding: 0 4px !important;
   position: absolute;
   top: 40%;
-  left: 12px; //바꿈
+  left: 10px; //바꿈
   transform: translateY(-40%);
   font-size: 2.4rem !important;
   color: ${theme.colors.text};
