@@ -6,19 +6,10 @@ import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
 import api from '../api/axios';
+import AuthContainer from '../components/Auth/AuthContainer';
 import { CheckLoggedIn } from '../utils/CheckLoggedIn';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-
-const RESET_PASSWORD_URL = '/user/reset-password';
-
-const ForgotPasswordContainer = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - 9rem);
-  background: url(${background});
-`;
 
 const ForgotPasswordFormContainer = styled.div`
   position: relative;
@@ -60,6 +51,8 @@ const Message = styled.span`
     props.type === 'error' ? theme.colors.error : theme.colors.text};
 `;
 
+const RESET_PASSWORD_URL = '/user/findPW';
+
 const ForgotPassword = () => {
   const navigate = useNavigate();
 
@@ -85,7 +78,7 @@ const ForgotPassword = () => {
     try {
       const res = await api.post(
         RESET_PASSWORD_URL,
-        JSON.stringify({ email }),
+        { email },
         {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true,
@@ -93,6 +86,7 @@ const ForgotPassword = () => {
       );
 
       // TODO: 비밀번호 찾기 마무리
+      console.log(res);
 
       setIsError(false);
 
@@ -110,7 +104,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <ForgotPasswordContainer>
+    <AuthContainer>
       <ForgotPasswordFormContainer>
         <StyledArrowIcon onClick={() => navigate(-1)} />
         <HeaderTitle>비밀번호 찾기</HeaderTitle>
@@ -131,7 +125,7 @@ const ForgotPassword = () => {
           <AuthFormButton text="비밀번호 찾기" />
         </ForgotPasswordForm>
       </ForgotPasswordFormContainer>
-    </ForgotPasswordContainer>
+    </AuthContainer>
   );
 };
 

@@ -6,18 +6,10 @@ import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
-import background from '../assets/background.webp';
 import { CheckLoggedIn } from '../utils/CheckLoggedIn';
 import api from '../api/axios';
+import AuthContainer from '../components/Auth/AuthContainer';
 // import title from '../assets/로고11.png';
-
-const LoginContainer = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - 9rem);
-  background: url(${background});
-`;
 
 const LoginFormContainer = styled.div`
   display: flex;
@@ -150,7 +142,7 @@ const Login = () => {
   };
 
   return (
-    <LoginContainer>
+    <AuthContainer>
       <LoginFormContainer>
         {/* <Title src={title} /> */}
         {/* <HeaderTitle style={{ color: '#ff5000' }}>Lost & Found</HeaderTitle> */}
@@ -180,7 +172,7 @@ const Login = () => {
           </AuthLinksContainer>
         </LoginForm>
       </LoginFormContainer>
-    </LoginContainer>
+    </AuthContainer>
   );
 };
 

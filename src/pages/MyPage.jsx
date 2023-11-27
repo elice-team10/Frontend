@@ -142,7 +142,7 @@ const MyPage = () => {
 
     if (!NICKNAME_REGEX.test(tempNickname)) {
       setErrorMsgNickname(
-        '닉네임은 2~10자의 한글, 영문, 숫자만 사용할 수 있습니다.',
+        '닉네임은 2~10자의 한글, 영문, 숫자만 사용 할 수 있고, 띄워쓰기는 허용되지 않습니다.',
       );
       return;
     }

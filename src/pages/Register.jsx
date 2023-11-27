@@ -8,16 +8,9 @@ import { NICKNAME_REGEX, EMAIL_REGEX, PWD_REGEX } from '../config/regex';
 import background from '../assets/background.webp';
 import api from '../api/axios';
 import { CheckLoggedIn } from '../utils/CheckLoggedIn';
+import AuthContainer from '../components/Auth/AuthContainer';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ToastAlert from '../components/UI/ToastAlert';
-
-const RegisterContainer = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - 9rem);
-  background: url(${background});
-`;
 
 const RegisterFormContainer = styled.div`
   position: relative;
@@ -146,7 +139,7 @@ const Register = () => {
   };
 
   return (
-    <RegisterContainer>
+    <AuthContainer>
       <RegisterFormContainer>
         <StyledArrowIcon onClick={() => navigate(-1)} />
         <HeaderTitle>회원가입</HeaderTitle>
@@ -185,7 +178,7 @@ const Register = () => {
           )}
         </RegisterForm>
       </RegisterFormContainer>
-    </RegisterContainer>
+    </AuthContainer>
   );
 };
 
