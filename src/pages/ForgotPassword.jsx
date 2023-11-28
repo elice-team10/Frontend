@@ -17,6 +17,7 @@ const ForgotPasswordFormContainer = styled.div`
   padding: 3.2rem 2rem 3rem 2rem; //바꿈
   border-radius: 12px;
   background-color: #eee; //바꿈
+  color: ${theme.colors.text};
 `;
 
 const StyledArrowIcon = styled(ArrowBackIosIcon)`

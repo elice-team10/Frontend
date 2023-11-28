@@ -10,6 +10,7 @@ import { CheckLoggedIn } from '../utils/CheckLoggedIn';
 import api from '../api/axios';
 import AuthContainer from '../components/Auth/AuthContainer';
 // import title from '../assets/로고11.png';
+import TypingText from '../components/UI/TypingText';
 
 const LoginFormContainer = styled.div`
   display: flex;
@@ -17,6 +18,7 @@ const LoginFormContainer = styled.div`
   padding: 3.2rem 2rem 4.8rem 2rem; // 바꿈
   border-radius: 12px;
   background-color: #eee;
+  color: ${theme.colors.text};
 `;
 
 const LoginForm = styled.form`
@@ -146,7 +148,17 @@ const Login = () => {
       <LoginFormContainer>
         {/* <Title src={title} /> */}
         {/* <HeaderTitle style={{ color: '#ff5000' }}>Lost & Found</HeaderTitle> */}
-        <HeaderTitle>로그인</HeaderTitle>
+        {/* <HeaderTitle>로그인</HeaderTitle> */}
+        <HeaderTitle>
+          <TypingText
+            strings={[
+              '안녕하세요!',
+              'LAF에 방문해주셔서',
+              '감사합니다 🦊',
+              '로그인을 해주세요 👀',
+            ]}
+          />
+        </HeaderTitle>
         <LoginForm onSubmit={handleSubmit}>
           {/* <FormLabel htmlFor="email">이메일</FormLabel> */}
           <AuthFormInput

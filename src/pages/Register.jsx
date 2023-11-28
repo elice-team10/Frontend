@@ -18,6 +18,7 @@ const RegisterFormContainer = styled.div`
   padding: 3.2rem 2rem 4.8rem 2rem; // 바꿈
   border-radius: 12px;
   background-color: #eee; //바꿈
+  color: ${theme.colors.text};
 `;
 
 const RegisterForm = styled.form`

@@ -10,6 +10,7 @@ import useAuth from '../hooks/useAuth';
 import { axiosPrivate } from '../api/axios';
 import useLogout from '../hooks/useLogout';
 import ModalBasic from '../components/UI/Modal';
+import UserAvatar from '../components/UI/UserAvatar';
 
 const MyPageContainer = styled.div`
   * {
@@ -115,6 +116,17 @@ const UserInfoPanel = styled.div`
   }
 `;
 
+const UserInfoCardWrapper = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  column-gap: 4.8rem;
+  align-items: center;
+
+  @media (max-width: 64em) {
+    column-gap: 3.2rem;
+  }
+`;
+
 const UserInfoCard = styled.div`
   display: flex;
   flex-direction: column;
@@ -142,7 +154,6 @@ const Label = styled.label`
 const ActionLinksContainer = styled.div`
   display: flex;
   justify-content: end;
-  /* padding: 2rem; */
 `;
 
 const StyledChangePasswordLink = styled(Link)`
@@ -341,19 +352,22 @@ const MyPage = () => {
 
         {currTab === '회원 정보수정/탈퇴' && (
           <UserInfoPanel>
-            <UserInfoCard>
-              <Label htmlFor="nickname">닉네임</Label>
-              <MyPageNickname
-                nickname={nickname}
-                tempNickname={tempNickname}
-                isEditMode={isNicknameEditMode}
-                onEditMode={handleClickEditNickname}
-                onConfirmClick={handleNicknameConfirm}
-                onCancelClick={handleNicknameCancel}
-                onChange={handleNicknameChange}
-                errorMsg={errorMsgNickname}
-              />
-            </UserInfoCard>
+            <UserInfoCardWrapper>
+              <UserAvatar />
+              <UserInfoCard>
+                <Label htmlFor="nickname">닉네임</Label>
+                <MyPageNickname
+                  nickname={nickname}
+                  tempNickname={tempNickname}
+                  isEditMode={isNicknameEditMode}
+                  onEditMode={handleClickEditNickname}
+                  onConfirmClick={handleNicknameConfirm}
+                  onCancelClick={handleNicknameCancel}
+                  onChange={handleNicknameChange}
+                  errorMsg={errorMsgNickname}
+                />
+              </UserInfoCard>
+            </UserInfoCardWrapper>
             <UserInfoCard>
               <Label htmlFor="email">이메일</Label>
               <MyPageEmail
