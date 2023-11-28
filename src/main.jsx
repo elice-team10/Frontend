@@ -15,9 +15,11 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import MyPage from './pages/MyPage.jsx';
 import Chat from './pages/Chat';
+import ChatList from './pages/ChatList';
 import SearchResult from './pages/SearchResult.jsx';
 import { queryClient } from './api/http.jsx';
 import CommunityEdit from './components/Community/CommunityEdit.jsx';
+
 
 const router = createBrowserRouter([
   {
@@ -65,7 +67,8 @@ const router = createBrowserRouter([
       },
       { path: '/mypage', element: <MyPage /> },
       { path: '/admin', element: <Admin /> },
-      { path: '/chat', element: <Chat /> },
+      { path: '/chat/:roomId', element: <Chat /> },
+      { path: '/chatList', element: <ChatList /> },
       // ... 다른 컴포넌트들
     ],
   },

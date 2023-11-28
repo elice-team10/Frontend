@@ -14,6 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ErrorBlock from '../UI/ErrorBlock';
 import { useState } from 'react';
 import ModalBasic from '../UI/Modal';
+import { axiosPrivate } from '../../api/axios';
 
 const Background = styled.div`
   background-color: #eee;
@@ -136,6 +137,11 @@ const Content = styled.p`
   line-height: 2.5rem;
   margin: auto 0;
 `;
+const BadgeAndBtn = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const Badge = styled(Chip)`
   && {
@@ -149,8 +155,28 @@ const Badge = styled(Chip)`
     color: ${theme.colors.textWhite};
   }
 `;
+const ChatBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 68px;
+  height: 28px;
+  margin-right: 4px;
+  background-color: rgba(0, 180, 0, 1);
+  color: ${theme.colors.textWhite};
+  border: none;
+  border-radius: 4px;
+  font-size: ${theme.fontSizes.small};
+  @media (max-width: 1200px) {
+    font-size: ${theme.fontSizes.small};
+  }
+  cursor: pointer;
+  transition: all 0.1s;
 
-
+  &:hover {
+    filter: brightness(1.15);
+  }
+`;
 
 function CommunityDetail() {
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -168,13 +194,13 @@ function CommunityDetail() {
     onSuccess: () => {
       console.log('Delete event succeeded');
       queryClient.invalidateQueries({
-        queryKey: ['events']
+        queryKey: ['events'],
       });
       navigate('/community');
     },
     onError: (error) => {
       console.error('Delete event failed:', error);
-    }
+    },
   });
 
   // 삭제 질문 모달
@@ -201,6 +227,22 @@ function CommunityDetail() {
     });
   };
 
+  /* --------------------챗방 추가-------------------- */
+  const handleAddChat = () => {
+    addChat();
+  };
+
+  const addChat = async () => {
+    try {
+      const postingUserId = data.userId._id;
+      const response = await axiosPrivate().post(`/chat/${postingUserId}`);
+      navigate(`/chat/${response.data.roomId}`);
+      console.log('Response:', response.data);
+    } catch (error) {
+      console.error('Error during the POST chat:', error);
+    }
+  };
+  /* --------------------챗방 추가-------------------- */
   let content;
 
   if (isPending) {
@@ -229,7 +271,10 @@ function CommunityDetail() {
               />
             )}
           </PhotoContainer>
-          <Badge label={`${data.isFound ? '완료' : '미완료'}`} size="small" />
+          <BadgeAndBtn>
+            <Badge label={`${data.isFound ? '완료' : '미완료'}`} size="small" />
+            <ChatBtn onClick={handleAddChat}>채팅하기</ChatBtn>
+          </BadgeAndBtn>
           {/* 장소 날짜 컨테이너 */}
           <PositionContainer>
             <Name>{data.userId.nickname}</Name>
@@ -246,7 +291,7 @@ function CommunityDetail() {
           <Content>{data.content}</Content>
         </ContentContainer>
         {/* 리플 컨테이너 */}
-        <Comment postId={params.id}/>
+        <Comment postId={params.id} />
       </>
     );
   }
