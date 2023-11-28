@@ -14,6 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ErrorBlock from '../UI/ErrorBlock';
 import { useState } from 'react';
 import ModalBasic from '../UI/Modal';
+// import { axiosPrivate } from '../../api/axios';
 
 const Background = styled.div`
   background-color: #eee;
@@ -136,6 +137,11 @@ const Content = styled.p`
   line-height: 2.5rem;
   margin: auto 0;
 `;
+const BadgeAndBtn = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const Badge = styled(Chip)`
   && {
@@ -147,6 +153,28 @@ const Badge = styled(Chip)`
         ? `${theme.colors.primary}`
         : `${theme.colors.border}`};
     color: ${theme.colors.textWhite};
+  }
+`;
+const ChatBtn = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 24px;
+  margin-right: 20px;
+  background-color: green;
+  color: ${theme.colors.textWhite};
+  border: none;
+  border-radius: 12px;
+  font-size: ${theme.fontSizes.small};
+  @media (max-width: 1200px) {
+    font-size: ${theme.fontSizes.small};
+  }
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    filter: brightness(1.15);
   }
 `;
 
@@ -198,6 +226,24 @@ function CommunityDetail() {
     navigate(`/community/post/${params.id}/edit`);
   };
 
+  const handleAddChat = () => {
+    addChat();
+    navigate('/chat');
+  };
+
+  /* ---------------챗방 추가--------------- */
+  const addChat = async () => {
+    try {
+      const postingUserId = data.postId._id;
+      const response = await axiosPrivate().post(`/chat/${postingUserId}`);
+
+      console.log('Response:', response.data);
+
+    } catch (error) {
+      console.error('Error during the POST chat:', error);
+    }
+  };
+
   let content;
 
   if (isPending) {
@@ -231,7 +277,10 @@ function CommunityDetail() {
               <WallpaperOutlinedIcon fontSize="large" />
             )}
           </PhotoContainer>
-          <Badge label={`${data.isFound ? '완료' : '미완료'}`} size="small" />
+          <BadgeAndBtn>
+            <Badge label={`${data.isFound ? '완료' : '미완료'}`} size="small" />
+            <ChatBtn onClick={handleAddChat}>채팅</ChatBtn>
+          </BadgeAndBtn>
           {/* 장소 날짜 컨테이너 */}
           <PositionContainer>
             <Name>{data.nickname}</Name>

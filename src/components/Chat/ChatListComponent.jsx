@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import theme from '../../config/theme';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-import axios from 'axios';
 
 const ChatListMain = styled.div`
   display: flex;
@@ -91,7 +90,7 @@ const ChatContent = styled.p`
   margin: 0;
 `;
 
-const ChatList = () => {
+const ChatListComponent = () => {
   // const [myNickname, setMyNickname] = useState([]);
 
   // useEffect(() => {
@@ -138,4 +137,4 @@ const ChatList = () => {
   );
 };
 
-export default ChatList;
+export default ChatListComponent;
