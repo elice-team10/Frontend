@@ -74,7 +74,7 @@ const ForgotPassword = () => {
       setMessage('유효한 이메일 주소를 입력하세요.');
       return;
     }
-    console.log(email);
+
     try {
       const res = await api.post(
         RESET_PASSWORD_URL,

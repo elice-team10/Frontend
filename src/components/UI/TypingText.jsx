@@ -5,7 +5,7 @@ const TypingText = ({ strings }) => {
   useEffect(() => {
     new TypeIt('#myElement', {
       strings: strings,
-      speed: 110,
+      speed: 105,
       breakLines: false,
       lifeLike: true,
     }).go();

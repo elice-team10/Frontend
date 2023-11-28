@@ -10,7 +10,9 @@ import useAuth from '../hooks/useAuth';
 import { axiosPrivate } from '../api/axios';
 import useLogout from '../hooks/useLogout';
 import ModalBasic from '../components/UI/Modal';
-import UserAvatar from '../components/UI/UserAvatar';
+import MyPageUserAvatar from '../components/MyPage/MyPageUserAvatar';
+import MyPageUserAvatarListModal from '../components/MyPage/MyPageUserAvatarListModal';
+import ToastAlert from '../components/UI/ToastAlert';
 
 const MyPageContainer = styled.div`
   * {
@@ -176,6 +178,11 @@ const MyPage = () => {
   const { auth, updateAuth } = useAuth();
 
   const [currTab, setCurrTab] = useState('회원 정보수정/탈퇴');
+
+  // User Avatar
+  const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState('1');
+
   const [nickname, setNickname] = useState(auth?.nickname);
   const [email, setEmail] = useState(auth?.email);
   const [tempNickname, setTempNickname] = useState('');
@@ -189,13 +196,17 @@ const MyPage = () => {
   const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
     useState(false);
 
+  const [deleteAccountSuccess, setDeleteAccountSuccess] = useState(false);
+
   useEffect(() => {
     async function getUserInfo() {
       try {
         const response = await axiosPrivate().get('/user/detail');
         const nickname = response?.data?.nickname;
         const email = response?.data?.email;
+        const profileImg = response?.data?.profileImg;
 
+        setSelectedImage(profileImg);
         setNickname(nickname);
         setEmail(email);
       } catch (err) {
@@ -256,7 +267,7 @@ const MyPage = () => {
       });
 
       // 닉네임 유효성 검사 통과 -> 로컬 스토리지 데이터 업데이트
-      updateAuth({ email: tempNickname });
+      updateAuth({ email: tempEmail });
 
       // 이메일 유효성 검사 통과 -> 상태 업데이트
       setEmail(tempEmail);
@@ -270,11 +281,12 @@ const MyPage = () => {
   const handleDeleteAccount = async () => {
     try {
       const response = await axiosPrivate().delete('/user');
-      console.log(response);
 
-      alert('이용해주셔서 감사합니다.');
       logout();
-      navigate('/', { replace: true });
+      setDeleteAccountSuccess(true);
+      setTimeout(() => {
+        navigate('/', { replace: true });
+      }, 1500);
     } catch (err) {
       console.error(err);
     }
@@ -308,6 +320,20 @@ const MyPage = () => {
     setTempEmail('');
     setErrorMsgEmail('');
     setIsEmailEditMode(false);
+  };
+
+  // 프로필 모달
+  const handleOpenProfileModal = () => {
+    setIsProfileModalOpen(true);
+  };
+
+  const handleCloseProfileModal = () => {
+    setIsProfileModalOpen(false);
+  };
+
+  const handleSelectImage = (imageNumber) => {
+    setSelectedImage(imageNumber);
+    setIsProfileModalOpen(false);
   };
 
   const handleOpenPasswordChangeModal = () => {
@@ -352,8 +378,17 @@ const MyPage = () => {
 
         {currTab === '회원 정보수정/탈퇴' && (
           <UserInfoPanel>
+            {isProfileModalOpen && (
+              <MyPageUserAvatarListModal
+                onProfileModalClose={handleCloseProfileModal}
+                onSelectImage={handleSelectImage}
+              />
+            )}
             <UserInfoCardWrapper>
-              <UserAvatar />
+              <MyPageUserAvatar
+                onProfileModalOpen={handleOpenProfileModal}
+                selectedImage={selectedImage}
+              />
               <UserInfoCard>
                 <Label htmlFor="nickname">닉네임</Label>
                 <MyPageNickname
@@ -398,6 +433,9 @@ const MyPage = () => {
                 getFunction={handleDeleteAccount}
                 onCloseModal={handleCloseDeleteAccountModal}
               />
+            )}
+            {deleteAccountSuccess && (
+              <ToastAlert icon="success" title="이용해주셔서 감사합니다." />
             )}
           </UserInfoPanel>
         )}
@@ -503,7 +541,7 @@ function MyPageNickname({
                 id="nickname"
                 value={tempNickname}
                 onChange={onChange}
-                maxLength="24"
+                maxLength="30"
               />
               <EditButton onClick={onConfirmClick}>확인</EditButton>
               <EditButton onClick={onCancelClick}>취소</EditButton>
@@ -556,7 +594,7 @@ function MyPageEmail({
                 id="email"
                 value={tempEmail}
                 onChange={onChange}
-                maxLength="24"
+                maxLength="30"
               />
               <EditButton onClick={onConfirmClick}>확인</EditButton>
               <EditButton onClick={onCancelClick}>취소</EditButton>

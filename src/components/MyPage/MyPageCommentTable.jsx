@@ -88,7 +88,7 @@ export default function MyPageCommentTable() {
     async function getUserCommentData() {
       try {
         const response = await axiosPrivate().get(`/comment`);
-        console.log(response.data);
+
         setCommentData(response.data);
         setIsLoading(false);
       } catch (err) {

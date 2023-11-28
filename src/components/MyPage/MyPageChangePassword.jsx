@@ -108,8 +108,6 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
         newPassword: passwordInfo.newPassword,
       });
 
-      console.log(response);
-
       // 비밀번호 변경 성공
       setPasswordInfo((prev) => ({ ...prev, validPassword: true }));
 

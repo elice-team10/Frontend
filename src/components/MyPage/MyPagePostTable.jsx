@@ -96,9 +96,6 @@ export default function MyPageUserPostTable() {
       try {
         const response = await axiosPrivate().get(`/post/page`);
 
-        console.log(auth);
-        console.log(response.data);
-
         setPostData(response.data);
         setIsLoading(false);
       } catch (err) {
