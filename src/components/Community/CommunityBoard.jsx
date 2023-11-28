@@ -69,6 +69,7 @@ function CommunityBoard() {
     const lostItem = data.filter((event) => event.board_category === 0);
     const foundItem = data.filter((event) => event.board_category === 1);
     console.log(data);
+    // console.log('new', data['0'].userId._id);
 
     content = (
       <>
@@ -83,7 +84,7 @@ function CommunityBoard() {
                 content={item.content}
                 location={item.event_location}
                 date={item.event_date}
-                nickname={item.nickname}
+                nickname={item.userId.nickname}
                 replyCount={'0'}
                 postId={item._id}
               />
@@ -100,7 +101,7 @@ function CommunityBoard() {
                 content={item.content}
                 location={item.event_location}
                 date={item.event_date}
-                nickname={item.nickname}
+                nickname={item.userId.nickname}
                 replyCount={'0'}
                 postId={item._id}
               />

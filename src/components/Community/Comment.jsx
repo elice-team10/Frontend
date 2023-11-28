@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import theme from '../../config/theme';
+import { useQuery } from '@tanstack/react-query';
 
 const ReplyContainer = styled.div`
   width: 56rem;
@@ -89,7 +90,7 @@ const ReplyButton = styled.div`
   display: flex;
   justify-content: inherit;
   color: ${theme.colors.textLightgray};
-  
+
   & div {
     padding-left: 8px;
   }
@@ -97,12 +98,21 @@ const ReplyButton = styled.div`
   & div:hover {
     color: ${theme.colors.primary};
   }
-
 `;
 
-function Comment() {
+const ReplyCount = styled.p`
+  font-size: ${theme.fontSizes.medium};
+  color: ${theme.colors.text};
+  font-weight: bold;
+`;
+
+function Comment({postId}) {
+  const { data, isError } = useQuery({
+    queryKey: ['events', postId],
+  })
   return (
     <>
+      <ReplyCount>댓글 0</ReplyCount>
       <ReplyContainer>
         <ReplyForm>
           <textarea placeholder="댓글을 남겨보세요."></textarea>

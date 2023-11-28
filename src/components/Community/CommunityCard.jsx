@@ -170,11 +170,12 @@ function CommunityCard({
     <CardContainer>
       <Card onClick={() => navigate(`/community/post/${postId}`)}>
         <PhotoContainer>
-          {picture ? (
-            <img src={`http://kdt-sw-6-team10.elicecoding.com${picture}`} />
+          {picture === 'null' ? (
+            <WallpaperOutlinedIcon fontSize="large" /> 
           ) : (
-            <WallpaperOutlinedIcon fontSize="large" />
+            <img src={`http://kdt-sw-6-team10.elicecoding.com${picture}`} />
           )}
+
           {/* <WallpaperOutlinedIcon fontSize="large" /> */}
         </PhotoContainer>
         <DividerLine />
