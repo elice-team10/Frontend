@@ -74,7 +74,7 @@ const styleClearIcon = {
 };
 
 const styleButton1 = {
-  transition: 'all 0.2s',
+  transition: 'all 0.1s',
   width: '180px',
   height: '40px',
   fontSize: '16px',
