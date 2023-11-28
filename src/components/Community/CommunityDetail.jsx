@@ -150,11 +150,7 @@ const Badge = styled(Chip)`
   }
 `;
 
-const ReplyCount = styled.p`
-  font-size: ${theme.fontSizes.medium};
-  color: ${theme.colors.text};
-  font-weight: bold;
-`;
+
 
 function CommunityDetail() {
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -162,12 +158,12 @@ function CommunityDetail() {
   const navigate = useNavigate();
   const params = useParams();
 
-  const { data, isPending, isError, error } = useQuery({
+  const { data, isError, error } = useQuery({
     queryKey: ['events', params.id],
     queryFn: () => fetchEvents(`post/detail/${params.id}`),
   });
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: deleteEvent,
     onSuccess: () => {
       console.log('Delete event succeeded');
@@ -209,7 +205,6 @@ function CommunityDetail() {
 
   if (isPending) {
     content = <CircularProgress sx={{ color: '#ff6700' }} />;
-    // content = <ToastAlert icon="success" title="글이 삭제되었습니다." />;
   }
 
   if (isError) {
@@ -251,8 +246,7 @@ function CommunityDetail() {
           <Content>{data.content}</Content>
         </ContentContainer>
         {/* 리플 컨테이너 */}
-        {/* <ReplyCount>댓글 {replyCount}</ReplyCount>
-        <Comment /> */}
+        <Comment postId={params.id}/>
       </>
     );
   }

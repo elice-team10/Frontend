@@ -166,8 +166,7 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   // 수정 버튼 상태
   const [isEditMode, setIsEditMode] = useState(false);
   // 에러 툴팁 상태
-  // const [isTooltip, setIsTooltip] = useState('');
-  const [tooltip, setTooltip] = useState('');
+  // const [tooltip, setTooltip] = useState('');
 
   useEffect(() => {
     if (inputData) {
@@ -217,10 +216,8 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   });
   // 게시판 작성 데이터 전송 formdata
   function handleSubmit(event) {
-    // const userId = urlLocation.state.userId;
 
     event.preventDefault();
-    // console.log('event', title);
 
     const formData = new FormData();
     formData.append('board_category', boardCategory);
@@ -232,13 +229,12 @@ function CommunityWrite({ inputData, onEditSubmit }) {
     formData.append('content', content);
     formData.append('isFound', complete);
     formData.append('picture', picture);
-    // formData.append('userId', userId);
 
     if (isEditMode) {
       // 수정 모드인 경우, onEditSubmit 콜백 호출
       const userId = urlLocation.state.userId;
-      console.log('event2', userId);
       const updatedFormData = new FormData();
+
       updatedFormData.append('board_category', boardCategory);
       updatedFormData.append('product_category', productCategory);
       updatedFormData.append('event_date', date);
@@ -259,7 +255,6 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   return (
     <Background>
       <PostContainer onSubmit={handleSubmit}>
-        {/* {isPending && <CircularProgress sx={{ color: '#ff6700' }} />} */}
         {isPending && (
           <ToastAlert icon="success" title="글 등록이 되었습니다." />
         )}
