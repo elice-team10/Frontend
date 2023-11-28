@@ -1,5 +1,5 @@
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import styled from 'styled-components';
 
 const FooterLayout = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ const FooterBox1 = styled.div`
   justify-content: center;
   align-items: flex-start;
   text-align: center;
-  color: #888B8C;
+  color: #888b8c;
   letter-spacing: 2px;
 
   h3 {
@@ -44,7 +44,7 @@ const FooterBox2 = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  color: #888B8C;
+  color: #888b8c;
   letter-spacing: 2px;
 
   p {

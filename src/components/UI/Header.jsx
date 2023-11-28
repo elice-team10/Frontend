@@ -59,7 +59,7 @@ const Header = () => {
       <ContentContainer>
         <Logo src={logoImage} alt="LAF Logo" onClick={() => navigate('/')} />
         <Navigation>
-        {(auth?.status === 0 || auth?.status === 1) && (
+          {(auth?.status === 0 || auth?.status === 1) && (
             <NavLink onClick={() => navigate('/chatList')}>채팅</NavLink>
           )}
           <NavLink onClick={() => navigate('/community')}>게시판</NavLink>

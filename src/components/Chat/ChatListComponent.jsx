@@ -17,7 +17,7 @@ const ChatListMain = styled.div`
 const ChatListContainer = styled.div`
   display: flex;
   height: 90vh;
-  margin: 40px 0;
+  margin: 60px 0;
   background-color: #eee;
 `;
 const ChatleftBox = styled.div`
@@ -63,7 +63,6 @@ const ListBody = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
   height: 94rem;
 `;
 const Chats = styled.div`

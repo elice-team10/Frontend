@@ -17,7 +17,7 @@ const Chatbox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin: 40px 0;
+  margin: 60px 0;
   width: 800px;
   height: 90vh;
   background-color: #fff;
