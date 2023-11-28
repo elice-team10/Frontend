@@ -3,6 +3,10 @@ import styled from 'styled-components';
 import profile2 from '../../assets/profiles/profile2.webp';
 import profile3 from '../../assets/profiles/profile3.webp';
 import profile4 from '../../assets/profiles/profile4.webp';
+import profile5 from '../../assets/profiles/profile5.webp';
+import profile6 from '../../assets/profiles/profile6.webp';
+import profile7 from '../../assets/profiles/profile7.webp';
+import profile8 from '../../assets/profiles/profile8.webp';
 import theme from '../../config/theme';
 import TypingText from '../UI/TypingText';
 import { axiosPrivate } from '../../api/axios';
@@ -74,8 +78,10 @@ const MyBasicAvatar = styled(AccountCircleIcon)`
 `;
 
 const ImageList = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   align-items: center;
+  justify-items: center;
   gap: 4.8rem;
 `;
 
@@ -117,15 +123,20 @@ export default function MyPageUserAvatarListModal({
   onSelectImage,
 }) {
   const { updateAuth } = useAuth();
-  const imageList = [profile2, profile3, profile4];
+  const imageList = [
+    profile2,
+    profile3,
+    profile4,
+    profile5,
+    profile6,
+    profile7,
+    profile8,
+  ];
 
   const handleModalClick = (e) => {
     e.preventDefault();
 
-    if (
-      e.target.className ||
-      e.target.className.split(' ')[2] === 'modal-container'
-    ) {
+    if (e.target.className.split(' ')[2] === 'modal-container') {
       onProfileModalClose();
     }
   };
@@ -145,7 +156,6 @@ export default function MyPageUserAvatarListModal({
       }
     }
 
-    // TODO: 이미지 번호 업데이트 API 통신 요청해야함.
     try {
       const response = await axiosPrivate().put(PROFILE_IMAGE_UPDATE_URL, {
         profileImg: imageNumber,

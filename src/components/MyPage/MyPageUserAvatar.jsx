@@ -6,6 +6,10 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import profile2 from '../../assets/profiles/profile2.webp';
 import profile3 from '../../assets/profiles/profile3.webp';
 import profile4 from '../../assets/profiles/profile4.webp';
+import profile5 from '../../assets/profiles/profile5.webp';
+import profile6 from '../../assets/profiles/profile6.webp';
+import profile7 from '../../assets/profiles/profile7.webp';
+import profile8 from '../../assets/profiles/profile8.webp';
 
 const AvatarWrapper = styled.div`
   position: relative;
@@ -118,6 +122,30 @@ export default function MyPageUserAvatar({
       {selectedImage === '4' && (
         <>
           <Avatar src={profile4} alt={altText} sizes={sizes} />
+          <MyCameraIcon />
+        </>
+      )}
+      {selectedImage === '5' && (
+        <>
+          <Avatar src={profile5} alt={altText} sizes={sizes} />
+          <MyCameraIcon />
+        </>
+      )}
+      {selectedImage === '6' && (
+        <>
+          <Avatar src={profile6} alt={altText} sizes={sizes} />
+          <MyCameraIcon />
+        </>
+      )}
+      {selectedImage === '7' && (
+        <>
+          <Avatar src={profile7} alt={altText} sizes={sizes} />
+          <MyCameraIcon />
+        </>
+      )}
+      {selectedImage === '8' && (
+        <>
+          <Avatar src={profile8} alt={altText} sizes={sizes} />
           <MyCameraIcon />
         </>
       )}
