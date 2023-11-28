@@ -39,8 +39,10 @@ export async function createNewEvent(eventData) {
 }
 
 // 게시글 삭제하는 함수
-export async function deleteEvent(postId) {
-  const response = await axiosPrivate().delete(`/post/${postId}`);
+export async function deleteEvent({postId, userId}) {
+  console.log('deleteEvent called');
+  const response = await axiosPrivate().delete(`/post/${postId}/${userId}`);
+  console.log('deleteEvent response:', response);
 
   if (response.status !== 200) {
     const error = new Error('게시글 삭제에 실패했습니다.');
@@ -55,9 +57,8 @@ export async function deleteEvent(postId) {
 }
 
 // 게시글 업데이트 함수
-export async function updateEvent({postId, eventData}) {
-  console.log('Sending update request with postId and eventData:', postId, eventData);
-  const response = await axiosPrivate().put(`/post/${postId}`, eventData, {
+export async function updateEvent({postId, userId, eventData}) {
+  const response = await axiosPrivate().put(`/post/${postId}/${userId}`, eventData, {
     headers: { 'Content-Type': 'multipart/form-data' },
     withCredentials: true,
   });

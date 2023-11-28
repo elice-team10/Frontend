@@ -19,7 +19,7 @@ import ChatList from './pages/ChatList';
 import SearchResult from './pages/SearchResult.jsx';
 import { queryClient } from './api/http.jsx';
 import CommunityEdit from './components/Community/CommunityEdit.jsx';
-import ChatListPage from './pages/ChatList';
+
 
 const router = createBrowserRouter([
   {
@@ -67,8 +67,8 @@ const router = createBrowserRouter([
       },
       { path: '/mypage', element: <MyPage /> },
       { path: '/admin', element: <Admin /> },
-      { path: '/chat', element: <Chat /> },
-      { path: '/chatList', element: <ChatListPage /> },
+      { path: '/chat/:roomId', element: <Chat /> },
+      { path: '/chatList', element: <ChatList /> },
       // ... 다른 컴포넌트들
     ],
   },

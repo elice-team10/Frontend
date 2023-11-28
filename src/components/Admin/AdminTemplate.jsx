@@ -52,7 +52,7 @@ const Button = styled.button`
     font-size: ${theme.fontSizes.small};
   }
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.1s;
 
   &:hover {
     filter: brightness(1.15);
