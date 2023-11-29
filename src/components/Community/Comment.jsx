@@ -119,6 +119,7 @@ const ReplyCount = styled.p`
 function Comment({ postId }) {
   const navigate = useNavigate();
   const [comment, setComment] = useState('');
+  const [originalComment, setOriginalComment] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const commentRef = useRef({});
   const { auth } = useAuth();
@@ -237,12 +238,13 @@ function Comment({ postId }) {
                     </div>
                     <div
                       type="button"
-                      onClick={() =>
+                      onClick={() => {
+                        commentRef.current[item._id].innerText = originalComment;
                         setIsEdit((prevIsEdit) => ({
                           ...prevIsEdit,
                           [item._id]: false,
                         }))
-                      }
+                      }}
                     >
                       취소
                     </div>
@@ -253,6 +255,7 @@ function Comment({ postId }) {
                     <div
                       type="button"
                       onClick={() => {
+                        setOriginalComment(commentRef.current[item._id].innerText)
                         setIsEdit((prevIsEdit) => ({
                           ...prevIsEdit,
                           [item._id]: true,
