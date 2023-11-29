@@ -9,6 +9,7 @@ const HomeContainer = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: white;
+  flex-grow: 1;
 `;
 
 const GradationBox = styled.div`
