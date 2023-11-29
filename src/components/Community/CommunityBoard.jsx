@@ -21,6 +21,7 @@ const CommunityContainer = styled.div`
   // justify-content: center;
   margin: auto;
   padding: 5rem 0;
+  flex-grow: 1;
 `;
 
 const LostContainer = styled.div`
