@@ -20,26 +20,26 @@ import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../utils/FormatDate';
 
 const columns = [
-  { id: 'postId', label: '게시물 번호', minWidth: '9rem', align: 'center' },
-  { id: 'postDate', label: '게시일', minWidth: '10rem', align: 'center' },
+  { id: 'postId', label: '게시물 번호', minWidth: '14rem', align: 'center' },
+  { id: 'postDate', label: '게시일', minWidth: '14rem', align: 'center' },
   {
     id: 'postTitle',
     label: '제목',
-    minWidth: '12rem',
+    minWidth: '18rem',
     align: 'center',
     format: (value) => value.toLocaleString('ko-KR'),
   },
   {
     id: 'findOrPick',
     label: '찾아요/주었어요',
-    minWidth: '11rem',
+    minWidth: '20rem',
     align: 'center',
     format: (value) => value.toLocaleString('ko-KR'),
   },
   {
     id: 'completedStatus',
     label: '완료 상태',
-    minWidth: '11rem',
+    minWidth: '20rem',
     align: 'center',
     format: (value) => value.toFixed(2),
   },
@@ -49,11 +49,14 @@ const CenteredCircularProgress = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: '80vh',
+  height: '25vh',
   flex: 1,
+  width: '86rem',
 });
 
 const MyPaper = styled(Paper)`
+  width: 86rem;
+
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
     margin-top: 0rem !important;
@@ -61,7 +64,14 @@ const MyPaper = styled(Paper)`
 `;
 
 const MyTableCell = styled(TableCell)`
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    min-width: 15.65rem !important;
+  }
+
+  /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
+    min-width: 12.1rem !important;
     font-size: ${theme.fontSizes.small} !important;
   }
 `;

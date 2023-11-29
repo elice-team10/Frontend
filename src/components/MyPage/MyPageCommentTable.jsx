@@ -20,18 +20,18 @@ import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../utils/FormatDate';
 
 const columns = [
-  { id: 'commentId', label: '댓글 번호', minWidth: '12rem', align: 'center' },
+  { id: 'commentId', label: '댓글 번호', minWidth: '22rem', align: 'center' },
   {
     id: 'commentDate',
     label: '댓글 작성일',
-    minWidth: '20rem',
+    minWidth: '24rem',
     align: 'center',
   },
 
   {
     id: 'commentContent',
     label: '댓글 내용',
-    minWidth: '28rem',
+    minWidth: '40rem',
     align: 'center',
     format: (value) => value.toLocaleString('ko-KR'),
   },
@@ -41,11 +41,14 @@ const CenteredCircularProgress = styled('div')({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  height: '80vh',
+  height: '25vh',
   flex: 1,
+  width: '86rem',
 });
 
 const MyPaper = styled(Paper)`
+  width: 86rem;
+
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
     margin-top: 0rem !important;
@@ -53,6 +56,11 @@ const MyPaper = styled(Paper)`
 `;
 
 const MyTableCell = styled(TableCell)`
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    min-width: 15.65rem !important;
+  }
+
   @media (max-width: 64em) {
     font-size: ${theme.fontSizes.small} !important;
   }

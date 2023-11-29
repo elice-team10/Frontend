@@ -35,8 +35,8 @@ const MyBasicAvatar = styled(AccountCircleIcon)`
 
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
-    width: 12rem !important;
-    height: 12rem !important;
+    width: 14rem !important;
+    height: 14rem !important;
   }
 `;
 

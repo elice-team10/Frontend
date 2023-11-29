@@ -6,7 +6,7 @@ const AuthContainer = styled.section`
   display: flex;
   align-items: center;
   justify-content: center;
-  height: calc(100vh - 9rem);
+  flex-grow: 1;
   background: center/cover no-repeat url(${background});
 `;
 

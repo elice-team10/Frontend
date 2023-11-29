@@ -26,6 +26,7 @@ const MyPageContainer = styled.div`
   justify-content: space-between;
   margin: 0 auto;
   margin-top: 6.4rem;
+  flex-grow: 1;
   gap: 9.6rem;
 
   /* 1200px / 16px = 75 */
@@ -37,7 +38,7 @@ const MyPageContainer = styled.div`
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
     max-width: 76.8rem;
-    gap: 1.2rem;
+    gap: 0.6rem;
   }
 
   /* 768px / 16px = 48 */
@@ -88,7 +89,7 @@ const NavigationItem = styled.li`
 
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
-    font-size: ${theme.fontSizes.large};
+    font-size: ${theme.fontSizes.medium};
   }
 
   ${(props) =>
@@ -109,8 +110,8 @@ const UserInfoPanel = styled.div`
   flex-direction: column;
   flex: 1;
   gap: 4.8rem;
-  margin-top: 1.2rem;
   padding-left: 1.6rem;
+  max-width: 86rem;
 
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
