@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 import theme from '../../config/theme';
 import { Link } from 'react-router-dom';
+import useAuth from '../../hooks/useAuth';
 
 const WriteButton = styled.button`
   width: 10rem;
@@ -66,6 +67,7 @@ CommunityTab.defaultProps = {
 const tabs = ['찾아요', '주웠어요'];
 
 function CommunityTab({ currentTab, onClick }) {
+ const { auth } = useAuth();
   return (
     <Container>
       {tabs.map((tab, i) => {
@@ -79,6 +81,7 @@ function CommunityTab({ currentTab, onClick }) {
           </EachTab>
         );
       })}
+        { auth && (
       <WriteButton>
         <StyledLink
           to={`/community/write?board_category=${
@@ -88,6 +91,7 @@ function CommunityTab({ currentTab, onClick }) {
           글 작성
         </StyledLink>
       </WriteButton>
+        )}
     </Container>
   );
 }
