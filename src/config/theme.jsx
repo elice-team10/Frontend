@@ -2,6 +2,7 @@ const theme = {
   colors: {
     primary: '#FF6700', // 주요 색상
     // secondary: '#2ecc71', // 보조 색상
+    pastelWhite: '#f7f3f0',
     text: '#393D3F', // 텍스트 색상
     textLightgray: '#888B8C',
     textWhite: '#fff',

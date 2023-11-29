@@ -22,12 +22,12 @@ import { useSearch } from '../../context/SearchProvider';
 import { fetchSubwayItems, fetchLostItems } from '../Home/fetchItems';
 
 const LoadButton = styled.button`
-  background:  linear-gradient(135deg, #ffa500, #ff7f50, #ff6700);
+  background:  #151618;
   border: none;
-  color: #fffaf0;
+  color:  rgba(160,165,182,.7);
   width: 15rem;
   height: 5rem;
-  border-radius: 20px;
+  border-radius: 12px;
   font-size: 1.8rem;
   cursor: pointer;
   transition:
@@ -53,7 +53,7 @@ const LoadButtonContainer = styled.div`
 `;
 
 function SearchResultBar() {
-  const [selectedChip, setSelectedChip] = useState(null);
+  const [selectedChip, setSelectedChip] = useState('all');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const {
@@ -79,24 +79,25 @@ function SearchResultBar() {
 
   const handleLoadMore = async () => {
     setLoading(true);
-    setPage((current) => current + 1);
+
+    const nextPage = page + 1;
+    setPage(nextPage);
 
     const requests = [];
 
     // 셀렉터를 선택하지 않으면 모든 api에 대한 결과를 보여줍니다.
     if (district === '' && subwayLine === '') {
-      requests.push(fetchLostItems(searchTerm, '', page));
-      requests.push(fetchSubwayItems(searchTerm, '', page));
+      requests.push(fetchLostItems(searchTerm, '', nextPage));
+      requests.push(fetchSubwayItems(searchTerm, '', nextPage));
     }
 
     if (district !== '') {
-      requests.push(fetchLostItems(searchTerm, district, page));
+      requests.push(fetchLostItems(searchTerm, district, nextPage));
     }
 
     if (subwayLine !== '') {
-      requests.push(fetchSubwayItems(searchTerm, subwayLine, page));
+      requests.push(fetchSubwayItems(searchTerm, subwayLine, nextPage));
     }
-
     try {
       const responses = await Promise.all(requests);
 
@@ -138,19 +139,32 @@ function SearchResultBar() {
           icon={<SearchIcon sx={{ fontSize: '2.5rem' }} />}
           label="전체 검색결과"
           onClick={() => handleChipClick('all')}
-          sx={{ fontSize: '1.6rem' }}
+          sx={{
+            fontSize: '1.6rem',
+            backgroundColor: selectedChip === 'all' ? '#151618' : '',
+            color: selectedChip === 'all' ? '#767a87' : '',
+          }}
         />
         <Chip
           icon={<LocationOnIcon sx={{ fontSize: '2.5rem' }} />}
           label="경찰서에서 보관중"
           onClick={() => handleChipClick('police')}
-          sx={{ fontSize: '1.6rem' }}
+          sx={{
+            fontSize: '1.6rem',
+            backgroundColor: selectedChip === 'police' ? '#151618' : '',
+            color: selectedChip === 'police' ? '#767a87' : '',
+          }}
         />
         <Chip
           icon={<SubwayIcon sx={{ fontSize: '2.5rem' }} />}
           label="지하철 및 기타기관"
           onClick={() => handleChipClick('subway')}
-          sx={{ fontSize: '1.6rem', padding: '1rem' }}
+          sx={{
+            fontSize: '1.6rem',
+            padding: '1rem',
+            backgroundColor: selectedChip === 'subway' ? '#151618' : '',
+            color: selectedChip === 'subway' ? '#767a87' : '',
+          }}
         />
         <Chip
           avatar={<Avatar alt="LafButton" src={LafImage} />}

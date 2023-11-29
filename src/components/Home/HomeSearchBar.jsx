@@ -7,10 +7,10 @@ import { Box, LinearProgress, CircularProgress } from '@mui/material';
 import { useSearch } from '../../context/SearchProvider';
 import axios from 'axios';
 import { fetchSubwayItems, fetchLostItems } from './fetchItems';
+import { SecurityUpdateGood } from '@mui/icons-material';
 
 const HomeContainer = styled.div`
   width: 1200px;
-  background-color: #fff;
 `;
 
 const Image = styled.img`
@@ -32,7 +32,7 @@ const SearchBox = styled.form`
   width: 70rem;
   height: 50px;
   border-radius: 32px;
-  border: 2.5px solid #ff6700;
+  border: 3px solid #ff6700;
   transition:
     border-color 0.1s,
     box-shadow 0.2s;
@@ -58,15 +58,12 @@ const StyledIcon = styled(SearchIcon)`
 const SearchInput = styled.input`
   border: none;
   color: #393d3f;
+  background-color: #f7f3f0;
   outline: none;
   width: 70rem;
   margin: auto 30px auto 30px;
   font-size: 1.8rem;
   font-family: 'Noto Sans KR', sans-serif; /* 폰트 적용 */
-  // transition: color 0.3s;
-  // ::placeholder {
-  //   color: rgba(57, 61, 63, 0.3);
-  // }
 `;
 
 const HomeSearchBar = () => {
@@ -76,6 +73,7 @@ const HomeSearchBar = () => {
     subwayLine,
     district,
     page,
+    setPage,
     setResult,
     result,
   } = useSearch('');
@@ -92,20 +90,21 @@ const HomeSearchBar = () => {
     setLoading(true); // 로딩 시작
 
     setResult([]);
+    setPage(1);
     const requests = [];
 
     // 셀렉터를 선택하지 않으면 모든 api에 대한 결과를 보여줍니다.
     if (district === '' && subwayLine === '') {
-      requests.push(fetchLostItems(searchTerm, '', page));
-      requests.push(fetchSubwayItems(searchTerm, '', page));
+      requests.push(fetchLostItems(searchTerm, '', 1));
+      requests.push(fetchSubwayItems(searchTerm, '', 1));
     }
 
     if (district !== '') {
-      requests.push(fetchLostItems(searchTerm, district, page));
+      requests.push(fetchLostItems(searchTerm, district, 1));
     }
 
     if (subwayLine !== '') {
-      requests.push(fetchSubwayItems(searchTerm, subwayLine, page));
+      requests.push(fetchSubwayItems(searchTerm, subwayLine, 1));
     }
 
     try {

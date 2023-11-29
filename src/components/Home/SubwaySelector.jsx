@@ -92,7 +92,12 @@ const SubwaySelector = () => {
   };
 
   return (
-    <StyledFormControl variant="outlined">
+    <StyledFormControl
+      variant="outlined"
+      sx={{
+        ':focus': { borderColor: '#ff6700' },
+      }}
+    >
       <InputLabel htmlFor="subway-line-select"></InputLabel>
       <StyledSelect
         onChange={handleChange}

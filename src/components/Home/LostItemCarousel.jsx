@@ -165,7 +165,7 @@ async function fetchItemCategory(categoryCode, categoryCode2 = null) {
   }
 }
 
-const CardCarousel = () => {
+const LostItemCarousel = () => {
   // 초기 인덱스를 0으로 설정합니다.
   const [activeStep, setActiveStep] = useState(0);
   const [carouselTransition, setCarouselTransition] = useState(
@@ -232,7 +232,7 @@ const CardCarousel = () => {
           {'검색중입니다. 잠시만 기다려주세요!'}
         </CarouselText>
       ) : (
-        <CarouselText>자주 잃어버리는 물건들</CarouselText>
+        <CarouselText>오늘 습득한 물건들!</CarouselText>
       )}
 
       <CarouselContainer>
@@ -262,4 +262,4 @@ const CardCarousel = () => {
   );
 };
 
-export default CardCarousel;
+export default LostItemCarousel;

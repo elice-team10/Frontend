@@ -1,21 +1,24 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
+import HelpOutlineSharpIcon from '@mui/icons-material/HelpOutlineSharp';
 import ClearIcon from '@mui/icons-material/Clear';
 
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 400px;
-  height: 200px;
+  width: 300px;
+  height: 300px;
   z-index: 999;
   position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  background: #fffaf0;
   border-radius: 12px;
+  border: 2px solid black;
+  padding-bottom: 20px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 `;
 
@@ -33,74 +36,81 @@ const StyledBackdrop = styled.div`
 `;
 const Titlebox = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  padding: 0 12px;
+  padding: 5px 12px;
   height: 30px;
-  background: linear-gradient(
-    135deg,
-    rgba(255, 103, 0, 0.8),
-    rgba(255, 127, 80, 0.7),
-    rgba(255, 165, 0, 0.7)
-  );
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
 `;
-const TitelText = styled.p`
+const TitleText = styled.p`
   font-size: 12px;
-  color: white;
+  color: #767a87;
+  display: none;
 `;
 
 const Text = styled.p`
   text-align: center;
-  line-height: 100px;
+  line-height: 50px;
   font-size: 20px;
-  margin: 8px;
+  font-weight: 300;
+  color: #393d3f;
+  margin: 0;
 `;
 
 const BtnBox = styled.div`
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 12px;
+  gap: 20px;
+  margin-top: 30px;
 `;
+
 const styleClearIcon = {
-  color: 'white',
-  fontSize: '28px',
+  color: '#ed7117',
+  fontSize: '25px',
   cursor: 'pointer',
   ':hover': {
-    color: '#ccc',
+    color: '#ff6700',
   },
+};
+
+const styleQuestionIcon = {
+  color: '#ed7117',
+  fontSize: '70px',
+  alignSelf: 'center',
 };
 
 const styleButton1 = {
   transition: 'all 0.2s',
-  width: '180px',
+  width: '120px',
   height: '40px',
-  fontSize: '16px',
+  fontSize: '17px',
+  color: '#ed7117',
   borderRadius: '12px',
-  color: '#393D3F',
-  borderColor: '#393D3F',
+  border: '2px solid #ed7117',
+  backgroundColor: '#fff',
   ':hover': {
-    borderColor: '#393D3F',
-    backgroundColor: '#ddd',
+    borderColor: '#ff6700',
+    backgroundColor: '#fff',
   },
 };
 
 const styleButton2 = {
   transition: 'all 0.2s',
-  width: '180px',
+  width: '120px',
   height: '40px',
-  fontSize: '16px',
+  fontSize: '17px',
   borderRadius: '12px',
-  backgroundColor: '#FF6700',
+  color: '#fffaf0',
+  backgroundColor: '#ed7117',
+  boxShadow: 'none',
   ':hover': {
-    backgroundColor: '#FF6700',
-    filter: 'brightness(1.15)',
+    backgroundColor: '#ff6700',
+    boxShadow: 'none',
   },
 };
 
-function ModalBasic({  getFunction, onCloseModal, title, content, btnText }) {
+function ModalBasic({ getFunction, onCloseModal, title, content, btnText }) {
   const handleFunction = () => {
     getFunction(); // 버튼 클릭시 실행헐 부모 컴포넌트의 함수
     onCloseModal(); // 모달 닫기
@@ -112,14 +122,15 @@ function ModalBasic({  getFunction, onCloseModal, title, content, btnText }) {
         <ModalContainer>
           <Titlebox>
             {/* 모달 헤더 글귀 */}
-            <TitelText>{title}</TitelText>
+            <TitleText>{title}</TitleText>
             <ClearIcon onClick={onCloseModal} sx={styleClearIcon} />
           </Titlebox>
+          <HelpOutlineSharpIcon sx={styleQuestionIcon} />
           {/* 모달 본문 */}
           <Text>{content}</Text>
           <BtnBox>
-            {/* 취소 버튼 */}
-            <Button onClick={onCloseModal} sx={styleButton1} variant="outlined">
+            {/* 취소 버튼 (바꿈) */}
+            <Button onClick={onCloseModal} sx={styleButton1}>
               취소
             </Button>
             {/* 확인 버튼 (클릭 시 부모 컴포넌트 함수 실행 후 모달 닫기) */}

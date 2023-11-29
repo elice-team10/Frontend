@@ -3,16 +3,27 @@ import { Outlet } from 'react-router-dom';
 import Header from './components/UI/Header';
 import { AuthProvider } from './context/AuthProvider';
 import { SearchProvider } from './context/SearchProvider';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#ff6700',
+    },
+  },
+});
 
 function App() {
   return (
     <>
-      <AuthProvider>
-        <SearchProvider>
-          <Header />
-          <Outlet />
-        </SearchProvider>
-      </AuthProvider>
+      <ThemeProvider theme={theme}>
+        <AuthProvider>
+          <SearchProvider>
+            <Header />
+            <Outlet />
+          </SearchProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </>
   );
 }
