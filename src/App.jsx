@@ -4,9 +4,17 @@ import Header from './components/UI/Header';
 import Footer from './components/UI/Footer';
 import { AuthProvider } from './context/AuthProvider';
 import { SearchProvider } from './context/SearchProvider';
-import { QueryClient, QueryClientProvider } from 'react-query';
-import styled from 'styled-components';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+<<<<<<< HEAD
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#ff6700',
+    },
+  },
+});
+=======
 const Appcontainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -14,20 +22,20 @@ const Appcontainer = styled.div`
 `;
 
 const queryClient = new QueryClient();
+>>>>>>> 35542623235ccc84b95a111090924e0e0b8fb9f6
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <SearchProvider>
-          <Appcontainer>
+    <>
+      <ThemeProvider theme={theme}>
+        <AuthProvider>
+          <SearchProvider>
             <Header />
             <Outlet />
-            <Footer />
-          </Appcontainer>
-        </SearchProvider>
-      </AuthProvider>
-    </QueryClientProvider>
+          </SearchProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </>
   );
 }
 

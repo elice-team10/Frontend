@@ -2,11 +2,13 @@ import styled from 'styled-components';
 import HomeSearchBar from '../components/Home/HomeSearchBar';
 import HomeButtons from '../components/Home/HomeButtons';
 import CardCarousel from '../components/Home/CardCarousel';
+import LostItemCarousel from '../components/Home/LostItemCarousel';
 
 const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: white;
 `;
 
 const GradationBox = styled.div`
@@ -24,6 +26,7 @@ const Home = () => {
       <HomeButtons />
       <CardCarousel />
       <GradationBox />
+      <LostItemCarousel />
     </HomeContainer>
   );
 };

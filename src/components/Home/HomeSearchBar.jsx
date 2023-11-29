@@ -6,11 +6,11 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Box, LinearProgress, CircularProgress } from '@mui/material';
 import { useSearch } from '../../context/SearchProvider';
 import axios from 'axios';
-import { fetchSubwayItems, fetchLostItems } from './fetchItems';
+import { fetchSubwayItems, fetchLostItems, fetchCommunity } from './fetchItems';
+import { SecurityUpdateGood } from '@mui/icons-material';
 
 const HomeContainer = styled.div`
   width: 1200px;
-  background-color: #fff;
 `;
 
 const Image = styled.img`
@@ -32,7 +32,7 @@ const SearchBox = styled.form`
   width: 70rem;
   height: 50px;
   border-radius: 32px;
-  border: 2.5px solid #ff6700;
+  border: 3px solid #ff6700;
   transition:
     border-color 0.1s,
     box-shadow 0.2s;
@@ -58,15 +58,12 @@ const StyledIcon = styled(SearchIcon)`
 const SearchInput = styled.input`
   border: none;
   color: #393d3f;
+  background-color: #f7f3f0;
   outline: none;
   width: 70rem;
   margin: auto 30px auto 30px;
   font-size: 1.8rem;
   font-family: 'Noto Sans KR', sans-serif; /* 폰트 적용 */
-  // transition: color 0.3s;
-  // ::placeholder {
-  //   color: rgba(57, 61, 63, 0.3);
-  // }
 `;
 
 const HomeSearchBar = () => {
@@ -76,46 +73,88 @@ const HomeSearchBar = () => {
     subwayLine,
     district,
     page,
+    setPage,
     setResult,
     result,
+    category,
+    setSubwayCount,
+    setPoliceCount,
+    subwayCount,
+    policeCount,
   } = useSearch('');
   const [loading, setLoading] = useState(false); // 로딩 상태
   const navigate = useNavigate();
 
   useEffect(() => {
     // searchTerm, subwayLine, district, page 중 하나라도 변경될 때 실행됩니다.
-    console.log(searchTerm, subwayLine, district, page);
-  }, [searchTerm, subwayLine, district, page]);
+    console.log(
+      searchTerm,
+      subwayLine,
+      district,
+      page,
+      category,
+      policeCount,
+      subwayCount,
+    );
+  }, [
+    searchTerm,
+    subwayLine,
+    district,
+    page,
+    category,
+    policeCount,
+    subwayCount,
+  ]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true); // 로딩 시작
 
     setResult([]);
+    setPage(1);
+    setSubwayCount(0);
+    setPoliceCount(0);
     const requests = [];
 
     // 셀렉터를 선택하지 않으면 모든 api에 대한 결과를 보여줍니다.
     if (district === '' && subwayLine === '') {
-      requests.push(fetchLostItems(searchTerm, '', page));
-      requests.push(fetchSubwayItems(searchTerm, '', page));
+      requests.push(fetchLostItems(searchTerm, '', 1));
+      requests.push(fetchSubwayItems(searchTerm, '', 1));
     }
 
     if (district !== '') {
-      requests.push(fetchLostItems(searchTerm, district, page));
+      requests.push(fetchLostItems(searchTerm, district, 1));
     }
 
     if (subwayLine !== '') {
-      requests.push(fetchSubwayItems(searchTerm, subwayLine, page));
+      requests.push(fetchSubwayItems(searchTerm, subwayLine, 1));
     }
+
+    requests.push(fetchCommunity(searchTerm, category));
 
     try {
       const responses = await Promise.all(requests);
       if (responses) {
         const flattenedResults = responses.flat(); // 중첩된 배열을 하나의 배열로 펼침
+        const policeItem = flattenedResults.find((item) => {
+          return item.id && item.id.startsWith('F');
+        });
+        const subwayItem = flattenedResults.find((item) => {
+          return item.id && item.id.startsWith('V');
+        });
+
+        if (policeItem) {
+          setPoliceCount(policeItem.totalCount);
+        }
+
+        if (subwayItem) {
+          setSubwayCount(subwayItem.totalCount);
+        }
         setResult(flattenedResults);
       }
 
       setLoading(false); // 로딩 종료
+
       navigate('/search'); // 리다이렉트
     } catch (error) {
       console.log(error);
