@@ -9,7 +9,9 @@ export const SearchProvider = ({ children }) => {
   const [district, setDistrict] = useState('');
   const [subwayLine, setSubwayLine] = useState('');
   const [page, setPage] = useState(1);
-  const [totalCount, setTotalCount] = useState(0);
+  const [policeCount, setPoliceCount] = useState(0);
+  const [subwayCount, setSubwayCount] = useState(0);
+  const [category, setCategory] = useState(0);
 
   const [result, setResult] = useState(() => {
     const savedResult = localStorage.getItem('result');
@@ -31,10 +33,14 @@ export const SearchProvider = ({ children }) => {
         setSubwayLine,
         page,
         setPage,
-        totalCount,
-        setTotalCount,
+        policeCount,
+        setPoliceCount,
+        subwayCount,
+        setSubwayCount,
         result,
         setResult,
+        category,
+        setCategory,
       }}
     >
       {children}
