@@ -148,6 +148,7 @@ async function fetchItemCategory(categoryCode, categoryCode2 = null) {
         date: lostItem.fdYmd,
         location: lostItem.depPlace,
         productCategory: lostItem.prdtClNm,
+        totalCount,
       };
 
       results.push(item);
@@ -172,7 +173,7 @@ const CardCarousel = () => {
     'transform 0.3s ease-in-out',
   );
   const [loading, setLoading] = useState(false);
-  const { setResult, result } = useSearch('');
+  const { setResult, setPoliceCount, setSubwayCount } = useSearch('');
   const navigate = useNavigate();
 
   const handleClick = async (card) => {
@@ -190,6 +191,21 @@ const CardCarousel = () => {
       if (responses) {
         const flattenedResults = responses.flat(); // 중첩된 배열을 하나의 배열로 펼침
         setResult(flattenedResults);
+
+        const policeItem = flattenedResults.find(
+          (item) => item.id && item.id.startsWith('f'),
+        );
+        const subwayItem = flattenedResults.find(
+          (item) => item.id && item.id.startsWith('v'),
+        );
+
+        if (policeItem) {
+          setPoliceCount(policeItem.totalCount);
+        }
+
+        if (subwayItem) {
+          setSubwayCount(subwayItem.totalCount);
+        }
       }
 
       setLoading(false);

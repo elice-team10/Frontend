@@ -17,7 +17,7 @@ const ModalContainer = styled.div`
   transform: translate(-50%, -50%);
   background: #fffaf0;
   border-radius: 12px;
-  border: 2px solid black;
+  border: 3px solid black;
   padding-bottom: 20px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 `;
@@ -53,7 +53,6 @@ const Text = styled.p`
   text-align: center;
   line-height: 50px;
   font-size: 20px;
-  font-weight: 300;
   color: #393d3f;
   margin: 0;
 `;
@@ -81,18 +80,13 @@ const styleQuestionIcon = {
 };
 
 const styleButton1 = {
-<<<<<<< HEAD
   transition: 'all 0.2s',
   width: '120px',
-=======
-  transition: 'all 0.1s',
-  width: '180px',
->>>>>>> 9f1c0938b5626944d69732bab98543ecdfce3ab4
   height: '40px',
   fontSize: '17px',
   color: '#ed7117',
   borderRadius: '12px',
-  border: '2px solid #ed7117',
+  border: '3px solid #ed7117',
   backgroundColor: '#fff',
   ':hover': {
     borderColor: '#ff6700',

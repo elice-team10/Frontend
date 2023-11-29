@@ -8,7 +8,7 @@ const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fffaf0;
+  background-color: white;
 `;
 
 const GradationBox = styled.div`

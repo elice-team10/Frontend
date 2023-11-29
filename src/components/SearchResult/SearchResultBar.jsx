@@ -65,21 +65,41 @@ function SearchResultBar() {
     setPage,
     setResult,
     result,
+    subwayCount,
+    setSubwayCount,
+    policeCount,
+    setPoliceCount,
   } = useSearch('');
 
   useEffect(() => {
     // result 배열이 업데이트 될 때마다 searchResults 상태를 업데이트
     setSearchResults(result);
+    console.log('result: ', result);
   }, [result]);
 
   useEffect(() => {
     // searchTerm, subwayLine, district, page 중 하나라도 변경될 때 실행됩니다.
-    console.log(searchTerm, subwayLine, district, page);
-  }, [searchTerm, subwayLine, district, page]);
+    console.log(
+      searchTerm,
+      subwayLine,
+      district,
+      page,
+      searchResults,
+      policeCount,
+      subwayCount,
+    );
+  }, [
+    searchTerm,
+    subwayLine,
+    district,
+    page,
+    searchResults,
+    policeCount,
+    subwayCount,
+  ]);
 
   const handleLoadMore = async () => {
     setLoading(true);
-
     const nextPage = page + 1;
     setPage(nextPage);
 
@@ -124,6 +144,8 @@ function SearchResultBar() {
     // '지하철 및 기타기관' 칩을 클릭했을 때 해당 결과를 보여줍니다.
     else if (chipKey === 'subway') {
       setSearchResults(result.filter((item) => item.id[0] === 'V'));
+    } else if (chipKey === 'community') {
+      setSearchResults(result.filter((item) => item.id[0] === '6'));
     }
   };
 
@@ -137,7 +159,7 @@ function SearchResultBar() {
         </IconButton>
         <Chip
           icon={<SearchIcon sx={{ fontSize: '2.5rem' }} />}
-          label="전체 검색결과"
+          label={`전체 검색결과 (${subwayCount + policeCount})`}
           onClick={() => handleChipClick('all')}
           sx={{
             fontSize: '1.6rem',
@@ -147,7 +169,7 @@ function SearchResultBar() {
         />
         <Chip
           icon={<LocationOnIcon sx={{ fontSize: '2.5rem' }} />}
-          label="경찰서에서 보관중"
+          label={`경찰서에서 보관중 (${policeCount})`}
           onClick={() => handleChipClick('police')}
           sx={{
             fontSize: '1.6rem',
@@ -157,7 +179,7 @@ function SearchResultBar() {
         />
         <Chip
           icon={<SubwayIcon sx={{ fontSize: '2.5rem' }} />}
-          label="지하철 및 기타기관"
+          label={`지하철 및 기타기관 (${subwayCount})`}
           onClick={() => handleChipClick('subway')}
           sx={{
             fontSize: '1.6rem',
@@ -170,7 +192,7 @@ function SearchResultBar() {
           avatar={<Avatar alt="LafButton" src={LafImage} />}
           label="게시판"
           color="warning"
-          onClick={handleChipClick}
+          onClick={() => handleChipClick('community')}
           sx={{
             fontSize: '1.6rem',
             backgroundColor: '#ff6700',
@@ -181,11 +203,13 @@ function SearchResultBar() {
       <GradationBox />
       {result.length > 0 && (
         <Grid container spacing={2}>
-          {searchResults.map((item, index) => (
-            <Grid item xs={3} key={index}>
-              <ResultCard {...item} />
-            </Grid>
-          ))}
+          {searchResults.map((item, index) =>
+            item ? (
+              <Grid item xs={3} key={index}>
+                <ResultCard {...item} />
+              </Grid>
+            ) : null,
+          )}
         </Grid>
       )}
       <LoadButtonContainer>

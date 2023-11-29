@@ -250,10 +250,14 @@ function ItemModal({ open, onClose, data }) {
 function ResultCard({ name, content, imageUrl, location, date, id }) {
   const [modalData, setModalData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
   const ErrorUrl =
     'https://www.lost112.go.kr/lostnfs/images/uploadImg/20171111/error-404.html';
 
   const handleClick = async () => {
+    if (id[0] === '6') {
+      navigate(`/community/post/${id}`);
+    }
     try {
       const data = await fetchItemById(id);
       setModalData(data); // 데이터 설정

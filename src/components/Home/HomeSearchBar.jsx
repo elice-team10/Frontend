@@ -6,7 +6,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Box, LinearProgress, CircularProgress } from '@mui/material';
 import { useSearch } from '../../context/SearchProvider';
 import axios from 'axios';
-import { fetchSubwayItems, fetchLostItems } from './fetchItems';
+import { fetchSubwayItems, fetchLostItems, fetchCommunity } from './fetchItems';
 import { SecurityUpdateGood } from '@mui/icons-material';
 
 const HomeContainer = styled.div`
@@ -76,14 +76,35 @@ const HomeSearchBar = () => {
     setPage,
     setResult,
     result,
+    category,
+    setSubwayCount,
+    setPoliceCount,
+    subwayCount,
+    policeCount,
   } = useSearch('');
   const [loading, setLoading] = useState(false); // 로딩 상태
   const navigate = useNavigate();
 
   useEffect(() => {
     // searchTerm, subwayLine, district, page 중 하나라도 변경될 때 실행됩니다.
-    console.log(searchTerm, subwayLine, district, page);
-  }, [searchTerm, subwayLine, district, page]);
+    console.log(
+      searchTerm,
+      subwayLine,
+      district,
+      page,
+      category,
+      policeCount,
+      subwayCount,
+    );
+  }, [
+    searchTerm,
+    subwayLine,
+    district,
+    page,
+    category,
+    policeCount,
+    subwayCount,
+  ]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -91,6 +112,8 @@ const HomeSearchBar = () => {
 
     setResult([]);
     setPage(1);
+    setSubwayCount(0);
+    setPoliceCount(0);
     const requests = [];
 
     // 셀렉터를 선택하지 않으면 모든 api에 대한 결과를 보여줍니다.
@@ -107,14 +130,31 @@ const HomeSearchBar = () => {
       requests.push(fetchSubwayItems(searchTerm, subwayLine, 1));
     }
 
+    requests.push(fetchCommunity(searchTerm, category));
+
     try {
       const responses = await Promise.all(requests);
       if (responses) {
         const flattenedResults = responses.flat(); // 중첩된 배열을 하나의 배열로 펼침
+        const policeItem = flattenedResults.find((item) => {
+          return item.id && item.id.startsWith('F');
+        });
+        const subwayItem = flattenedResults.find((item) => {
+          return item.id && item.id.startsWith('V');
+        });
+
+        if (policeItem) {
+          setPoliceCount(policeItem.totalCount);
+        }
+
+        if (subwayItem) {
+          setSubwayCount(subwayItem.totalCount);
+        }
         setResult(flattenedResults);
       }
 
       setLoading(false); // 로딩 종료
+
       navigate('/search'); // 리다이렉트
     } catch (error) {
       console.log(error);
