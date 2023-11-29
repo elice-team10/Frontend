@@ -40,15 +40,20 @@ const FoundContainer = styled.div`
 function CommunityBoard() {
   const [currentTab, setCurrentTab] = useState('찾아요');
   const clickTabHandle = (tab) => {
-    console.log('Tab clicked:', tab);
     setCurrentTab(tab);
   };
-
+  // 게시글 정보
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['events'],
     queryFn: () => fetchEvents('/post'),
     staleTime: 5000,
   });
+
+  // 댓글 정보
+  // const { data: commentData } = useQuery({
+  //   queryKey: ['commentData'],
+  //   queryFn: () => fetchComments(`/comment/${postId}`),
+  // });
 
   let content;
 
@@ -68,9 +73,7 @@ function CommunityBoard() {
   if (data) {
     const lostItem = data.filter((event) => event.board_category === 0);
     const foundItem = data.filter((event) => event.board_category === 1);
-    console.log(data);
-    // console.log('new', data['0'].userId._id);
-
+    
     content = (
       <>
         {currentTab === '찾아요' ? (

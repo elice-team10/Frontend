@@ -104,10 +104,6 @@ const Name = styled.p`
   font-weight: bold;
   color: ${theme.colors.text};
   margin-right: 0.4rem;
-
-  &:hover {
-    color: ${theme.colors.primary};
-  }
 `;
 
 const Location = styled.p`
@@ -150,8 +146,6 @@ const Badge = styled(Chip)`
   }
 `;
 
-
-
 function CommunityDetail() {
   // const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -166,14 +160,10 @@ function CommunityDetail() {
   const { mutate, isPending } = useMutation({
     mutationFn: deleteEvent,
     onSuccess: () => {
-      console.log('Delete event succeeded');
       queryClient.invalidateQueries({
         queryKey: ['events']
       });
       navigate('/community');
-    },
-    onError: (error) => {
-      console.error('Delete event failed:', error);
     }
   });
 
@@ -232,7 +222,7 @@ function CommunityDetail() {
           <Badge label={`${data.isFound ? '완료' : '미완료'}`} size="small" />
           {/* 장소 날짜 컨테이너 */}
           <PositionContainer>
-            <Name>{data.userId.nickname}</Name>
+            <Name>{data?.userId?.nickname}</Name>
             <LocationIcon />
             <Location>{`서울시 ${data.event_location}`}</Location>
             <DateIcon />
@@ -265,7 +255,7 @@ function CommunityDetail() {
       <Background>
         <PostContainer style={{ height: '100%' }}>
           <ButtonContainer>
-            <StyledArrowIcon fontSize="3.5rem" onClick={() => navigate(-1)} />
+            <StyledArrowIcon fontSize="3.5rem" onClick={() => navigate('/community')} />
             <button onClick={handleEdit}>수정</button>
             <button onClick={handleDelete}>삭제</button>
           </ButtonContainer>

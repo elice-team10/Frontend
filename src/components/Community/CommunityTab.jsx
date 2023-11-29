@@ -34,6 +34,7 @@ const EachTab = styled.p`
   line-height: 22px;
   color: ${theme.colors.text};
   padding: 0.8rem;
+  cursor: pointer;
   + p {
     margin-left: 1.6rem;
   }
@@ -70,7 +71,9 @@ function CommunityTab({ currentTab, onClick }) {
       })}
       <WriteButton>
         <StyledLink
-          to={`/community/write?board_category=${currentTab === '찾아요' ? 0 : 1}`}
+          to={`/community/write?board_category=${
+            currentTab === '찾아요' ? 0 : 1
+          }`}
         >
           글 작성
         </StyledLink>
