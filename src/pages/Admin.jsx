@@ -8,6 +8,7 @@ const AdminContainer = styled.div`
   flex-direction: column;
   align-items: center;
   margin: 20px 0;
+  flex-grow: 1;
 `;
 
 const AdminTitleBox = styled.div`

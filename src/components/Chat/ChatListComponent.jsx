@@ -13,6 +13,7 @@ const ChatListMain = styled.div`
   display: flex;
   justify-content: center;
   background-color: #eee;
+  flex-grow: 1;
 `;
 const ChatListContainer = styled.div`
   display: flex;
@@ -26,9 +27,9 @@ const ChatleftBox = styled.div`
   width: 100px;
   background: linear-gradient(
     135deg,
-    rgba(255, 165, 0, 0.5),
-    rgba(255, 127, 80, 0.5),
-    rgba(255, 103, 0, 0.6)
+    rgba(255, 165, 0, 0.8),
+    rgba(255, 127, 80, 0.8),
+    rgba(255, 103, 0, 0.8)
   );
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
@@ -140,9 +141,10 @@ const ChatListComponent = () => {
     setModalOpen(false); // 모달 닫기
   };
 
-  const handleChatClick = (event, roomId) => {
+  const handleChatClick = (event, roomId, opponentNickname) => {
+    console.log("Opponent Nickname:", opponentNickname);
     event.stopPropagation();
-    navigate(`/chat/${roomId}`);
+    navigate(`/chat/${roomId}?nickname=${opponentNickname}`);
   };
 
   const getFunction = (roomId) => {
@@ -217,13 +219,13 @@ const ChatListComponent = () => {
                 return (
                   <Chats
                     key={chatRoom.roomId._id}
-                    onClick={(e) => handleChatClick(e, chatRoom.roomId._id)}
+                    onClick={(e) => handleChatClick(e, chatRoom.roomId._id, chatRoom.opponent?.nickname)}
                   >
                     <ChatPartnerBox>
                       <StyledAccountCircleIcon sx={{ fontSize: 44 }} />
                       <ChatPartner>
                         <ChatPartnerNickname>
-                          {chatRoom.oppenent.nickname}
+                          {chatRoom.opponent.nickname}
                         </ChatPartnerNickname>
                         <ChatContent>{lastMessage}</ChatContent>
                       </ChatPartner>
