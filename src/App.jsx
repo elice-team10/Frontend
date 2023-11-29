@@ -8,10 +8,10 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import styled from 'styled-components';
 
 const Appcontainer = styled.div`
-display: flex;
-flex-direction: column;
-justify-content: space-between;
-min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  max-width: 265rem;
+  min-height: 100vh;
 `;
 
 const queryClient = new QueryClient();

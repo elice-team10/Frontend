@@ -15,17 +15,17 @@ const InputContainer = styled.div`
 `;
 
 const MyUserIcon = styled(PersonIcon)`
-  padding: 0 4px;
+  padding: 0 4px !important;
   position: absolute;
   top: 40%;
-  left: 12px; //바꿈
+  left: 10px; //바꿈
   transform: translateY(-40%);
   font-size: 2.4rem !important;
   color: ${theme.colors.text};
 `;
 
 const MyEmailIcon = styled(EmailIcon)`
-  padding: 0 4px;
+  padding: 0 4px !important;
   position: absolute;
   top: 40%;
   left: 10px; // 바꿈
@@ -35,7 +35,9 @@ const MyEmailIcon = styled(EmailIcon)`
 `;
 
 const MyPasswordIcon = styled(LockIcon)`
-  padding: 0 4px;
+  padding: ${(props) =>
+    props.id === 'change_password' ? '0 !important' : '0 4px !important'};
+
   position: absolute;
   top: 40%;
   left: 10px; // 바꿈
@@ -48,8 +50,8 @@ const Input = styled.input`
   box-sizing: border-box;
   width: 32rem;
   height: 5rem;
-  padding: 1.2rem 2.8rem 1.2rem 5rem;
-  margin-bottom: 10px;
+  padding: 1.2rem 2.8rem 1.2rem 5rem !important;
+  margin-bottom: 10px !important;
   //border: 1px solid ${theme.colors.border};
   border: none; // 바꿈
   border-radius: 12px;
@@ -80,10 +82,12 @@ export default function AuthFormInput({
     <InputContainer>
       {id === 'nickname' && <MyUserIcon />}
       {id === 'email' && <MyEmailIcon />}
-      {(id === 'password' ||
-        id === 'current_password' ||
+      {id === 'password' && <MyPasswordIcon />}
+      {(id === 'current_password' ||
         id === 'new_password' ||
-        id === 'confirm_new_password') && <MyPasswordIcon />}
+        id === 'confirm_new_password') && (
+        <MyPasswordIcon id="change_password" />
+      )}
       <Input
         type={type}
         id={id}
