@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import theme from '../../config/theme';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import { axiosPrivate } from '../../api/axios';
 import { useNavigate } from 'react-router';
@@ -14,6 +13,7 @@ const ChatListMain = styled.div`
   display: flex;
   justify-content: center;
   background-color: #eee;
+  flex-grow: 1;
 `;
 const ChatListContainer = styled.div`
   display: flex;
@@ -141,9 +141,10 @@ const ChatListComponent = () => {
     setModalOpen(false); // 모달 닫기
   };
 
-  const handleChatClick = (event, roomId) => {
+  const handleChatClick = (event, roomId, opponentNickname) => {
+    console.log("Opponent Nickname:", opponentNickname);
     event.stopPropagation();
-    navigate(`/chat/${roomId}`);
+    navigate(`/chat/${roomId}?nickname=${opponentNickname}`);
   };
 
   const getFunction = (roomId) => {
@@ -218,13 +219,13 @@ const ChatListComponent = () => {
                 return (
                   <Chats
                     key={chatRoom.roomId._id}
-                    onClick={(e) => handleChatClick(e, chatRoom.roomId._id)}
+                    onClick={(e) => handleChatClick(e, chatRoom.roomId._id, chatRoom.opponent?.nickname)}
                   >
                     <ChatPartnerBox>
                       <StyledAccountCircleIcon sx={{ fontSize: 44 }} />
                       <ChatPartner>
                         <ChatPartnerNickname>
-                          {chatRoom.oppenent.nickname}
+                          {chatRoom.opponent.nickname}
                         </ChatPartnerNickname>
                         <ChatContent>{lastMessage}</ChatContent>
                       </ChatPartner>

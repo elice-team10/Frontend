@@ -6,12 +6,14 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SendIcon from '@mui/icons-material/Send';
 import { axiosPrivate } from '../../api/axios';
 import { useParams, useNavigate } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { useQuery } from 'react-query';
 
 const ChatRoomcontainer = styled.div`
   display: flex;
   justify-content: center;
   background-color: #eee;
+  flex-grow: 1;
 `;
 const Chatbox = styled.div`
   display: flex;
@@ -112,6 +114,10 @@ const ChatRoom = () => {
   const { roomId } = useParams(); // roomId 값을 추출
   const navigate = useNavigate();
   const [isComposing, setIsComposing] = useState(false);
+  const location = useLocation();
+
+  const searchParams = new URLSearchParams(location.search);
+  const opponentNickname = searchParams.get('nickname');
 
   const authString = localStorage.getItem('auth'); // 'auth' 키 로컬 스토리지에서 사용자 정보 가져오기
   let localNickname;
@@ -179,7 +185,7 @@ const ChatRoom = () => {
             onClick={() => navigate('/chatList')}
           />
           <StyledAccountCircleIcon sx={{ fontSize: 36 }} />
-          <HeaderNickname>{localNickname}</HeaderNickname>
+          <HeaderNickname>{opponentNickname}</HeaderNickname>
         </ChatHeader>
         <MessageList>
           {messages.map((messages, index) => (

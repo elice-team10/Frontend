@@ -35,7 +35,7 @@ const Titlebox = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 12px !important;
   height: 30px;
   background: linear-gradient(
     135deg,
@@ -55,14 +55,14 @@ const Text = styled.p`
   text-align: center;
   line-height: 100px;
   font-size: 20px;
-  margin: 8px;
+  margin: 8px !important;
 `;
 
 const BtnBox = styled.div`
   display: flex;
   justify-content: center;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 12px !important;
 `;
 const styleClearIcon = {
   color: 'white',
@@ -100,7 +100,7 @@ const styleButton2 = {
   },
 };
 
-function ModalBasic({  getFunction, onCloseModal, title, content, btnText }) {
+function ModalBasic({ getFunction, onCloseModal, title, content, btnText }) {
   const handleFunction = () => {
     getFunction(); // 버튼 클릭시 실행헐 부모 컴포넌트의 함수
     onCloseModal(); // 모달 닫기
