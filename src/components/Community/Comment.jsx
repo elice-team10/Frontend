@@ -1,6 +1,18 @@
 import styled from 'styled-components';
 import theme from '../../config/theme';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import {
+  createNewComment,
+  deleteComment,
+  fetchComments,
+  queryClient,
+  updateComment,
+} from '../../api/http';
+import CircularProgress from '@mui/material/CircularProgress';
+import { formatDate } from '../../utils/FormatDate';
+import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router';
+import useAuth from '../../hooks/useAuth';
 
 const ReplyContainer = styled.div`
   width: 56rem;
@@ -30,7 +42,7 @@ const ReplyContainer = styled.div`
   }
 `;
 
-const ReplyForm = styled.form`
+const ReplyForm = styled.div`
   padding: 1rem;
   display: flex;
   position: relative;
@@ -58,7 +70,7 @@ const ReplyForm = styled.form`
   & button {
     position: absolute;
     right: 11px;
-    top: 16px;
+    top: 13px;
     font-family: 'Noto Sans KR', sans-serif;
     font-size: ${theme.fontSizes.small};
     color: ${theme.colors.textWhite};
@@ -77,10 +89,8 @@ const ReplyBoard = styled.div`
   display: flex;
   justify-content: space-between;
 
-  & div {
-    display: inherit;
-
-    + div {
+  & span {
+    + span {
       margin-left: 0.6rem;
     }
   }
@@ -106,33 +116,216 @@ const ReplyCount = styled.p`
   font-weight: bold;
 `;
 
-function Comment({postId}) {
-  const { data, isError } = useQuery({
-    queryKey: ['events', postId],
-  })
-  return (
-    <>
-      <ReplyCount>댓글 0</ReplyCount>
-      <ReplyContainer>
-        <ReplyForm>
-          <textarea placeholder="댓글을 남겨보세요."></textarea>
-          <button>등록</button>
-        </ReplyForm>
-        <ul>
-          <li>
+function Comment({ postId }) {
+  const navigate = useNavigate();
+  const [comment, setComment] = useState('');
+  const [isEdit, setIsEdit] = useState(false);
+  const commentRef = useRef({});
+  const { auth } = useAuth();
+
+  // 수정 버튼 클릭시 p태그 포커스
+  useEffect(() => {
+    if (isEdit) {
+      const commentId = Object.keys(isEdit).find((key) => isEdit[key] === true);
+      if (commentRef.current[commentId]) {
+        commentRef.current[commentId].focus();
+      }
+    }
+  }, [isEdit]);
+
+  // 댓글 읽기
+  const {
+    data: commentData,
+    isPending,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ['commentData'],
+    queryFn: () => fetchComments(`/comment/${postId}`),
+  });
+
+  // 댓글 작성
+  const { mutate: commentMutate } = useMutation({
+    mutationFn: createNewComment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['commentData'],
+      });
+    },
+  });
+
+  // 댓글 삭제
+  const { mutate: deleteMutate } = useMutation({
+    mutationFn: deleteComment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['commentData'],
+      });
+    },
+  });
+
+  // 댓글 수정
+  const { mutate: addMutate } = useMutation({
+    mutationFn: updateComment,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['commentData'],
+      });
+    },
+  });
+
+  const handleAddComment = (event) => {
+    event.preventDefault();
+    commentMutate({ postId, content: String(comment) });
+    setComment('');
+  };
+
+  const handleDeletComment = (commentId, userId) => {
+    console.log('commentid', commentId);
+    console.log('userid', userId);
+    deleteMutate({ commentId, userId });
+  };
+
+  const handleEditComment = (commentId, userId, comment) => {
+    console.log('edit', commentId, userId, comment, commentRef);
+    addMutate({ commentId, userId, content: String(comment) });
+  };
+
+  let content;
+
+  if (isPending) {
+    content = <CircularProgress sx={{ color: '#ff6700' }} />;
+  }
+
+  if (isError) {
+    content = (
+      <ErrorBlock
+        title="에러 발생"
+        message={error.info?.message || '데이터를 가져오는데 실패했습니다.'}
+      />
+    );
+  }
+  if (commentData && commentData.length !== 0) {
+    console.log('commentdata', commentData);
+    content = (
+      <ul>
+        {commentData.map((item, index) => (
+          <li key={item._id}>
             <ReplyBoard>
               <div>
-                <span>닉네임 • </span>
-                <span>11-18</span>
+                <span>{`${item.userId.nickname} •`}</span>
+                <span>{formatDate(item.createdAt)}</span>
               </div>
               <ReplyButton>
-                <div>수정</div>
-                <div>삭제</div>
+                {isEdit[item._id] ? (
+                  <>
+                    <div
+                      type="button"
+                      onClick={() => {
+                        handleEditComment(
+                          item._id,
+                          item.userId._id,
+                          commentRef.current[item._id].innerText,
+                        );
+                        setIsEdit((prevIsEdit) => ({
+                          ...prevIsEdit,
+                          [item._id]: false,
+                        }));
+                      }}
+                    >
+                      등록
+                    </div>
+                    <div
+                      type="button"
+                      onClick={() =>
+                        setIsEdit((prevIsEdit) => ({
+                          ...prevIsEdit,
+                          [item._id]: false,
+                        }))
+                      }
+                    >
+                      취소
+                    </div>
+                  </>
+                ) : (
+                  item.userId?.nickname === auth?.nickname && (
+                  <>
+                    <div
+                      type="button"
+                      onClick={() => {
+                        setIsEdit((prevIsEdit) => ({
+                          ...prevIsEdit,
+                          [item._id]: true,
+                        }));
+                        commentRef.current[item._id].focus();
+                      }}
+                    >
+                      수정
+                    </div>
+                    <div
+                      type="button"
+                      onClick={() =>
+                        handleDeletComment(item._id, item.userId._id)
+                      }
+                    >
+                      삭제
+                    </div>
+                  </>
+                  )
+                )}
               </ReplyButton>
             </ReplyBoard>
-            <p>그거 제가 주웠어요!</p>
+            <p
+              contentEditable={isEdit[item._id] || false}
+              suppressContentEditableWarning={isEdit[item._id] || false}
+              // 각각 댓글 요소의 개별 참조 설정
+              ref={(el) => (commentRef.current[item._id] = el)}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  event.preventDefault(); // Enter 키 누르면 생기는 줄바꿈 방지
+                  handleEditComment(
+                    item._id,
+                    item.userId._id,
+                    commentRef.current[item._id].innerText,
+                  );
+                  setIsEdit((prevIsEdit) => ({
+                    ...prevIsEdit,
+                    [item._id]: false,
+                  }));
+                }
+              }}
+            >
+              {item.content}
+            </p>
           </li>
-        </ul>
+        ))}
+      </ul>
+    );
+  }
+
+  return (
+    <>
+      <ReplyCount>{`댓글 ${
+        commentData ? commentData.length : '0'
+      }`}</ReplyCount>
+      <ReplyContainer>
+        <ReplyForm>
+          <textarea
+            placeholder="댓글을 남겨보세요."
+            value={comment}
+            onChange={(event) => setComment(event.target.value)}
+            onKeyDown={(event) => {
+              if (event.key === 'Enter') {
+                event.preventDefault(); // Enter 키 누르면 생기는 줄바꿈 방지
+                handleAddComment(event);
+              }
+            }}
+          ></textarea>
+          <button type="button" onClick={handleAddComment}>
+            등록
+          </button>
+        </ReplyForm>
+        {content}
       </ReplyContainer>
     </>
   );

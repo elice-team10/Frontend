@@ -14,7 +14,10 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ErrorBlock from '../UI/ErrorBlock';
 import { useState } from 'react';
 import ModalBasic from '../UI/Modal';
+import useAuth from '../../hooks/useAuth';
 import { axiosPrivate } from '../../api/axios';
+import profile2 from '../../assets/profiles/profile2.webp';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Background = styled.div`
   background-color: #eee;
@@ -32,7 +35,7 @@ const PhotoContainer = styled.div`
   width: 56rem;
   height: 25rem;
   display: flex;
-  // justify-content: center;
+  justify-content: center;
   align-items: center;
   img {
     width: 54rem;
@@ -49,9 +52,9 @@ const PhotoContainer = styled.div`
 `;
 
 const ContentContainer = styled.div`
-  width: 54rem;
+  width: 56rem;
   height: 100%;
-  padding: 1rem 1rem 3rem;
+  padding: -2rem 1rem 3rem;
   flex-direction: column;
   display: flex;
   border-radius: 12px;
@@ -59,6 +62,7 @@ const ContentContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
+  // padding: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -66,12 +70,14 @@ const TitleContainer = styled.div`
 `;
 
 const Title = styled.p`
+  padding: 12px;
   font-weight: bold;
   font-size: ${theme.fontSizes.large};
   color: ${theme.colors.text};
 `;
 
 const ButtonContainer = styled.div`
+  padding: 12px;
   display: flex;
   justify-content: flex-end;
   align-items: center;
@@ -95,20 +101,25 @@ const ButtonContainer = styled.div`
 `;
 
 const PositionContainer = styled.div`
+  padding: 12px 4px;
   display: flex;
   align-items: center;
-  height: 5rem;
+  height: 4rem;
+  flex-direction: column;
+  align-items: start;
+
+  && div {
+    display: flex;
+  }
 `;
 
-const Name = styled.p`
-  font-size: ${theme.fontSizes.medium};
+const LocAndDateContainer = styled.div``;
+
+const Name = styled.div`
+  font-size: ${theme.fontSizes.small};
   font-weight: bold;
   color: ${theme.colors.text};
-  margin-right: 0.4rem;
-
-  &:hover {
-    color: ${theme.colors.primary};
-  }
+  margin-left: 0.8rem;
 `;
 
 const Location = styled.p`
@@ -124,7 +135,7 @@ const LocationIcon = styled(PlaceIcon)`
 const Date = styled.p`
   font-size: ${theme.fontSizes.small};
   color: ${theme.colors.text};
-  margin: 0.8rem;
+  margin: 0.4rem;
 `;
 
 const DateIcon = styled(CalendarMonthIcon)`
@@ -132,12 +143,32 @@ const DateIcon = styled(CalendarMonthIcon)`
 `;
 
 const Content = styled.p`
+  padding: 12px;
   font-size: ${theme.fontSizes.medium};
   color: ${theme.colors.text};
   line-height: 2.5rem;
   margin: auto 0;
 `;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-left: 1.2rem;
+`;
+
+const BasicProfile = styled(AccountCircleIcon)`
+  width: 38.4px !important;
+  height: 38.4px !important;
+  color: #ccc;
+`;
+
+const Avartar = styled.img`
+  object-fit: cover;
+  width: 38.4px;
+`;
+
 const BadgeAndBtn = styled.div`
+  padding: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -183,6 +214,7 @@ function CommunityDetail() {
 
   const navigate = useNavigate();
   const params = useParams();
+  const { auth } = useAuth();
 
   const { data, isError, error } = useQuery({
     queryKey: ['events', params.id],
@@ -192,14 +224,10 @@ function CommunityDetail() {
   const { mutate, isPending } = useMutation({
     mutationFn: deleteEvent,
     onSuccess: () => {
-      console.log('Delete event succeeded');
       queryClient.invalidateQueries({
         queryKey: ['events'],
       });
       navigate('/community');
-    },
-    onError: (error) => {
-      console.error('Delete event failed:', error);
     },
   });
 
@@ -259,6 +287,7 @@ function CommunityDetail() {
   }
 
   if (data) {
+    console.log('detail', data);
     content = (
       <>
         <ContentContainer>
@@ -275,14 +304,31 @@ function CommunityDetail() {
             <Badge label={`${data.isFound ? '완료' : '미완료'}`} size="small" />
             <ChatBtn onClick={handleAddChat}>채팅하기</ChatBtn>
           </BadgeAndBtn>
-          {/* 장소 날짜 컨테이너 */}
-          <PositionContainer>
-            <Name>{data.userId.nickname}</Name>
-            <LocationIcon />
-            <Location>{`서울시 ${data.event_location}`}</Location>
-            <DateIcon />
-            <Date>{data.event_date}</Date>
-          </PositionContainer>
+          {/* 프로필 컨테이너 */}
+          <ProfileContainer>
+            {data.userId.profileImg === '1' ? (
+              <BasicProfile />
+            ) : (
+              <Avartar
+                src={`/profiles/profile${data.userId.profileImg}.webp`}
+              />
+            )}
+
+            <PositionContainer>
+              <Name>{data?.userId?.nickname}</Name>
+              {/* 장소 날짜 컨테이너 */}
+              <LocAndDateContainer>
+                <Location>
+                  <LocationIcon />
+                  {`서울시 ${data.event_location}`}
+                </Location>
+                <Date>
+                  <DateIcon />
+                  {data.event_date}
+                </Date>
+              </LocAndDateContainer>
+            </PositionContainer>
+          </ProfileContainer>
           {/* 타이틀 컨테이너 */}
           <TitleContainer>
             <Title>{data.title}</Title>
@@ -310,9 +356,16 @@ function CommunityDetail() {
       <Background>
         <PostContainer style={{ height: '100%' }}>
           <ButtonContainer>
-            <StyledArrowIcon fontSize="3.5rem" onClick={() => navigate(-1)} />
-            <button onClick={handleEdit}>수정</button>
-            <button onClick={handleDelete}>삭제</button>
+            <StyledArrowIcon
+              fontSize="3.5rem"
+              onClick={() => navigate('/community')}
+            />
+            {data && data.userId.nickname === auth.nickname && (
+              <>
+                <button onClick={handleEdit}>수정</button>
+                <button onClick={handleDelete}>삭제</button>
+              </>
+            )}
           </ButtonContainer>
           {content}
         </PostContainer>

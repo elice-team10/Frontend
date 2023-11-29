@@ -12,7 +12,7 @@ const Background = styled.div`
 `;
 
 const CommunityContainer = styled.div`
-  width: 1200px;
+  max-width: 120rem;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -21,6 +21,7 @@ const CommunityContainer = styled.div`
   // justify-content: center;
   margin: auto;
   padding: 5rem 0;
+  flex-grow: 1;
 `;
 
 const LostContainer = styled.div`
@@ -28,6 +29,16 @@ const LostContainer = styled.div`
   grid-template-columns: repeat(4, 29.6rem);
   grid-column-gap: 1.9rem;
   grid-row-gap: 4rem;
+
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    grid-template-columns: repeat(4, 29.6rem);
+  }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    grid-template-columns: repeat(2, 24.6rem);
+  }
 `;
 
 const FoundContainer = styled.div`
@@ -35,20 +46,35 @@ const FoundContainer = styled.div`
   grid-template-columns: repeat(4, 29.6rem);
   grid-column-gap: 1.9rem;
   grid-row-gap: 2.4rem;
+
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    grid-template-columns: repeat(4, 29.6rem);
+  }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    grid-template-columns: repeat(2, 29.6rem);
+  }
 `;
 
 function CommunityBoard() {
   const [currentTab, setCurrentTab] = useState('찾아요');
   const clickTabHandle = (tab) => {
-    console.log('Tab clicked:', tab);
     setCurrentTab(tab);
   };
-
+  // 게시글 정보
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['events'],
     queryFn: () => fetchEvents('/post'),
     staleTime: 5000,
   });
+
+  // 댓글 정보
+  // const { data: commentData } = useQuery({
+  //   queryKey: ['commentData'],
+  //   queryFn: () => fetchComments(`/comment/${postId}`),
+  // });
 
   let content;
 
@@ -68,9 +94,7 @@ function CommunityBoard() {
   if (data) {
     const lostItem = data.filter((event) => event.board_category === 0);
     const foundItem = data.filter((event) => event.board_category === 1);
-    console.log(data);
-    // console.log('new', data['0'].userId._id);
-
+    
     content = (
       <>
         {currentTab === '찾아요' ? (
