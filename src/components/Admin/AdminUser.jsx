@@ -1,4 +1,4 @@
-import { useState, useEffect, useImperativeHandle, forwardRef  } from 'react';
+import { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
 import { axiosPrivate } from '../../api/axios';
@@ -12,7 +12,7 @@ const columns = [
     headerName: '회원 상태',
     width: 230,
     renderCell: (params) => (
-      <span>{params.value === 0 ? "관리자" : "일반 회원"}</span>
+      <span>{params.value === 0 ? '관리자' : '일반 회원'}</span>
     ),
   },
   {
@@ -71,8 +71,7 @@ const AdminUser = ({ onSelectionChange }, ref) => {
               fontSize: theme.fontSizes.medium,
             },
             color: theme.colors.text,
-            borderTop: '1.5px solid black',
-            borderBottom: '0.5px solid black',
+            borderBottom: '1.2px solid #7C9299',
           },
         }}
       />

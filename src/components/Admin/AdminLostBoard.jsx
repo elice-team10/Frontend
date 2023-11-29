@@ -1,9 +1,4 @@
-import {
-  useState,
-  useEffect,
-  useImperativeHandle,
-  forwardRef,
-} from 'react';
+import { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
 import { axiosPrivate } from '../../api/axios';
@@ -16,14 +11,17 @@ const columns = [
     headerName: '종류',
     width: 190,
   },
-  { field: 'nickname', headerName: '닉네임', width: 190 },
+  {
+    field: 'nickname',
+    headerName: '닉네임',
+    width: 190,
+    renderCell: (params) => <span>{params.row.userId.nickname}</span>,
+  },
   {
     field: 'isFound',
     headerName: '현재 상태',
     width: 190,
-    renderCell: (params) => (
-      <span>{params.value ? '완료' : '미완료'}</span>
-    ),
+    renderCell: (params) => <span>{params.value ? '완료' : '미완료'}</span>,
   },
 
   {
@@ -43,7 +41,7 @@ const AdminLostBoard = ({ onSelectionChange }, ref) => {
       const filteredData = response.data.filter(
         (post) => post.board_category === 0,
       );
-      setRows(filteredData); // 서버로부터 받은 데이터로 rows 상태를 업데이트
+      setRows(filteredData);
     } catch (error) {
       console.error('Error fetching data: ', error);
     }
@@ -86,8 +84,7 @@ const AdminLostBoard = ({ onSelectionChange }, ref) => {
               fontSize: theme.fontSizes.medium,
             },
             color: theme.colors.text,
-            borderTop: '1.5px solid black',
-            borderBottom: '0.5px solid black',
+            borderBottom: '1.2px solid #7C9299',
           },
         }}
       />
