@@ -67,7 +67,7 @@ CommunityTab.defaultProps = {
 const tabs = ['찾아요', '주웠어요'];
 
 function CommunityTab({ currentTab, onClick }) {
- const { auth } = useAuth();
+  const { auth } = useAuth();
   return (
     <Container>
       {tabs.map((tab, i) => {
@@ -81,17 +81,17 @@ function CommunityTab({ currentTab, onClick }) {
           </EachTab>
         );
       })}
-        { auth && (
-      <WriteButton>
-        <StyledLink
-          to={`/community/write?board_category=${
-            currentTab === '찾아요' ? 0 : 1
-          }`}
-        >
-          글 작성
-        </StyledLink>
-      </WriteButton>
-        )}
+      {auth && (
+        <WriteButton>
+          <StyledLink
+            to={`/community/write?board_category=${
+              currentTab === '찾아요' ? 0 : 1
+            }`}
+          >
+            글 작성
+          </StyledLink>
+        </WriteButton>
+      )}
     </Container>
   );
 }
