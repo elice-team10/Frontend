@@ -7,10 +7,10 @@ const AdminContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 20px 0;
 `;
 
 const AdminTitleBox = styled.div`
-  width: 1200px;
   text-align: center;
   margin: 70px 0 30px 0;
   font-weight: bold;

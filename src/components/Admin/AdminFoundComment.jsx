@@ -1,16 +1,16 @@
-import {
-  useState,
-  useEffect,
-  useImperativeHandle,
-  forwardRef,
-} from 'react';
+import { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
 import { axiosPrivate } from '../../api/axios';
 
 const columns = [
   { field: '_id', headerName: '댓글 번호', width: 230 },
-  { field: 'nickname', headerName: '닉네임', width: 230 },
+  {
+    field: 'nickname',
+    headerName: '닉네임',
+    width: 230,
+    renderCell: (params) => <span>{params.row.userId.nickname}</span>,
+  },
   { field: 'content', headerName: '내용', width: 230 },
   {
     field: 'postId',
@@ -77,8 +77,7 @@ const AdminFoundComment = ({ onSelectionChange }, ref) => {
               fontSize: theme.fontSizes.medium,
             },
             color: theme.colors.text,
-            borderTop: '1.5px solid black',
-            borderBottom: '0.5px solid black',
+            borderBottom: '1.2px solid #7C9299',
           },
         }}
       />
