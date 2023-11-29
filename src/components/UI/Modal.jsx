@@ -38,7 +38,7 @@ const Titlebox = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 5px 12px;
+  padding: 0 12px !important;
   height: 30px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -53,15 +53,14 @@ const Text = styled.p`
   text-align: center;
   line-height: 50px;
   font-size: 20px;
-  color: #393d3f;
-  margin: 0;
+  margin: 8px !important;
 `;
 
 const BtnBox = styled.div`
   display: flex;
   justify-content: center;
-  gap: 20px;
-  margin-top: 30px;
+  gap: 12px;
+  margin-bottom: 12px !important;
 `;
 
 const styleClearIcon = {

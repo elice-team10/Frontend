@@ -6,6 +6,7 @@ import { AuthProvider } from './context/AuthProvider';
 import { SearchProvider } from './context/SearchProvider';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+<<<<<<< HEAD
 const theme = createTheme({
   palette: {
     primary: {
@@ -13,6 +14,16 @@ const theme = createTheme({
     },
   },
 });
+=======
+const Appcontainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 265rem;
+  min-height: 100vh;
+`;
+
+const queryClient = new QueryClient();
+>>>>>>> 35542623235ccc84b95a111090924e0e0b8fb9f6
 
 function App() {
   return (

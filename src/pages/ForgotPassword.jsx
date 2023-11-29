@@ -4,21 +4,11 @@ import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX } from '../config/regex';
-import background from '../assets/background.webp';
 import api from '../api/axios';
+import AuthContainer from '../components/Auth/AuthContainer';
 import { CheckLoggedIn } from '../utils/CheckLoggedIn';
 import { useNavigate } from 'react-router-dom';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-
-const RESET_PASSWORD_URL = '/user/reset-password';
-
-const ForgotPasswordContainer = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - 9rem);
-  background: url(${background});
-`;
 
 const ForgotPasswordFormContainer = styled.div`
   position: relative;
@@ -27,6 +17,7 @@ const ForgotPasswordFormContainer = styled.div`
   padding: 3.2rem 2rem 3rem 2rem; //바꿈
   border-radius: 12px;
   background-color: #eee; //바꿈
+  color: ${theme.colors.text};
 `;
 
 const StyledArrowIcon = styled(ArrowBackIosIcon)`
@@ -60,6 +51,8 @@ const Message = styled.span`
     props.type === 'error' ? theme.colors.error : theme.colors.text};
 `;
 
+const RESET_PASSWORD_URL = '/user/findPW';
+
 const ForgotPassword = () => {
   const navigate = useNavigate();
 
@@ -85,19 +78,15 @@ const ForgotPassword = () => {
     try {
       const res = await api.post(
         RESET_PASSWORD_URL,
-        JSON.stringify({ email }),
+        { email },
         {
           headers: { 'Content-Type': 'application/json' },
           withCredentials: true,
         },
       );
 
-      // TODO: 비밀번호 찾기 마무리
-
       setIsError(false);
-
-      // setMessage('임시 비밀번호를 이메일로 전송했습니다.');
-      setMessage(res.data.message);
+      setMessage('새 비밀번호를 이메일로 보냈습니다.');
     } catch (error) {
       console.error(' 오류 발생: ', error);
       setIsError(true);
@@ -110,7 +99,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <ForgotPasswordContainer>
+    <AuthContainer>
       <ForgotPasswordFormContainer>
         <StyledArrowIcon onClick={() => navigate(-1)} />
         <HeaderTitle>비밀번호 찾기</HeaderTitle>
@@ -131,7 +120,7 @@ const ForgotPassword = () => {
           <AuthFormButton text="비밀번호 찾기" />
         </ForgotPasswordForm>
       </ForgotPasswordFormContainer>
-    </ForgotPasswordContainer>
+    </AuthContainer>
   );
 };
 
