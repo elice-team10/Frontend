@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import theme from '../../config/theme';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+
 import DeleteIcon from '@mui/icons-material/Delete';
 import { axiosPrivate } from '../../api/axios';
 import { useNavigate } from 'react-router';
@@ -26,9 +27,9 @@ const ChatleftBox = styled.div`
   width: 100px;
   background: linear-gradient(
     135deg,
-    rgba(255, 165, 0, 0.5),
-    rgba(255, 127, 80, 0.5),
-    rgba(255, 103, 0, 0.6)
+    rgba(255, 165, 0, 0.8),
+    rgba(255, 127, 80, 0.8),
+    rgba(255, 103, 0, 0.8)
   );
   border-top-left-radius: 12px;
   border-bottom-left-radius: 12px;
