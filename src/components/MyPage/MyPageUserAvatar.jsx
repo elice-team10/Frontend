@@ -13,12 +13,12 @@ import profile8 from '../../assets/profiles/profile8.webp';
 
 const AvatarWrapper = styled.div`
   position: relative;
-
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+
+  /* transition: all 0.3s ease-in-out;
   &:hover {
     transform: scale(1.1);
-  }
+  } */
 `;
 
 const MyBasicAvatar = styled(AccountCircleIcon)`

@@ -28,6 +28,7 @@ const ModalContainer = styled.div`
 
 const HeaderTitle = styled.h1`
   align-self: center;
+  color: ${theme.colors.text};
   font-size: ${theme.fontSizes.title};
 
   /* 1200px / 16px = 75 */
@@ -58,11 +59,11 @@ const MyBasicAvatar = styled(AccountCircleIcon)`
 
   cursor: pointer;
 
-  transition: all 0.3s ease-in-out !important;
+  /* transition: all 0.3s ease-in-out !important;
 
   &:hover {
     transform: scale(1.1);
-  }
+  } */
 
   /* 1200px / 16px = 75 */
   @media (max-width: 75em) {
@@ -92,11 +93,11 @@ const Image = styled.img`
   object-fit: cover;
 
   cursor: pointer;
-  transition: all 0.3s ease-in-out;
+  /* transition: all 0.3s ease-in-out;
 
   &:hover {
     transform: scale(1.1);
-  }
+  } */
 
   /* 1200px / 16px = 75 */
   @media (max-width: 75em) {
@@ -172,7 +173,7 @@ export default function MyPageUserAvatarListModal({
     <ModalContainer className="modal-container" onClick={handleModalClick}>
       <ModalWrapper>
         <HeaderTitle>
-          <TypingText strings={['원하시는 프로필 사진을 선택해주세요! 😸']} />
+          <TypingText strings={['원하시는 프로필 사진을 선택해주세요!']} />
         </HeaderTitle>
         <ImageList>
           <MyBasicAvatar className="basic" onClick={handleImageClick} />
