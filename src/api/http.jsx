@@ -39,7 +39,7 @@ export async function createNewEvent(eventData) {
 }
 
 // 게시글 삭제하는 함수
-export async function deleteEvent({postId, userId}) {
+export async function deleteEvent({ postId, userId }) {
   console.log('deleteEvent called');
   const response = await axiosPrivate().delete(`/post/${postId}/${userId}`);
   console.log('deleteEvent response:', response);
@@ -57,14 +57,86 @@ export async function deleteEvent({postId, userId}) {
 }
 
 // 게시글 업데이트 함수
-export async function updateEvent({postId, userId, eventData}) {
-  const response = await axiosPrivate().put(`/post/${postId}/${userId}`, eventData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-    withCredentials: true,
-  });
+export async function updateEvent({ postId, userId, eventData }) {
+  const response = await axiosPrivate().put(
+    `/post/${postId}/${userId}`,
+    eventData,
+    {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      withCredentials: true,
+    },
+  );
 
   if (response.status !== 200) {
     const error = new Error('게시글 수정에 실패했습니다.');
+    error.code = response.status;
+    error.info = response.data;
+    throw error;
+  }
+
+  const event = response.data;
+
+  return event;
+}
+
+// 댓글 정보 가져오는 함수
+export async function fetchComments(endpoint) {
+  const response = await api.get(endpoint, { withCredentials: true });
+
+  if (response.status !== 200) {
+    const error = new Error('댓글 정보를 가져오는데 실패했습니다.');
+    error.code = response.status;
+    error.info = response.data;
+    throw error;
+  }
+
+  const events = response.data;
+
+  return events;
+}
+
+// 댓글 작성
+export async function createNewComment({ postId, content }) {
+  const response = await axiosPrivate().post(`/comment/${postId}`, { content });
+  if (response.status !== 200) {
+    const error = new Error('댓글 작성에 실패했습니다.');
+    error.code = response.status;
+    error.info = response.data;
+    throw error;
+  }
+
+  const event = response.data;
+
+  return event;
+}
+
+// 댓글 삭제
+export async function deleteComment({ commentId, userId }) {
+  const response = await axiosPrivate().delete(
+    `/comment/${commentId}/${userId}`,
+  );
+
+  if (response.status !== 200) {
+    const error = new Error('댓글 삭제에 실패했습니다.');
+    error.code = response.status;
+    error.info = response.data;
+    throw error;
+  }
+
+  const event = response.data;
+
+  return event;
+}
+
+// 댓글 수정
+export async function updateComment({ commentId, userId, content }) {
+  const response = await axiosPrivate().put(`/comment/${commentId}/${userId}`, {
+    content,
+  });
+  console.log('updateEvent response:', response);
+
+  if (response.status !== 200) {
+    const error = new Error('댓글 수정에 실패했습니다.');
     error.code = response.status;
     error.info = response.data;
     throw error;
