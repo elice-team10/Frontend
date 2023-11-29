@@ -1,12 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import profile2 from '../../assets/profiles/profile2.webp';
-import profile3 from '../../assets/profiles/profile3.webp';
-import profile4 from '../../assets/profiles/profile4.webp';
-import profile5 from '../../assets/profiles/profile5.webp';
-import profile6 from '../../assets/profiles/profile6.webp';
-import profile7 from '../../assets/profiles/profile7.webp';
-import profile8 from '../../assets/profiles/profile8.webp';
 import theme from '../../config/theme';
 import TypingText from '../UI/TypingText';
 import { axiosPrivate } from '../../api/axios';
@@ -125,13 +118,13 @@ export default function MyPageUserAvatarListModal({
 }) {
   const { updateAuth } = useAuth();
   const imageList = [
-    profile2,
-    profile3,
-    profile4,
-    profile5,
-    profile6,
-    profile7,
-    profile8,
+    '/profiles/profile2.webp',
+    '/profiles/profile3.webp',
+    '/profiles/profile4.webp',
+    '/profiles/profile5.webp',
+    '/profiles/profile6.webp',
+    '/profiles/profile7.webp',
+    '/profiles/profile8.webp',
   ];
 
   const handleModalClick = (e) => {
