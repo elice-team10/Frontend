@@ -10,6 +10,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: ${theme.colors.pastelWhite};
+  flex-grow: 1;
 `;
 
 const SearchResult = () => {
