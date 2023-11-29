@@ -12,6 +12,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { formatDate } from '../../utils/FormatDate';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
+import useAuth from '../../hooks/useAuth';
 
 const ReplyContainer = styled.div`
   width: 56rem;
@@ -120,6 +121,7 @@ function Comment({ postId }) {
   const [comment, setComment] = useState('');
   const [isEdit, setIsEdit] = useState(false);
   const commentRef = useRef({});
+  const { auth } = useAuth();
 
   // 수정 버튼 클릭시 p태그 포커스
   useEffect(() => {
@@ -204,7 +206,7 @@ function Comment({ postId }) {
     );
   }
   if (commentData && commentData.length !== 0) {
-    console.log('data', commentData);
+    console.log('commentdata', commentData);
     content = (
       <ul>
         {commentData.map((item, index) => (
@@ -246,6 +248,7 @@ function Comment({ postId }) {
                     </div>
                   </>
                 ) : (
+                  item.userId?.nickname === auth?.nickname && (
                   <>
                     <div
                       type="button"
@@ -268,6 +271,7 @@ function Comment({ postId }) {
                       삭제
                     </div>
                   </>
+                  )
                 )}
               </ReplyButton>
             </ReplyBoard>

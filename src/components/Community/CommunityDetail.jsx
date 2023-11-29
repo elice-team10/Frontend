@@ -14,6 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import ErrorBlock from '../UI/ErrorBlock';
 import { useState } from 'react';
 import ModalBasic from '../UI/Modal';
+import useAuth from '../../hooks/useAuth';
 
 const Background = styled.div`
   background-color: #eee;
@@ -151,6 +152,7 @@ function CommunityDetail() {
 
   const navigate = useNavigate();
   const params = useParams();
+  const { auth } = useAuth();
 
   const { data, isError, error } = useQuery({
     queryKey: ['events', params.id],
@@ -207,6 +209,7 @@ function CommunityDetail() {
   }
 
   if (data) {
+    console.log('detail', data);
     content = (
       <>
         <ContentContainer>
@@ -256,8 +259,12 @@ function CommunityDetail() {
         <PostContainer style={{ height: '100%' }}>
           <ButtonContainer>
             <StyledArrowIcon fontSize="3.5rem" onClick={() => navigate('/community')} />
-            <button onClick={handleEdit}>수정</button>
-            <button onClick={handleDelete}>삭제</button>
+            {data && data.userId.nickname === auth.nickname && (
+              <>
+              <button onClick={handleEdit}>수정</button>
+              <button onClick={handleDelete}>삭제</button>
+              </>
+            )}
           </ButtonContainer>
           {content}
         </PostContainer>
