@@ -6,18 +6,11 @@ import theme from '../config/theme';
 import AuthFormInput from '../components/Auth/AuthFormInput';
 import AuthFormButton from '../components/Auth/AuthFormButton';
 import { EMAIL_REGEX, PWD_REGEX } from '../config/regex';
-import background from '../assets/background.webp';
 import { CheckLoggedIn } from '../utils/CheckLoggedIn';
 import api from '../api/axios';
+import AuthContainer from '../components/Auth/AuthContainer';
 // import title from '../assets/로고11.png';
-
-const LoginContainer = styled.section`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: calc(100vh - 9rem);
-  background: url(${background});
-`;
+import TypingText from '../components/UI/TypingText';
 
 const LoginFormContainer = styled.div`
   display: flex;
@@ -25,6 +18,7 @@ const LoginFormContainer = styled.div`
   padding: 3.2rem 2rem 4.8rem 2rem; // 바꿈
   border-radius: 12px;
   background-color: #eee;
+  color: ${theme.colors.text};
 `;
 
 const LoginForm = styled.form`
@@ -150,11 +144,14 @@ const Login = () => {
   };
 
   return (
-    <LoginContainer>
+    <AuthContainer>
       <LoginFormContainer>
         {/* <Title src={title} /> */}
         {/* <HeaderTitle style={{ color: '#ff5000' }}>Lost & Found</HeaderTitle> */}
-        <HeaderTitle>로그인</HeaderTitle>
+        {/* <HeaderTitle>로그인</HeaderTitle> */}
+        <HeaderTitle>
+          <TypingText strings={['찾았습니다.', '지금 로그인해주세요.']} />
+        </HeaderTitle>
         <LoginForm onSubmit={handleSubmit}>
           {/* <FormLabel htmlFor="email">이메일</FormLabel> */}
           <AuthFormInput
@@ -180,7 +177,7 @@ const Login = () => {
           </AuthLinksContainer>
         </LoginForm>
       </LoginFormContainer>
-    </LoginContainer>
+    </AuthContainer>
   );
 };
 

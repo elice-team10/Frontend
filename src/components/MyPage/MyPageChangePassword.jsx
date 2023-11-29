@@ -19,30 +19,31 @@ const ChangePasswordModalWrapper = styled.section`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
 `;
 
 const ChangePasswordModalContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 3.2rem 4.8rem 4.8rem 4.8rem;
+  padding: 4.8rem 2.4rem 4.8rem 2.4rem !important;
   border-radius: 12px;
-  background-color: #fff;
+  background-color: #eee;
 `;
 
 const ChangePasswordForm = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 0.6rem;
 `;
 
 const HeaderTitle = styled.h1`
   align-self: center;
-  margin-bottom: 4.8rem;
+  margin-bottom: 4.8rem !important;
   font-size: ${theme.fontSizes.subtitle};
 `;
 
 const ErrorMessage = styled.span`
-  padding-left: 0.8rem;
+  padding-left: 0.8rem !important;
   font-size: ${theme.fontSizes.small};
   color: ${theme.colors.error};
 `;
@@ -106,8 +107,6 @@ const MyPageChangePassword = ({ isModalOpen, onCloseModal }) => {
         password: passwordInfo.currentPassword,
         newPassword: passwordInfo.newPassword,
       });
-
-      console.log(response);
 
       // 비밀번호 변경 성공
       setPasswordInfo((prev) => ({ ...prev, validPassword: true }));
