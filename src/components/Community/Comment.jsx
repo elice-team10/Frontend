@@ -309,6 +309,7 @@ function Comment({ postId }) {
         commentData ? commentData.length : '0'
       }`}</ReplyCount>
       <ReplyContainer>
+        {auth && (
         <ReplyForm>
           <textarea
             placeholder="댓글을 남겨보세요."
@@ -325,6 +326,7 @@ function Comment({ postId }) {
             등록
           </button>
         </ReplyForm>
+        )}
         {content}
       </ReplyContainer>
     </>
