@@ -18,7 +18,6 @@ const theme = createTheme({
 const Appcontainer = styled.div`
   display: flex;
   flex-direction: column;
-  max-width: 265rem;
   min-height: 100vh;
 `;
 
