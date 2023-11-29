@@ -10,6 +10,7 @@ import { createNewEvent, queryClient } from '../../api/http';
 import useAuth from '../../hooks/useAuth';
 import ErrorBlock from '../UI/ErrorBlock';
 import CircularProgress from '@mui/material/CircularProgress';
+import ToastAlert from '../UI/ToastAlert';
 
 const Background = styled.div`
   background-color: #eee;
@@ -164,6 +165,8 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   const { auth } = useAuth();
   // 수정 버튼 상태
   const [isEditMode, setIsEditMode] = useState(false);
+  // 에러 툴팁 상태
+  // const [tooltip, setTooltip] = useState('');
 
   useEffect(() => {
     if (inputData) {
@@ -194,6 +197,8 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   const searchParams = new URLSearchParams(urlLocation.search);
   const boardCategoryFromQuery = searchParams.get('board_category');
 
+  // const userId = urlLocation.state.userId;
+
   useEffect(() => {
     if (boardCategoryFromQuery !== null) {
       setBoardCategory(Number(boardCategoryFromQuery));
@@ -211,8 +216,9 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   });
   // 게시판 작성 데이터 전송 formdata
   function handleSubmit(event) {
+
     event.preventDefault();
-    console.log('event', title);
+
     const formData = new FormData();
     formData.append('board_category', boardCategory);
     formData.append('product_category', productCategory);
@@ -226,9 +232,9 @@ function CommunityWrite({ inputData, onEditSubmit }) {
 
     if (isEditMode) {
       // 수정 모드인 경우, onEditSubmit 콜백 호출
-      console.log('event2', title);
-
+      const userId = urlLocation.state.userId;
       const updatedFormData = new FormData();
+
       updatedFormData.append('board_category', boardCategory);
       updatedFormData.append('product_category', productCategory);
       updatedFormData.append('event_date', date);
@@ -249,7 +255,9 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   return (
     <Background>
       <PostContainer onSubmit={handleSubmit}>
-        {isPending && <CircularProgress sx={{ color: '#ff6700' }} />}
+        {isPending && (
+          <ToastAlert icon="success" title="글 등록이 되었습니다." />
+        )}
         {!isPending && (
           <>
             <TitleContainer>
@@ -259,6 +267,7 @@ function CommunityWrite({ inputData, onEditSubmit }) {
                 value={title}
                 onChange={(event) => setTitle(event.target.value)}
               />
+
               <GradationBox />
             </TitleContainer>
             <ToolbarContainer>
@@ -322,10 +331,11 @@ function CommunityWrite({ inputData, onEditSubmit }) {
           </>
         )}
         {isError && (
-          <ErrorBlock
-            title="글 등록을 실패했습니다."
-            message={error.info?.message || '잠시후 다시 작성 부탁드립니다.'}
-          />
+          <ToastAlert icon="error" title='제목, 분실물종류, 내용은 필수 입력입니다.' />
+          // <ErrorBlock
+          //   title="글 등록을 실패했습니다."
+          //   message={error.info?.message || '잠시후 다시 작성 부탁드립니다.'}
+          // />
         )}
       </PostContainer>
     </Background>

@@ -10,7 +10,6 @@ import { axiosPrivate } from '../../api/axios';
 import ModalBasic from '../UI/Modal';
 import ToastAlert from '../UI/ToastAlert';
 
-
 const AdminNavContainer = styled.div`
   display: flex;
   align-items: flex-start;
@@ -52,7 +51,7 @@ const Button = styled.button`
     font-size: ${theme.fontSizes.small};
   }
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.1s;
 
   &:hover {
     filter: brightness(1.15);
@@ -138,7 +137,7 @@ const AdminTemplate = () => {
       onShowModal();
     } else {
       setShowInfoToast(true);
-      setTimeout(() => setShowInfoToast(false),   0);
+      setTimeout(() => setShowInfoToast(false), 0);
     }
   };
 

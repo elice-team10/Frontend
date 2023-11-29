@@ -81,8 +81,13 @@ const styleQuestionIcon = {
 };
 
 const styleButton1 = {
+<<<<<<< HEAD
   transition: 'all 0.2s',
   width: '120px',
+=======
+  transition: 'all 0.1s',
+  width: '180px',
+>>>>>>> 9f1c0938b5626944d69732bab98543ecdfce3ab4
   height: '40px',
   fontSize: '17px',
   color: '#ed7117',
