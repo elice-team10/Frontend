@@ -4,11 +4,13 @@ import Header from './components/UI/Header';
 import Footer from './components/UI/Footer';
 import { AuthProvider } from './context/AuthProvider';
 import { SearchProvider } from './context/SearchProvider';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import styled from 'styled-components';
 
 const Appcontainer = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 265rem;
   min-height: 100vh;
 `;
 
@@ -16,16 +18,17 @@ const queryClient = new QueryClient();
 
 function App() {
   return (
-    <>
-      <ThemeProvider theme={theme}>
-        <AuthProvider>
-          <SearchProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <SearchProvider>
+          <Appcontainer>
             <Header />
             <Outlet />
-          </SearchProvider>
-        </AuthProvider>
-      </ThemeProvider>
-    </>
+            <Footer />
+          </Appcontainer>
+        </SearchProvider>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 
