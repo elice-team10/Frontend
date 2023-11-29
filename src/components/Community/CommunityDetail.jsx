@@ -104,10 +104,9 @@ const PositionContainer = styled.div`
   padding: 12px 4px;
   display: flex;
   align-items: center;
-  height: 5rem;
+  height: 4rem;
   flex-direction: column;
   align-items: start;
-  
 
   && div {
     display: flex;
@@ -117,7 +116,7 @@ const PositionContainer = styled.div`
 const LocAndDateContainer = styled.div``;
 
 const Name = styled.div`
-  font-size: ${theme.fontSizes.medium};
+  font-size: ${theme.fontSizes.small};
   font-weight: bold;
   color: ${theme.colors.text};
   margin-left: 0.8rem;
@@ -158,9 +157,9 @@ const ProfileContainer = styled.div`
 `;
 
 const BasicProfile = styled(AccountCircleIcon)`
-width: 38.4px !important;
-height: 38.4px !important;
-color: #ccc;
+  width: 38.4px !important;
+  height: 38.4px !important;
+  color: #ccc;
 `;
 
 const Avartar = styled.img`
@@ -310,11 +309,14 @@ function CommunityDetail() {
             {data.userId.profileImg === '1' ? (
               <BasicProfile />
             ) : (
-              <Avartar src={`/profiles/profile${data.userId.profileImg}.webp`} />
+              <Avartar
+                src={`/profiles/profile${data.userId.profileImg}.webp`}
+              />
             )}
 
             <PositionContainer>
               <Name>{data?.userId?.nickname}</Name>
+              {/* 장소 날짜 컨테이너 */}
               <LocAndDateContainer>
                 <Location>
                   <LocationIcon />
@@ -327,7 +329,6 @@ function CommunityDetail() {
               </LocAndDateContainer>
             </PositionContainer>
           </ProfileContainer>
-          {/* 장소 날짜 컨테이너 */}
           {/* 타이틀 컨테이너 */}
           <TitleContainer>
             <Title>{data.title}</Title>

@@ -8,7 +8,7 @@ const WriteButton = styled.button`
   line-height: 22px;
   color: ${theme.colors.textWhite};
   padding: 0.8rem;
-  margin: 19px 0 19px 897px;
+  margin: 19px 0 19px auto;
   background-color: ${theme.colors.primary};
   border: 1px solid ${theme.colors.primary};
   font-weight: bold;
@@ -22,6 +22,16 @@ const Container = styled.div`
   display: flex;
   width: 100%;
   padding-bottom: 5rem;
+
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    max-width: 102.4rem;
+  }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    max-width: 76.8rem;
+  }
 `;
 
 const StyledLink = styled(Link)`

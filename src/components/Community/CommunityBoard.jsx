@@ -12,7 +12,7 @@ const Background = styled.div`
 `;
 
 const CommunityContainer = styled.div`
-  width: 1200px;
+  max-width: 120rem;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -29,6 +29,16 @@ const LostContainer = styled.div`
   grid-template-columns: repeat(4, 29.6rem);
   grid-column-gap: 1.9rem;
   grid-row-gap: 4rem;
+
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    grid-template-columns: repeat(4, 29.6rem);
+  }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    grid-template-columns: repeat(2, 24.6rem);
+  }
 `;
 
 const FoundContainer = styled.div`
@@ -36,6 +46,16 @@ const FoundContainer = styled.div`
   grid-template-columns: repeat(4, 29.6rem);
   grid-column-gap: 1.9rem;
   grid-row-gap: 2.4rem;
+
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    grid-template-columns: repeat(4, 29.6rem);
+  }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    grid-template-columns: repeat(2, 29.6rem);
+  }
 `;
 
 function CommunityBoard() {
