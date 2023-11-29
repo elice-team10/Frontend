@@ -16,7 +16,6 @@ import { useState } from 'react';
 import ModalBasic from '../UI/Modal';
 import useAuth from '../../hooks/useAuth';
 import { axiosPrivate } from '../../api/axios';
-import profile2 from '../../assets/profiles/profile2.webp';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const Background = styled.div`
