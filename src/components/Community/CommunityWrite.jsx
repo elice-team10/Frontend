@@ -214,6 +214,7 @@ function CommunityWrite({ inputData, onEditSubmit }) {
       navigate('/community');
     },
   });
+  
   // 게시판 작성 데이터 전송 formdata
   function handleSubmit(event) {
 

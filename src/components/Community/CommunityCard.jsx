@@ -20,6 +20,7 @@ const Card = styled.div`
   top: 0;
   transition: all 0.1s ease-in;
   overflow: hidden;
+  cursor: pointer;
 
   &:hover {
     top: -2px;
