@@ -1,6 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Outlet, Route, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import {
+  Outlet,
+  Route,
+  RouterProvider,
+  createBrowserRouter,
+} from 'react-router-dom';
 import './index.css';
 import App from './App.jsx';
 import Home from './pages/Home.jsx';
@@ -19,7 +24,6 @@ import ChatList from './pages/ChatList';
 import SearchResult from './pages/SearchResult.jsx';
 import { queryClient } from './api/http.jsx';
 import CommunityEdit from './components/Community/CommunityEdit.jsx';
-
 
 const router = createBrowserRouter([
   {
@@ -51,7 +55,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/community/post/:id',
-        element: <CommunityDetail />
+        element: <CommunityDetail />,
       },
       {
         path: '/community/post/:id/edit',
@@ -73,7 +77,6 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <QueryClientProvider client={queryClient}>
