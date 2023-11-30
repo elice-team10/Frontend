@@ -117,7 +117,14 @@ const ChatRoom = () => {
   const location = useLocation();
 
   const searchParams = new URLSearchParams(location.search);
-  const opponentNickname = searchParams.get('nickname');
+  let opponentNickname = searchParams.get('nickname');
+
+  const searchParamsDirect = new URLSearchParams(location.search);
+  const opponentNicknameDirect = searchParamsDirect.get('nickname');
+
+  if (!opponentNickname) {
+    opponentNickname = opponentNicknameDirect;
+  }
 
   const authString = localStorage.getItem('auth'); // 'auth' 키 로컬 스토리지에서 사용자 정보 가져오기
   let localNickname;
@@ -151,6 +158,7 @@ const ChatRoom = () => {
   useEffect(() => {
     if (data) {
       setMessages(data);
+      console.log('123', { messages });
     }
   }, [data]);
 
@@ -188,9 +196,12 @@ const ChatRoom = () => {
           <HeaderNickname>{opponentNickname}</HeaderNickname>
         </ChatHeader>
         <MessageList>
-          {messages.map((messages, index) => (
-            <Message key={index} $mine={messages.nickname === localNickname}>
-              {messages.content}
+          {messages.map((message, index) => (
+            <Message
+              key={index}
+              $mine={message.userId.nickname === localNickname}
+            >
+              {message.content}
             </Message>
           ))}
         </MessageList>
