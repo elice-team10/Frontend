@@ -185,13 +185,19 @@ const MyPage = () => {
   const [selectedImage, setSelectedImage] = useState('1');
 
   const [nickname, setNickname] = useState(auth?.nickname);
-  const [email, setEmail] = useState(auth?.email);
+
+  // 메모: 이메일 수정 기능은 없으면 좋을 것 같다는 피드백을 받아서 이메일 수정 관련 코드 주석 처리
+  // const [email, setEmail] = useState(auth?.email);
+
   const [tempNickname, setTempNickname] = useState('');
-  const [tempEmail, setTempEmail] = useState('');
+  // const [tempEmail, setTempEmail] = useState('');
+
   const [isNicknameEditMode, setIsNicknameEditMode] = useState(false);
-  const [isEmailEditMode, setIsEmailEditMode] = useState(false);
+  // const [isEmailEditMode, setIsEmailEditMode] = useState(false);
+
   const [errorMsgNickname, setErrorMsgNickname] = useState('');
-  const [errorMsgEmail, setErrorMsgEmail] = useState('');
+
+  // const [errorMsgEmail, setErrorMsgEmail] = useState('');
   const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
     useState(false);
   const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
@@ -209,7 +215,7 @@ const MyPage = () => {
 
         setSelectedImage(profileImg);
         setNickname(nickname);
-        setEmail(email);
+        // setEmail(email);
       } catch (err) {
         console.error(err);
       }
@@ -254,30 +260,30 @@ const MyPage = () => {
     }
   };
 
-  const handleEmailConfirm = async () => {
-    // 이메일 데이터 업데이트 요청
-    // 이메일 유효성 검사 필요
-    if (!EMAIL_REGEX.test(tempEmail)) {
-      setErrorMsgEmail('유효한 이메일 주소를 입력하세요.');
-      return;
-    }
+  // const handleEmailConfirm = async () => {
+  //   // 이메일 데이터 업데이트 요청
+  //   // 이메일 유효성 검사 필요
+  //   if (!EMAIL_REGEX.test(tempEmail)) {
+  //     setErrorMsgEmail('유효한 이메일 주소를 입력하세요.');
+  //     return;
+  //   }
 
-    try {
-      const response = await axiosPrivate().put('/user', {
-        email: tempEmail,
-      });
+  //   try {
+  //     const response = await axiosPrivate().put('/user', {
+  //       email: tempEmail,
+  //     });
 
-      // 닉네임 유효성 검사 통과 -> 로컬 스토리지 데이터 업데이트
-      updateAuth({ email: tempEmail });
+  //     // 닉네임 유효성 검사 통과 -> 로컬 스토리지 데이터 업데이트
+  //     updateAuth({ email: tempEmail });
 
-      // 이메일 유효성 검사 통과 -> 상태 업데이트
-      setEmail(tempEmail);
-      setErrorMsgEmail('');
-      setIsEmailEditMode(false);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //     // 이메일 유효성 검사 통과 -> 상태 업데이트
+  //     setEmail(tempEmail);
+  //     setErrorMsgEmail('');
+  //     setIsEmailEditMode(false);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const handleDeleteAccount = async () => {
     try {
@@ -298,18 +304,18 @@ const MyPage = () => {
     setIsNicknameEditMode((prev) => !prev);
   };
 
-  const handleClickEditEmail = () => {
-    setTempEmail(email);
-    setIsEmailEditMode((prev) => !prev);
-  };
+  // const handleClickEditEmail = () => {
+  //   setTempEmail(email);
+  //   setIsEmailEditMode((prev) => !prev);
+  // };
 
   const handleNicknameChange = (e) => {
     setTempNickname(e.target.value);
   };
 
-  const handleEmailChange = (e) => {
-    setTempEmail(e.target.value);
-  };
+  // const handleEmailChange = (e) => {
+  //   setTempEmail(e.target.value);
+  // };
 
   const handleNicknameCancel = () => {
     setTempNickname('');
@@ -317,11 +323,11 @@ const MyPage = () => {
     setIsNicknameEditMode(false);
   };
 
-  const handleEmailCancel = () => {
-    setTempEmail('');
-    setErrorMsgEmail('');
-    setIsEmailEditMode(false);
-  };
+  // const handleEmailCancel = () => {
+  //   setTempEmail('');
+  //   setErrorMsgEmail('');
+  //   setIsEmailEditMode(false);
+  // };
 
   // 프로필 모달
   const handleOpenProfileModal = () => {
@@ -404,7 +410,7 @@ const MyPage = () => {
                 />
               </UserInfoCard>
             </UserInfoCardWrapper>
-            <UserInfoCard>
+            {/* <UserInfoCard>
               <Label htmlFor="email">이메일</Label>
               <MyPageEmail
                 email={email}
@@ -416,7 +422,7 @@ const MyPage = () => {
                 onChange={handleEmailChange}
                 errorMsg={errorMsgEmail}
               />
-            </UserInfoCard>
+            </UserInfoCard> */}
 
             <ActionLinksContainer>
               <StyledChangePasswordLink onClick={handleOpenPasswordChangeModal}>
@@ -555,6 +561,7 @@ function MyPageNickname({
   );
 }
 
+// 메모: 이메일 수정 기능은 없으면 좋을 것 같다는 피드백을 받아서 이메일 수정 관련 코드 사용 안함
 /**
  * MyPageEmail
  */
