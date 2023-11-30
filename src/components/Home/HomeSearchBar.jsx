@@ -5,12 +5,11 @@ import lafLogo from '../../assets/laf_logo.png';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, LinearProgress, CircularProgress } from '@mui/material';
 import { useSearch } from '../../context/SearchProvider';
-import axios from 'axios';
 import { fetchSubwayItems, fetchLostItems, fetchCommunity } from './fetchItems';
-import { SecurityUpdateGood } from '@mui/icons-material';
+import { SearchHistoryIcon } from './SearchHistoryIcon';
 
 const HomeContainer = styled.div`
-  width: 1200px;
+  max-width: 1200px;
 `;
 
 const Image = styled.img`
@@ -24,6 +23,10 @@ const HomeSearchBarContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  max-width: 120rem;
+  // background-color: #7c9299;
+  padding: 3rem 11.75rem;
+  border-radius: 12px;
 `;
 
 const SearchBox = styled.form`
@@ -32,23 +35,35 @@ const SearchBox = styled.form`
   width: 70rem;
   height: 50px;
   border-radius: 32px;
+  background-color: #fff;
   border: 3px solid #ff6700;
-  transition:
-    border-color 0.1s,
-    box-shadow 0.2s;
+  transition:background-color 0.1s,
   &:hover {
-    border-color: #ff4000;
-    box-shadow: 0 0 5px 2px rgb(225, 225, 226);
-    input:: placeholder {
-      // color: #ff4500;
-    }
+    background-color: black;
+  }
+`;
+
+const SearchButton = styled.button`
+  width: 9rem;
+  height: 50px;
+  border-radius: 32px;
+  border: none;
+  background-color: #151618;
+  color: white;
+  margin-left: 1rem;
+  cursor: pointer;
+  font-size: 1.6rem;
+  transition: all 0.1s ease-in-out;
+  &:hover {
+    background-color: #ddd;
+    color: black;
   }
 `;
 
 const StyledIcon = styled(SearchIcon)`
   font-size: 4rem !important;
   color: #ff6700;
-  margin-right: 10px;
+  margin-left: 15px;
   margin-top: auto;
   margin-bottom: auto;
   &:hover {
@@ -58,7 +73,7 @@ const StyledIcon = styled(SearchIcon)`
 const SearchInput = styled.input`
   border: none;
   color: #393d3f;
-  background-color: #f7f3f0;
+  background-color: white;
   outline: none;
   width: 70rem;
   margin: auto 30px auto 30px;
@@ -106,6 +121,14 @@ const HomeSearchBar = () => {
     subwayCount,
   ]);
 
+  const saveSearchTerm = (term) => {
+    let searches = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    if (!searches.includes(term)) {
+      searches = [term, ...searches].slice(0, 10); // 최근 10개 항목만 저장
+      localStorage.setItem('searchHistory', JSON.stringify(searches));
+    }
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true); // 로딩 시작
@@ -114,6 +137,8 @@ const HomeSearchBar = () => {
     setPage(1);
     setSubwayCount(0);
     setPoliceCount(0);
+    saveSearchTerm(searchTerm);
+
     const requests = [];
 
     // 셀렉터를 선택하지 않으면 모든 api에 대한 결과를 보여줍니다.
@@ -180,7 +205,7 @@ const HomeSearchBar = () => {
               <CircularProgress size={30} sx={{ color: '#ff6700' }} />
             </Box>
           ) : (
-            ''
+            <StyledIcon />
           )}
 
           <SearchInput
@@ -189,8 +214,9 @@ const HomeSearchBar = () => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <StyledIcon />
+          <SearchHistoryIcon />
         </SearchBox>
+        <SearchButton onClick={handleSubmit}>검색</SearchButton>
       </HomeSearchBarContainer>
     </HomeContainer>
   );

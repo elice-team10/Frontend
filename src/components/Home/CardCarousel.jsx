@@ -20,14 +20,18 @@ import { useSearch } from '../../context/SearchProvider';
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 120rem;
+  // background-color: #f7f3f0;
+  padding: 0rem 5rem 4rem 5rem;
+  margin-bottom: 2rem;
 `;
 
 const CarouselText = styled.span`
-  margin-top: 5rem;
+  margin-top: 2rem;
   margin-bottom: 0.5rem;
   margin-left: 5rem;
   display: block;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   flex-self: flex-start;
   color: #7c9299;
 `;
@@ -40,7 +44,7 @@ const CarouselContainer = styled.div`
 
 const CarouselWrapper = styled.div`
   overflow: hidden;
-  max-width: 70rem;
+  max-width: 88rem;
 `;
 
 const CarouselSlide = styled.div`
@@ -70,15 +74,15 @@ const CardImage = styled.img`
   align-items: center;
   border: none;
   border-radius: 8px;
-  width: 15.5rem;
-  height: 15.5rem;
+  width: 20rem;
+  height: 20rem;
 `;
 
 const CardText = styled.div`
   display: none;
   position: absolute;
   bottom: 1rem;
-  left: 7rem;
+  left: 10rem;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.5rem;
@@ -243,7 +247,7 @@ const CardCarousel = () => {
         <CarouselText>
           <CircularProgress
             sx={{ color: '#7c9299', marginRight: '1rem' }}
-            size="1.2rem"
+            size="1.4rem"
           />
           {'검색중입니다. 잠시만 기다려주세요!'}
         </CarouselText>
