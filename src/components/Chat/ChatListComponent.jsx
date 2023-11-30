@@ -66,6 +66,7 @@ const ListBody = styled.div`
   flex-direction: column;
   height: 94rem;
 `;
+
 const Chats = styled.div`
   display: flex;
   justify-content: space-between;
@@ -77,9 +78,15 @@ const Chats = styled.div`
     background-color: #eee;
   }
 `;
+const Avartar = styled.img`
+  border-radius: 50%;
+  object-fit: cover;
+  width: 47px;
+  height: 47px;
+  border: 0.5px solid black;
+`;
 const StyledAccountCircleIcon = styled(AccountCircleIcon)`
   color: #ccc;
-  margin-left: 20px;
 `;
 const ChatPartnerBox = styled.div`
   display: flex;
@@ -90,7 +97,7 @@ const ChatPartner = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2px;
-  margin-left: 20px;
+  margin-left: 12px;
 `;
 const ChatPartnerNickname = styled.p`
   font-size: ${theme.fontSizes.medium};
@@ -113,7 +120,7 @@ const Deletebtn = styled.div`
   width: 60px;
   height: 28px;
   margin-right: 20px;
-  background-color: rgba(300, 40, 0, 0.7);
+  background-color: rgba(300, 40, 0, 0.8);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -142,7 +149,7 @@ const ChatListComponent = () => {
   };
 
   const handleChatClick = (event, roomId, opponentNickname) => {
-    console.log("Opponent Nickname:", opponentNickname);
+    console.log('Opponent Nickname:', opponentNickname);
     event.stopPropagation();
     navigate(`/chat/${roomId}?nickname=${opponentNickname}`);
   };
@@ -164,7 +171,6 @@ const ChatListComponent = () => {
     try {
       const response = await axiosPrivate().get(`/chat`);
       setChatRooms(response.data);
-      console.log('Chat rooms:', response.data);
     } catch (error) {
       console.error('Failed to fetch chat', error);
     }
@@ -209,25 +215,41 @@ const ChatListComponent = () => {
             </ListHeader>
             <ListBody>
               {chatRooms.map((chatRoom) => {
-                // 마지막 메시지 내용 추출
-                const lastMessage =
+                // 마지막 메시지 내용 추출 및 글자 수 제한
+                const lastMessageContent =
                   chatRoom.roomId.content.length > 0
                     ? chatRoom.roomId.content[
                         chatRoom.roomId.content.length - 1
                       ].content
                     : '대화내용이 없습니다.';
+                const lastMessage =
+                  lastMessageContent.length > 50
+                    ? lastMessageContent.slice(0, 16) + '...'
+                    : lastMessageContent;
 
-                    if (!chatRoom.opponent) {
-                      return null; // opponent가 없으면 이 항목을 렌더링하지 않음
-                    }
-                    
+                if (!chatRoom.opponent) {
+                  return null; // opponent가 없으면 이 항목을 렌더링하지 않음
+                }
+
                 return (
                   <Chats
                     key={chatRoom.roomId._id}
-                    onClick={(e) => handleChatClick(e, chatRoom.roomId._id, chatRoom.opponent?.nickname)}
+                    onClick={(e) =>
+                      handleChatClick(
+                        e,
+                        chatRoom.roomId._id,
+                        chatRoom.opponent?.nickname,
+                      )
+                    }
                   >
                     <ChatPartnerBox>
-                      <StyledAccountCircleIcon sx={{ fontSize: 44 }} />
+                      {chatRoom.opponent?.profileImg === '1' ? (
+                        <StyledAccountCircleIcon sx={{ fontSize: 48 }} />
+                      ) : (
+                        <Avartar
+                          src={`/profiles/profile${chatRoom.opponent?.profileImg}.webp`}
+                        />
+                      )}
                       <ChatPartner>
                         <ChatPartnerNickname>
                           {chatRoom.opponent.nickname}

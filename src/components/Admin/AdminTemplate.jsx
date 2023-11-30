@@ -106,7 +106,6 @@ const AdminSubMenu = styled.div`
 const AdminFormContainer = styled.div`
   height: 631px;
   width: 1200px;
-  background-color: #eee;
   @media (max-width: 1200px) {
     width: 768px;
   }
@@ -266,7 +265,7 @@ const AdminTemplate = () => {
               ? '정말 탈퇴시키겠습니까?'
               : '정말 삭제하시겠습니까?'
           }
-          btnText={activeMenu === '회원정보' ? '선택한 회원 탈퇴' : '삭제'}
+          btnText={activeMenu === '회원정보' ? '탈퇴' : '삭제'}
           onCloseModal={onCloseModal}
           getFunction={getFunction}
         />
