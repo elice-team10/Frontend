@@ -150,9 +150,7 @@ export default function MyPageUserAvatarListModal({
       if (e.target.tagName === 'svg' || e.target.tagName === 'path') {
         imageNumber = '1';
       } else if (e.target.tagName === 'IMG') {
-        console.log(e.currentTarget);
-        console.log(e.currentTarget?.src?.split('.'));
-        imageNumber = e.currentTarget.src.split('.')[0].at(-1);
+        imageNumber = e.currentTarget.src.split('.webp')[0].at(-1);
       }
     }
 
