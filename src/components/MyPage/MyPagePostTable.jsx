@@ -20,7 +20,8 @@ import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../utils/FormatDate';
 
 const columns = [
-  { id: 'postId', label: '게시물 번호', minWidth: '14rem', align: 'center' },
+  // 메모: 게시글 번호는 중요하지 않을 것 같다는 피드백으로 주석 처리
+  // { id: 'postId', label: '게시물 번호', minWidth: '14rem', align: 'center' },
   { id: 'postDate', label: '게시일', minWidth: '14rem', align: 'center' },
   {
     id: 'postTitle',

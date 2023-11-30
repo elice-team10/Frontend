@@ -20,7 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../utils/FormatDate';
 
 const columns = [
-  { id: 'commentId', label: '댓글 번호', minWidth: '22rem', align: 'center' },
+  // { id: 'commentId', label: '댓글 번호', minWidth: '22rem', align: 'center' },
   {
     id: 'commentDate',
     label: '댓글 작성일',
