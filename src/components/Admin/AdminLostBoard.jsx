@@ -15,7 +15,7 @@ const columns = [
     field: 'nickname',
     headerName: '닉네임',
     width: 190,
-    renderCell: (params) => <span>{params.row.userId.nickname}</span>,
+    renderCell: (params) => <span>{params.row.userId?.nickname}</span>,
   },
   {
     field: 'isFound',
