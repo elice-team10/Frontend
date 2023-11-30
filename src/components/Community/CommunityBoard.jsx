@@ -108,7 +108,7 @@ function CommunityBoard() {
                 content={item.content}
                 location={item.event_location}
                 date={item.event_date}
-                nickname={item.userId.nickname}
+                nickname={item.userId?.nickname}
                 replyCount={'0'}
                 postId={item._id}
               />
