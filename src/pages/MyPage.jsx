@@ -185,6 +185,7 @@ const MyPage = () => {
   const [selectedImage, setSelectedImage] = useState('1');
 
   const [nickname, setNickname] = useState(auth?.nickname);
+  const [status, setStatus] = useState(null);
 
   // 메모: 이메일 수정 기능은 없으면 좋을 것 같다는 피드백을 받아서 이메일 수정 관련 코드 주석 처리
   // const [email, setEmail] = useState(auth?.email);
@@ -212,7 +213,9 @@ const MyPage = () => {
         const nickname = response?.data?.nickname;
         const email = response?.data?.email;
         const profileImg = response?.data?.profileImg;
+        const status = response?.data?.status;
 
+        setStatus(status);
         setSelectedImage(profileImg);
         setNickname(nickname);
         // setEmail(email);
@@ -428,9 +431,11 @@ const MyPage = () => {
               <StyledChangePasswordLink onClick={handleOpenPasswordChangeModal}>
                 비밀번호 변경
               </StyledChangePasswordLink>
-              <StyledDeactivateLink onClick={handleOpenDeleteAccountModal}>
-                회원 탈퇴
-              </StyledDeactivateLink>
+              {status === 1 && (
+                <StyledDeactivateLink onClick={handleOpenDeleteAccountModal}>
+                  회원 탈퇴
+                </StyledDeactivateLink>
+              )}
             </ActionLinksContainer>
             {isDeleteAccountModalOpen && (
               <ModalBasic
