@@ -219,7 +219,7 @@ const ChatBtn = styled.div`
 `;
 
 function CommunityDetail() {
-  const [isModal, setIsModal] = useState(false);
+  // const [isModal, setIsModal] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -228,36 +228,33 @@ function CommunityDetail() {
   const { data, isError, error } = useQuery({
     queryKey: ['events', params.id],
     queryFn: () => fetchEvents(`post/detail/${params.id}`),
-    staleTime: 600000,
   });
-
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: deleteEvent,
-    onSuccess: () => {
-      navigate('/community', { replace: true });
+    onSettled: () => {
+      queryClient.invalidateQueries('events');
+      navigate('/community');
     },
   });
 
+
   // 삭제 질문 모달
-  const handleStartDelete = () => {
-    console.log('Before setIsModal(true):', isModal);
-    setIsModal(true);
-    console.log('After setIsModal(true):', isModal);
-  };
+  // const handleStartDelete = () => {
+  //   console.log('Before setIsModal(true):', isModal);
+  //   setIsModal(true);
+  //   console.log('After setIsModal(true):', isModal);
+  // };
 
-  const handleStopDelete = () => {
-    setIsModal(false);
-    console.log(isModal);
-  };
+  // const handleStopDelete = () => {
+  //   setIsModal(false);
+  //   console.log(isModal);
+  // };
 
-  const handleDelete = useCallback(async () => {
+  const handleDelete = () => {
     console.log('handleDelete called');
-    try {
-      await mutate({ postId: params.id, userId: data.userId._id });
-    } catch (error) {
-      console.error('Error during deletion:', error);
-    }
-  }, [params.id, data?.userId._id, mutate]);
+    mutate({ postId: params.id, userId: data.userId._id });
+    navigate('/community');
+  };
 
   const handleEdit = () => {
     navigate(`/community/post/${params.id}/edit`, {
@@ -283,9 +280,9 @@ function CommunityDetail() {
   /* --------------------챗방 추가-------------------- */
   let content;
 
-  // if (isPending) {
-  //   content = <CircularProgress sx={{ color: '#ff6700' }} />;
-  // }
+  if (isPending) {
+    content = <CircularProgress sx={{ color: '#ff6700' }} />;
+  }
 
   if (isError) {
     content = (
@@ -297,7 +294,6 @@ function CommunityDetail() {
   }
 
   if (data) {
-    console.log('detail', data);
     content = (
       <>
         <ContentContainer>
@@ -334,7 +330,7 @@ function CommunityDetail() {
                 </Location>
                 <Date>
                   <DateIcon />
-                  {data.event_date}
+                  {data.event_date ? data.event_date : '-'}
                 </Date>
               </LocAndDateContainer>
             </PositionContainer>
@@ -354,7 +350,7 @@ function CommunityDetail() {
 
   return (
     <>
-      {isModal && (
+      {/* {isModal && (
         <ModalBasic
           title="게시글 삭제"
           content="이 글을 삭제하시겠습니까?"
@@ -362,7 +358,7 @@ function CommunityDetail() {
           onCloseModal={handleStopDelete}
           getFunction={handleDelete}
         />
-      )}
+      )} */}
       <Background>
         <PostContainer style={{ height: '100%' }}>
           <ButtonContainer>
@@ -373,7 +369,7 @@ function CommunityDetail() {
             {data && data.userId.email === auth?.email && (
               <>
                 <button onClick={handleEdit}>수정</button>
-                <button onClick={handleStartDelete}>삭제</button>
+                <button onClick={handleDelete}>삭제</button>
               </>
             )}
           </ButtonContainer>

@@ -13,6 +13,7 @@ import { formatDate } from '../../utils/FormatDate';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import useAuth from '../../hooks/useAuth';
+import ErrorBlock from '../UI/ErrorBlock';
 
 const ReplyContainer = styled.div`
   width: 56rem;
@@ -121,6 +122,7 @@ function Comment({ postId }) {
   const [comment, setComment] = useState('');
   const [originalComment, setOriginalComment] = useState('');
   const [isEdit, setIsEdit] = useState(false);
+  const [commentPlaceholder, setCommentPlaceholder] = useState('댓글을 남겨보세요.');
   const commentRef = useRef({});
   const { auth } = useAuth();
 
@@ -177,7 +179,11 @@ function Comment({ postId }) {
 
   const handleAddComment = (event) => {
     event.preventDefault();
-    commentMutate({ postId, content: String(comment) });
+    if(comment.trim() === ''){
+      setCommentPlaceholder('댓글을 작성해주세요.');
+      return;
+    }
+    commentMutate({ postId, content: comment });
     setComment('');
   };
 
@@ -284,7 +290,7 @@ function Comment({ postId }) {
               // 각각 댓글 요소의 개별 참조 설정
               ref={(el) => (commentRef.current[item._id] = el)}
               onKeyDown={(event) => {
-                if (event.key === 'Enter') {
+                if (event.keyCode === 'Enter') {
                   event.preventDefault(); // Enter 키 누르면 생기는 줄바꿈 방지
                   handleEditComment(
                     item._id,
@@ -315,11 +321,11 @@ function Comment({ postId }) {
         {auth && (
         <ReplyForm>
           <textarea
-            placeholder="댓글을 남겨보세요."
+            placeholder={commentPlaceholder}
             value={comment}
             onChange={(event) => setComment(event.target.value)}
             onKeyDown={(event) => {
-              if (event.key === 'Enter') {
+              if (event.keyCode === 'Enter') {
                 event.preventDefault(); // Enter 키 누르면 생기는 줄바꿈 방지
                 handleAddComment(event);
               }

@@ -298,7 +298,7 @@ function CommunityWrite({ inputData, onEditSubmit }) {
                 onChange={(event) => setDate(event.target.value)}
               />
               <ImageInput
-                defaultValue={inputData ? inputData.picture : picture}
+                defaultValue={inputData && inputData.picture ? picture : null}
                 onChange={handleFileChange}
               />
             </ToolbarContainer>

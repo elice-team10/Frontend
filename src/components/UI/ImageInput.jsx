@@ -44,7 +44,7 @@ const Input = styled.input`
 
 function ImageInput({ onChange, defaultValue }) {
   const [placeholder, setPlaceholder] = useState(
-    defaultValue ? defaultValue : '사진 등록',
+    defaultValue || '사진 등록',
   );
   const [showAlert, setShowAlert] = useState(false);
   const imgRef = useRef(null);
@@ -66,7 +66,7 @@ function ImageInput({ onChange, defaultValue }) {
           // 파일 이름으로 placeholder 지정
           if (imgRef.current && imgRef.current.files.length > 0) {
             // 파일 크기 체크
-            const filesize = imgRef.current.files[0].size / 1024 / 1024; // in MB
+            const filesize = imgRef.current.files[0].size / 1024 / 1024; 
             if (filesize > 1) {
               setShowAlert(true);
               // 파일 선택 초기화
