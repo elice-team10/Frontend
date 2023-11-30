@@ -8,17 +8,16 @@ const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 200px;
   z-index: 999;
   position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #fffaf0;
-  border-radius: 12px;
-  border: 3px solid black;
-  padding-bottom: 20px;
+  background: white;
+  border: none;
+  padding-bottom: 5px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 `;
 
@@ -53,6 +52,7 @@ const Text = styled.p`
   text-align: center;
   line-height: 50px;
   font-size: 20px;
+  font-weight: 375;
   margin: 8px !important;
 `;
 
@@ -64,7 +64,7 @@ const BtnBox = styled.div`
 `;
 
 const styleClearIcon = {
-  color: '#ed7117',
+  color: '#7c9299',
   fontSize: '25px',
   cursor: 'pointer',
   ':hover': {
@@ -83,13 +83,13 @@ const styleButton1 = {
   width: '120px',
   height: '40px',
   fontSize: '17px',
-  color: '#ed7117',
-  borderRadius: '12px',
-  border: '3px solid #ed7117',
-  backgroundColor: '#fff',
+  fontWeight: '375',
+  color: 'black',
+  //borderRadius: '8px',
+  border: 'none',
+  backgroundColor: '#7C9299',
   ':hover': {
-    borderColor: '#ff6700',
-    backgroundColor: '#fff',
+    backgroundColor: '#ddd',
   },
 };
 
@@ -98,13 +98,14 @@ const styleButton2 = {
   width: '120px',
   height: '40px',
   fontSize: '17px',
-  borderRadius: '12px',
-  color: '#fffaf0',
-  backgroundColor: '#ed7117',
+  fontWeight: '375',
   boxShadow: 'none',
+  //borderRadius: '8px',
+  color: '#fff',
+  backgroundColor: '#151618',
   ':hover': {
-    backgroundColor: '#ff6700',
-    boxShadow: 'none',
+    backgroundColor: '#ddd',
+    color: 'black',
   },
 };
 
@@ -123,7 +124,7 @@ function ModalBasic({ getFunction, onCloseModal, title, content, btnText }) {
             <TitleText>{title}</TitleText>
             <ClearIcon onClick={onCloseModal} sx={styleClearIcon} />
           </Titlebox>
-          <HelpOutlineSharpIcon sx={styleQuestionIcon} />
+          {/* <HelpOutlineSharpIcon sx={styleQuestionIcon} /> */}
           {/* 모달 본문 */}
           <Text>{content}</Text>
           <BtnBox>
