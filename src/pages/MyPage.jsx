@@ -188,7 +188,7 @@ const MyPage = () => {
   const [status, setStatus] = useState(null);
 
   // 메모: 이메일 수정 기능은 없으면 좋을 것 같다는 피드백을 받아서 이메일 수정 관련 코드 주석 처리
-  // const [email, setEmail] = useState(auth?.email);
+  const [email, setEmail] = useState(auth?.email);
 
   const [tempNickname, setTempNickname] = useState('');
   // const [tempEmail, setTempEmail] = useState('');
@@ -218,7 +218,7 @@ const MyPage = () => {
         setStatus(status);
         setSelectedImage(profileImg);
         setNickname(nickname);
-        // setEmail(email);
+        setEmail(email);
       } catch (err) {
         console.error(err);
       }
@@ -413,19 +413,19 @@ const MyPage = () => {
                 />
               </UserInfoCard>
             </UserInfoCardWrapper>
-            {/* <UserInfoCard>
+            <UserInfoCard>
               <Label htmlFor="email">이메일</Label>
               <MyPageEmail
                 email={email}
-                tempEmail={tempEmail}
-                isEditMode={isEmailEditMode}
-                onEditMode={handleClickEditEmail}
-                onConfirmClick={handleEmailConfirm}
-                onCancelClick={handleEmailCancel}
-                onChange={handleEmailChange}
-                errorMsg={errorMsgEmail}
+                // tempEmail={tempEmail}
+                // isEditMode={isEmailEditMode}
+                // onEditMode={handleClickEditEmail}
+                // onConfirmClick={handleEmailConfirm}
+                // onCancelClick={handleEmailCancel}
+                // onChange={handleEmailChange}
+                // errorMsg={errorMsgEmail}
               />
-            </UserInfoCard> */}
+            </UserInfoCard>
 
             <ActionLinksContainer>
               <StyledChangePasswordLink onClick={handleOpenPasswordChangeModal}>
@@ -582,23 +582,23 @@ const UserEmail = styled.p`
 
 function MyPageEmail({
   email,
-  tempEmail,
-  isEditMode,
-  onEditMode,
-  onConfirmClick,
-  onCancelClick,
-  onChange,
-  errorMsg,
+  // tempEmail,
+  // isEditMode,
+  // onEditMode,
+  // onConfirmClick,
+  // onCancelClick,
+  // onChange,
+  // errorMsg,
 }) {
   return (
     <>
       <UserInfoContainer>
         <UserInfoBox>
-          {!isEditMode && (
-            <>
-              <UserEmail>{email}</UserEmail>
-              <EditButton onClick={onEditMode}>수정</EditButton>
-            </>
+          {/* {!isEditMode && (
+            <> */}
+          <UserEmail>{email}</UserEmail>
+          {/* <EditButton onClick={onEditMode}>수정</EditButton> */}
+          {/* </>
           )}
           {isEditMode && (
             <>
@@ -612,10 +612,10 @@ function MyPageEmail({
               <EditButton onClick={onConfirmClick}>확인</EditButton>
               <EditButton onClick={onCancelClick}>취소</EditButton>
             </>
-          )}
+          )} */}
         </UserInfoBox>
       </UserInfoContainer>
-      {errorMsg && <ErrorMessage>{errorMsg}</ErrorMessage>}
+      {/* {errorMsg && <ErrorMessage>{errorMsg}</ErrorMessage>} */}
     </>
   );
 }
