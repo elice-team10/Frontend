@@ -190,15 +190,15 @@ function CommunityCard({
             <LocationIcon />
             <Location>{`서울시 ${location}`}</Location>
             <DateIcon />
-            <Date>{date}</Date>
+            <Date>{date ? date : '-'}</Date>
           </PositionContainer>
           <DividerLine />
           <UserContainer>
             <Nickname>{nickname}</Nickname>
-            <ReplyContainer>
+            {/* <ReplyContainer>
               <ReplyIcon />
               <Reply>{replyCount}</Reply>
-            </ReplyContainer>
+            </ReplyContainer> */}
           </UserContainer>
         </ContentContainer>
       </Card>

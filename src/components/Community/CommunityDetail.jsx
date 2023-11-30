@@ -12,7 +12,7 @@ import { deleteEvent, fetchEvents, queryClient } from '../../api/http';
 import { useNavigate, useParams } from 'react-router';
 import CircularProgress from '@mui/material/CircularProgress';
 import ErrorBlock from '../UI/ErrorBlock';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import ModalBasic from '../UI/Modal';
 import useAuth from '../../hooks/useAuth';
 import { axiosPrivate } from '../../api/axios';
@@ -126,16 +126,23 @@ const Location = styled.p`
   font-size: ${theme.fontSizes.small};
   color: ${theme.colors.text};
   margin: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 `;
 
 const LocationIcon = styled(PlaceIcon)`
   color: ${theme.colors.text};
+  bottom: 3px;
 `;
 
 const Date = styled.p`
   font-size: ${theme.fontSizes.small};
   color: ${theme.colors.text};
   margin: 0.4rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 `;
 
 const DateIcon = styled(CalendarMonthIcon)`
@@ -161,10 +168,12 @@ const BasicProfile = styled(AccountCircleIcon)`
   height: 38.4px !important;
   color: #ccc;
 `;
-
+ 
 const Avartar = styled.img`
+  border-radius: 50%;
   object-fit: cover;
   width: 38.4px;
+  height: 38.4px;
 `;
 
 const BadgeAndBtn = styled.div`
@@ -210,7 +219,7 @@ const ChatBtn = styled.div`
 `;
 
 function CommunityDetail() {
-  // const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModal, setIsModal] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -219,35 +228,36 @@ function CommunityDetail() {
   const { data, isError, error } = useQuery({
     queryKey: ['events', params.id],
     queryFn: () => fetchEvents(`post/detail/${params.id}`),
+    staleTime: 600000,
   });
 
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: deleteEvent,
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['events'],
-      });
-      navigate('/community');
+      navigate('/community', { replace: true });
     },
   });
 
   // 삭제 질문 모달
-  // const handleStartDelete = () => {
-  //   console.log('Before setIsModalOpen(true):', isModalOpen);
-  //   setIsModalOpen(true);
-  //   console.log('After setIsModalOpen(true):', isModalOpen);
-  // };
-
-  // const handleStopDelete = () => {
-  //   setIsModalOpen(false);
-  //   console.log(isModalOpen);
-  // };
-
-  const handleDelete = () => {
-    console.log('handleDelete called');
-    mutate({ postId: params.id, userId: data.userId._id });
-    navigate('/community');
+  const handleStartDelete = () => {
+    console.log('Before setIsModal(true):', isModal);
+    setIsModal(true);
+    console.log('After setIsModal(true):', isModal);
   };
+
+  const handleStopDelete = () => {
+    setIsModal(false);
+    console.log(isModal);
+  };
+
+  const handleDelete = useCallback(async () => {
+    console.log('handleDelete called');
+    try {
+      await mutate({ postId: params.id, userId: data.userId._id });
+    } catch (error) {
+      console.error('Error during deletion:', error);
+    }
+  }, [params.id, data?.userId._id, mutate]);
 
   const handleEdit = () => {
     navigate(`/community/post/${params.id}/edit`, {
@@ -273,9 +283,9 @@ function CommunityDetail() {
   /* --------------------챗방 추가-------------------- */
   let content;
 
-  if (isPending) {
-    content = <CircularProgress sx={{ color: '#ff6700' }} />;
-  }
+  // if (isPending) {
+  //   content = <CircularProgress sx={{ color: '#ff6700' }} />;
+  // }
 
   if (isError) {
     content = (
@@ -344,7 +354,7 @@ function CommunityDetail() {
 
   return (
     <>
-      {/* {isModalOpen && (
+      {isModal && (
         <ModalBasic
           title="게시글 삭제"
           content="이 글을 삭제하시겠습니까?"
@@ -352,7 +362,7 @@ function CommunityDetail() {
           onCloseModal={handleStopDelete}
           getFunction={handleDelete}
         />
-      )} */}
+      )}
       <Background>
         <PostContainer style={{ height: '100%' }}>
           <ButtonContainer>
@@ -363,7 +373,7 @@ function CommunityDetail() {
             {data && data.userId.email === auth?.email && (
               <>
                 <button onClick={handleEdit}>수정</button>
-                <button onClick={handleDelete}>삭제</button>
+                <button onClick={handleStartDelete}>삭제</button>
               </>
             )}
           </ButtonContainer>
