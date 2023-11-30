@@ -16,14 +16,18 @@ import axios from 'axios';
 import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSearch } from '../../context/SearchProvider';
+import { fetchRecentItems } from './fetchRecentItems';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 120rem;
+  background-color: #dbcdf0;
+  padding: 0rem 5rem 4rem 5rem;
 `;
 
 const CarouselText = styled.span`
-  margin-top: 5rem;
+  margin-top: 2rem;
   margin-bottom: 0.5rem;
   margin-left: 5rem;
   display: block;
@@ -40,7 +44,7 @@ const CarouselContainer = styled.div`
 
 const CarouselWrapper = styled.div`
   overflow: hidden;
-  max-width: 70rem;
+  max-width: 88rem;
 `;
 
 const CarouselSlide = styled.div`
@@ -70,15 +74,15 @@ const CardImage = styled.img`
   align-items: center;
   border: none;
   border-radius: 8px;
-  width: 15.5rem;
-  height: 15.5rem;
+  width: 20rem;
+  height: 20rem;
 `;
 
 const CardText = styled.div`
   display: none;
   position: absolute;
   bottom: 1rem;
-  left: 7rem;
+  left: 10rem;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.5rem;
@@ -107,64 +111,6 @@ const cardsData = [
   },
 ];
 
-async function fetchItemCategory(categoryCode, categoryCode2 = null) {
-  const url =
-    'http://apis.data.go.kr/1320000/LosfundInfoInqireService/getLosfundInfoAccToClAreaPd';
-  const serviceKey = decodeURIComponent(
-    'ANqqJt8CTWuvlA%2BWsV9WzIpKzY3RQAarn%2F2QkJD1AN3FYzZS6zMsDuq%2B8jDbXE6fXW8u50ZbGWdAWYLEzXK2TQ%3D%3D',
-  );
-
-  const queryParams = {
-    serviceKey, // 서비스 키
-    PRDT_CL_CD_01: categoryCode, // 상품명
-    N_FD_LCT_CD: 'LCA000',
-    pageNo: 1, // 페이지 번호
-    numOfRows: '20', // 행 수
-  };
-
-  if (categoryCode2) {
-    queryParams.PRDT_CL_CD_02 = categoryCode2;
-  }
-
-  try {
-    const response = await axios.get(url, { params: queryParams });
-
-    // XML 파싱을 위한 파서 생성
-    // const parser = new XMLParser();
-    // const parsedResponse = parser.parse(response.data);
-
-    const lostItems = response.data.response.body.items.item;
-    const numOfRows = response.data.response.body.numOfRows;
-    const pageNo = response.data.response.body.pageNo;
-    const totalCount = response.data.response.body.totalCount;
-
-    const results = [];
-    for (const lostItem of lostItems) {
-      const item = {
-        id: lostItem.atcId,
-        content: lostItem.fdSbjt,
-        name: lostItem.fdPrdtNm,
-        imageUrl: lostItem.fdFilePathImg,
-        date: lostItem.fdYmd,
-        location: lostItem.depPlace,
-        productCategory: lostItem.prdtClNm,
-      };
-
-      results.push(item);
-    }
-    // 결과 출력
-    console.log('Status:', response.status);
-    console.log('Headers:', response.headers);
-    console.log('Parsed Body:', results);
-    console.log(
-      `Num of Rows:${numOfRows}, Page No. : ${pageNo}, Total Count : ${totalCount}`,
-    );
-    return results;
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
 const LostItemCarousel = () => {
   // 초기 인덱스를 0으로 설정합니다.
   const [activeStep, setActiveStep] = useState(0);
@@ -175,28 +121,8 @@ const LostItemCarousel = () => {
   const { setResult, result } = useSearch('');
   const navigate = useNavigate();
 
-  const handleClick = async (card) => {
-    setLoading(true); // 로딩 시작
-    setResult([]);
-    const requests = [];
-    if (card.categoryCode2) {
-      requests.push(fetchItemCategory(card.categoryCode, card.categoryCode2));
-    } else {
-      requests.push(fetchItemCategory(card.categoryCode));
-    }
-
-    try {
-      const responses = await Promise.all(requests);
-      if (responses) {
-        const flattenedResults = responses.flat(); // 중첩된 배열을 하나의 배열로 펼침
-        setResult(flattenedResults);
-      }
-
-      setLoading(false);
-      navigate('/search'); // 리다이렉트
-    } catch (error) {
-      console.log(error);
-    }
+  const handleClick = async () => {
+    fetchRecentItems();
   };
 
   const handleNext = () => {

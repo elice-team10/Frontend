@@ -216,6 +216,11 @@ const ChatListComponent = () => {
                         chatRoom.roomId.content.length - 1
                       ].content
                     : '대화내용이 없습니다.';
+
+                    if (!chatRoom.opponent) {
+                      return null; // opponent가 없으면 이 항목을 렌더링하지 않음
+                    }
+                    
                 return (
                   <Chats
                     key={chatRoom.roomId._id}
