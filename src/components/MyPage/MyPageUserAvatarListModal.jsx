@@ -130,7 +130,11 @@ export default function MyPageUserAvatarListModal({
   const handleModalClick = (e) => {
     e.preventDefault();
 
-    if (e.target.className.split(' ')[2] === 'modal-container') {
+    if (
+      e.target.tagName === 'path' ||
+      e.target.tagName === 'svg' ||
+      e.target?.className?.split(' ')[2] === 'modal-container'
+    ) {
       onProfileModalClose();
     }
   };
@@ -146,7 +150,7 @@ export default function MyPageUserAvatarListModal({
       if (e.target.tagName === 'svg' || e.target.tagName === 'path') {
         imageNumber = '1';
       } else if (e.target.tagName === 'IMG') {
-        imageNumber = e.currentTarget.src.split('.')[0].at(-1);
+        imageNumber = e.currentTarget.src.split('.webp')[0].at(-1);
       }
     }
 

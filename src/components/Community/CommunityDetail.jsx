@@ -371,7 +371,7 @@ function CommunityDetail() {
               fontSize="3.5rem"
               onClick={() => navigate('/community')}
             />
-            {data && data.userId.nickname === auth.nickname && (
+            {data && data.userId.nickname === auth?.nickname && (
               <>
                 <button onClick={handleEdit}>수정</button>
                 <button onClick={handleDelete}>삭제</button>

@@ -9,5 +9,5 @@ export default defineConfig({
     hmr: {
       path: '/ws', // WebSocket 경로 설정
     },
-  }
+  },
 });
