@@ -6,7 +6,7 @@ const StyledButton = styled.button`
   display: flex;
   align-items: center;
   background-color: #ff6700; /* 버튼 배경색 */
-  border: ${({ selected }) => (selected ? '3px solid black' : 'none')};
+  border: none;
   border-radius: 2rem; /* 버튼 모서리 둥글게 */
   padding: 0px;
   cursor: pointer;
