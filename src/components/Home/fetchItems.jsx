@@ -47,11 +47,7 @@ export async function fetchSubwayItems(productName, place, page) {
 
       arr.push(item);
     }
-    // 결과 출력
-    console.log('Parsed Body:', arr);
-    console.log(
-      `Num of Rows:${numOfRows}, Page No. : ${pageNo}, Total Count : ${totalCount}`,
-    );
+
     return arr;
   } catch (error) {
     console.error('Error:', error);
@@ -104,11 +100,6 @@ export async function fetchLostItems(productName, place, page) {
       arr.push(item);
     }
 
-    console.log('Parsed Body:', arr);
-    console.log(
-      `Num of Rows:${numOfRows}, Page No. : ${pageNo}, Total Count : ${totalCount}`,
-    );
-
     return arr;
   } catch (error) {
     console.error('Error:', error);
@@ -125,8 +116,6 @@ export async function fetchCommunity(searchTerm, category) {
 
   try {
     const response = await axios.get(url, { params: queryParams });
-
-    console.log(response);
 
     const arr = [];
     for (const res of response.data) {
