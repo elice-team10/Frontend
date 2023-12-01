@@ -2,6 +2,7 @@
 import { Outlet } from 'react-router-dom';
 import Header from './components/UI/Header';
 import Footer from './components/UI/Footer';
+import ScrollTopButton from '../src/components/UI/ScrollTopButton';
 import { AuthProvider } from './context/AuthProvider';
 import { SearchProvider } from './context/SearchProvider';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -23,6 +24,7 @@ function App() {
           <Appcontainer>
             <Header />
             <Outlet />
+            <ScrollTopButton />
             <Footer />
           </Appcontainer>
         </SearchProvider>

@@ -43,7 +43,7 @@ const CarouselContainer = styled.div`
 
 const CarouselWrapper = styled.div`
   overflow: hidden;
-  max-width: 96.5rem;
+  max-width: 120rem;
 `;
 
 const CarouselSlide = styled.div`
@@ -52,14 +52,14 @@ const CarouselSlide = styled.div`
 `;
 
 const CardContainer = styled.div`
-  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
+  cursor: ${({ $isdisabled }) => ($isdisabled ? 'not-allowed' : 'pointer')};
   transition: transform 0.2s ease-in-out;
   position: relative;
 
   &:hover {
-    transform: ${({ isDisabled }) => (isDisabled ? 'none' : 'scale(1.05)')};
+    transform: ${({ $isdisabled }) => ($isdisabled ? 'none' : 'scale(1.04)')};
     div {
-      display: ${({ isDisabled }) => (isDisabled ? 'none' : 'block')};
+      display: ${({ $isdisabled }) => ($isdisabled ? 'none' : 'block')};
     }
   }
 `;
@@ -73,15 +73,15 @@ const CardImage = styled.img`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 17rem;
-  height: 17rem;
+  width: 20rem;
+  height: 20rem;
 `;
 
 const CardText = styled.div`
   display: none;
   position: absolute;
   bottom: 1rem;
-  left: 8rem;
+  left: 10rem;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.5rem;
@@ -265,7 +265,7 @@ const CardCarousel = () => {
             {cardsData.map((card, index) => (
               <CardContainer
                 key={index}
-                isDisabled={loading}
+                $isdisabled={loading}
                 onClick={() => handleClick(card)}
               >
                 <CardImage src={card.image} />
