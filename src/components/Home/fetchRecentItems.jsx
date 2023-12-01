@@ -28,10 +28,10 @@ export async function fetchRecentItems() {
   const queryParams = {
     serviceKey, // 서비스 키
     N_FD_LCT_CD: 'LCA000',
-    START_YMD: yesterdayString,
+    START_YMD: '20231201',
     END_YMD: todayString,
     pageNo: 1, // 페이지 번호
-    numOfRows: '40', // 행 수
+    numOfRows: '100', // 행 수
   };
 
   try {

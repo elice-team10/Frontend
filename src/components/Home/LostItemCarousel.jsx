@@ -19,7 +19,7 @@ const Container = styled.div`
 const CarouselText = styled.span`
   margin-top: 2rem;
   margin-bottom: 1rem;
-  margin-left: 0rem;
+  margin-left: 2rem;
   display: block;
   font-size: 1.4rem;
   flex-self: flex-start;
@@ -50,7 +50,6 @@ const CarouselContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #ddd;
 `;
 
 const CarouselWrapper = styled.div`
@@ -70,10 +69,7 @@ const CardContainer = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
-  margin: 0rem 0rem;
-  padding: 0rem 1.5rem 0rem 1.5rem;
-
-  border-radius: 12px;
+  margin: 0;
 
   &:hover {
     transform: scale(1.05);
@@ -153,6 +149,14 @@ const cardsData = [
       'https://www.lost112.go.kr/lostnfs/images/uploadImg/20231201/20231201122224801.jpg',
     location: '당현지구대',
     name: '빌포드 가방',
+  },
+  {
+    date: '2023-12-01',
+    id: 'F2023120100000022',
+    imageUrl:
+      'https://www.lost112.go.kr/lostnfs/images/uploadImg/20231201/20231201123924746.jpg',
+    location: '금천지구대',
+    name: '아이폰',
   },
 ];
 
