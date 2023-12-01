@@ -54,7 +54,7 @@ const Logo = styled.img`
 
   &:hover {
     scale: 1.2;
-    transform: rotate(-12deg);
+    transform: rotate(-3.5deg);
   }
 
   /* 1024px / 16px = 64 */
@@ -64,7 +64,7 @@ const Logo = styled.img`
 
   /* 768px / 16px = 48  */
   @media (max-width: 48em) {
-    max-height: 4rem;
+    /* max-height: 4rem; */
   }
 `;
 
