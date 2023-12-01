@@ -31,7 +31,7 @@ export async function fetchRecentItems() {
     START_YMD: yesterdayString,
     END_YMD: todayString,
     pageNo: 1, // 페이지 번호
-    numOfRows: '20', // 행 수
+    numOfRows: '40', // 행 수
   };
 
   try {
@@ -44,6 +44,12 @@ export async function fetchRecentItems() {
 
     const results = [];
     for (const lostItem of lostItems) {
+      if (
+        lostItem.fdFilePathImg ===
+        'https://www.lost112.go.kr/lostnfs/images/sub/img02_no_img.gif'
+      ) {
+        continue; // 이 이미지 URL을 가진 아이템은 건너뛰고 다음 반복으로 넘어감
+      }
       const item = {
         id: lostItem.atcId,
         content: lostItem.fdSbjt,
@@ -55,7 +61,12 @@ export async function fetchRecentItems() {
         totalCount,
       };
 
-      results.push(item);
+      if (
+        item.imageUrl !==
+        'https://www.lost112.go.kr/lostnfs/images/sub/img04_no_img.gif'
+      ) {
+        results.push(item);
+      }
     }
 
     console.log('Parsed Body:', results);
