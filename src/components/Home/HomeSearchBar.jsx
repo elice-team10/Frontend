@@ -8,18 +8,6 @@ import { useSearch } from '../../context/SearchProvider';
 import { fetchSubwayItems, fetchLostItems, fetchCommunity } from './fetchItems';
 import { SearchHistoryIcon } from './SearchHistoryIcon';
 
-const shakeAnimation = keyframes`
-  0%, 100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-20px);
-  }
-  75% {
-    transform: translateX(20px);
-  }
-`;
-
 const HomeContainer = styled.div`
   max-width: 1200px;
 `;
@@ -29,9 +17,6 @@ const Image = styled.img`
   margin: 2rem auto 0 auto;
   cursor: pointer;
   width: 170px;
-  &:hover {
-    animation: ${shakeAnimation} 0.5s ease-in-out infinite;
-  }
 `;
 
 const HomeSearchBarContainer = styled.div`
@@ -39,8 +24,8 @@ const HomeSearchBarContainer = styled.div`
   align-items: center;
   justify-content: center;
   max-width: 120rem;
-  //background-color: #7c9299;
   padding: 3rem 11.75rem;
+  padding-top: 0rem;
   border-radius: 12px;
 `;
 
