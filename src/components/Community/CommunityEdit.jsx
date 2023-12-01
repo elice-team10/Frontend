@@ -12,7 +12,7 @@ function CommunityEdit() {
   const userId = urlLocation.state.userId;
 
   const { data, isPending, isError, error } = useQuery({
-    queryKey: ['events', params.id],
+    queryKey: ['events', 'edit', params.id],
     queryFn: () => fetchEvents(`/post/detail/${params.id}`),
   });
 
@@ -22,18 +22,18 @@ function CommunityEdit() {
     onMutate: async (data) => {
       const newEvent = data.eventData;
 
-      await queryClient.cancelQueries({ queryKey: ['events', userId, params.id] });
-      const prevEvent = queryClient.getQueryData(['events', userId, params.id]);
+      await queryClient.cancelQueries({ queryKey: ['events', 'edit', 'update', userId, params.id] });
+      const prevEvent = queryClient.getQueryData(['events', 'edit', 'update', userId, params.id]);
 
       queryClient.setQueryData(['events', userId, params.id], newEvent);
 
       return { prevEvent };
     },
     onError: (error, data, context) => {
-      queryClient.setQueryData(['events', userId, params.id], context.prevEvent);
+      queryClient.setQueryData(['events', 'edit', 'update', userId, params.id], context.prevEvent);
     },
     onSettled: () => {
-      queryClient.invalidateQueries(['events', userId, params.id]);
+      queryClient.invalidateQueries(['events', 'edit', 'update', userId, params.id]);
     },
   });
 

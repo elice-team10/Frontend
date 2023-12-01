@@ -108,8 +108,8 @@ function CommunityBoard() {
                 content={item.content}
                 location={item.event_location}
                 date={item.event_date}
+                profile={item.userId?.profileImg}
                 nickname={item.userId?.nickname}
-                replyCount={'0'}
                 postId={item._id}
               />
             ))}
@@ -125,8 +125,8 @@ function CommunityBoard() {
                 content={item.content}
                 location={item.event_location}
                 date={item.event_date}
+                profile={item.userId?.profileImg}
                 nickname={item.userId.nickname}
-                replyCount={'0'}
                 postId={item._id}
               />
             ))}

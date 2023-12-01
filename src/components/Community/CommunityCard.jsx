@@ -5,6 +5,7 @@ import PlaceIcon from '@mui/icons-material/Place';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { useNavigate } from 'react-router-dom';
 
 const Card = styled.div`
@@ -24,7 +25,7 @@ const Card = styled.div`
 
   &:hover {
     top: -2px;
-    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.3);
   }
 `;
 
@@ -104,6 +105,12 @@ const DateIcon = styled(CalendarMonthIcon)`
 const PositionContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+
+  && div {
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const DividerLine = styled.div`
@@ -118,13 +125,36 @@ const UserContainer = styled.div`
   display: flex;
   align-items: center;
   margin-top: 0.4rem;
-  justify-content: space-between;
+  // justify-content: space-between;
+  gap: 0.8rem;
+  height: 4.3rem;
+`;
+
+const BasicProfile = styled(AccountCircleIcon)`
+  width: 3.24rem !important;
+  height: 3.24rem !important;
+  color: #ccc;
+`;
+
+const Avartar = styled.img`
+  border-radius: 50%;
+  object-fit: cover;
+  width: 2.7rem;
+  height: 2.7rem;
 `;
 
 const Nickname = styled.p`
   font-size: ${theme.fontSizes.small};
-  font-weight: bold;
+  font-weight: 700;
   color: ${theme.colors.text};
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  && p {
+    color: ${theme.colors.textLightgray};
+    font-weight: normal;
+  }
 `;
 
 const ReplyContainer = styled.div`
@@ -143,17 +173,6 @@ const Reply = styled.p`
   margin: 0.8rem;
 `;
 
-CommunityCard.defaultProps = {
-  title: '에어팟 찾아요.',
-  complete: '미완료',
-  content:
-    '성수동 성수낙낙에서 에어팟을 잃어버렸습니다. 제 소중한 에어팟을 찾아주세요!',
-  location: '성동구',
-  date: '23-11-14',
-  nickname: '라프',
-  replyCount: '2',
-};
-
 function CommunityCard({
   picture,
   title,
@@ -161,18 +180,18 @@ function CommunityCard({
   content,
   location,
   date,
+  profile,
   nickname,
-  replyCount,
   postId,
 }) {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <CardContainer>
       <Card onClick={() => navigate(`/community/post/${postId}`)}>
         <PhotoContainer>
           {picture === 'null' ? (
-            <WallpaperOutlinedIcon fontSize="large" /> 
+            <WallpaperOutlinedIcon fontSize="large" />
           ) : (
             <img src={`http://kdt-sw-6-team10.elicecoding.com${picture}`} />
           )}
@@ -182,19 +201,36 @@ function CommunityCard({
         <DividerLine />
         <ContentContainer>
           <TitleContainer>
-            <Title>{title}</Title>
+            <Title>
+              {title.length > 12 ? `${title.substring(0, 12)}...` : title}
+            </Title>
             <Badge label={`${complete}`} size="small" />
           </TitleContainer>
-          <Content>{content}</Content>
+          <Content>
+            {content.length > 30 ? `${content.substring(0, 80)}...` : content}
+          </Content>
           <PositionContainer>
-            <LocationIcon />
-            <Location>{`서울시 ${location}`}</Location>
-            <DateIcon />
-            <Date>{date ? date : '-'}</Date>
+            <div>
+              <LocationIcon />
+              <Location>{`서울시 ${location}`}</Location>
+            </div>
+            <div>
+              <DateIcon />
+              <Date>{date ? date : '-'}</Date>
+            </div>
           </PositionContainer>
           <DividerLine />
           <UserContainer>
-            <Nickname>{nickname}</Nickname>
+            {profile === '1' ? (
+              <BasicProfile />
+            ) : (
+              <Avartar src={`/profiles/profile${profile}.webp`} />
+            )}
+
+            <Nickname>
+              <p>by</p>
+              {nickname}
+            </Nickname>
             {/* <ReplyContainer>
               <ReplyIcon />
               <Reply>{replyCount}</Reply>

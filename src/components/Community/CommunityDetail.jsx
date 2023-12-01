@@ -17,6 +17,8 @@ import ModalBasic from '../UI/Modal';
 import useAuth from '../../hooks/useAuth';
 import { axiosPrivate } from '../../api/axios';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 const Background = styled.div`
   background-color: #eee;
@@ -29,6 +31,7 @@ const StyledArrowIcon = styled(ArrowBackIosIcon)`
   margin: 0 auto 1rem 0;
   font-size: xx-large;
   color: ${theme.colors.primary};
+  cursor: pointer;
 `;
 
 const PhotoContainer = styled.div`
@@ -62,7 +65,7 @@ const ContentContainer = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  // padding: 12px;
+  padding: 2rem 2rem 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -70,7 +73,7 @@ const TitleContainer = styled.div`
 `;
 
 const Title = styled.p`
-  padding: 12px;
+  padding: 12px 0;
   font-weight: bold;
   font-size: ${theme.fontSizes.large};
   color: ${theme.colors.text};
@@ -84,20 +87,24 @@ const ButtonContainer = styled.div`
   padding-bottom: 2rem;
 
   && button {
+    display: flex;
+    align-items: center;
     font-family: 'Noto Sans KR', sans-serif;
     font-size: ${theme.fontSizes.small};
-    color: ${theme.colors.border};
-    background-color: ${theme.colors.textWhite};
+    color: ${theme.colors.textWhite};
+    background-color: ${theme.colors.border};
     border: 1px solid ${theme.colors.border};
-    border-radius: 4px;
-    padding: 0.6rem;
+    border-radius: 1.9rem;
+    padding: 0.9rem;
     margin: 0 0.4rem 1rem;
+    cursor: pointer;
   }
   && button:hover {
-    color: ${theme.colors.text};
-    border: 1px solid ${theme.colors.text};
-    background-color: #eee;
+    color: ${theme.colors.textWhite};
+    background-color: ${theme.colors.primary};
+    border: 1px solid ${theme.colors.primary};
   }
+
 `;
 
 const PositionContainer = styled.div`
@@ -117,7 +124,7 @@ const LocAndDateContainer = styled.div``;
 
 const Name = styled.div`
   font-size: ${theme.fontSizes.small};
-  font-weight: bold;
+  font-weight: 600;
   color: ${theme.colors.text};
   margin-left: 0.8rem;
 `;
@@ -150,7 +157,7 @@ const DateIcon = styled(CalendarMonthIcon)`
 `;
 
 const Content = styled.p`
-  padding: 12px;
+  padding: 0 2rem 3rem;
   font-size: ${theme.fontSizes.medium};
   color: ${theme.colors.text};
   line-height: 2.5rem;
@@ -160,7 +167,7 @@ const Content = styled.p`
 const ProfileContainer = styled.div`
   display: flex;
   align-items: center;
-  margin-left: 1.2rem;
+  margin-left: 2rem;
 `;
 
 const BasicProfile = styled(AccountCircleIcon)`
@@ -168,7 +175,7 @@ const BasicProfile = styled(AccountCircleIcon)`
   height: 38.4px !important;
   color: #ccc;
 `;
- 
+
 const Avartar = styled.img`
   border-radius: 50%;
   object-fit: cover;
@@ -177,7 +184,7 @@ const Avartar = styled.img`
 `;
 
 const BadgeAndBtn = styled.div`
-  padding: 12px;
+  padding: 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -187,7 +194,7 @@ const Badge = styled(Chip)`
   && {
     width: fit-content;
     font-size: ${theme.fontSizes.small};
-    font-weight: bold;
+    font-weight: 400;
     background-color: ${(props) =>
       props.label === '미완료'
         ? `${theme.colors.primary}`
@@ -218,8 +225,39 @@ const ChatBtn = styled.div`
   }
 `;
 
+const StyledBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+`;
+
+const ImageModal = styled.img`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 300px;
+  height: 300px;
+  z-index: 999;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  // background: #fffaf0;
+  border-radius: 12px;
+  // border: 3px solid black;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+`;
+
 function CommunityDetail() {
-  // const [isModal, setIsModal] = useState(false);
+  const [isModal, setIsModal] = useState(false);
+  const [isImageModalOpen, setImageModalOpen] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -237,18 +275,22 @@ function CommunityDetail() {
     },
   });
 
+  // 이미지 모달 백드롭 닫기
+  const onCloseImageModal = () => {
+    setImageModalOpen(false);
+  };
 
   // 삭제 질문 모달
-  // const handleStartDelete = () => {
-  //   console.log('Before setIsModal(true):', isModal);
-  //   setIsModal(true);
-  //   console.log('After setIsModal(true):', isModal);
-  // };
+  const handleStartDelete = () => {
+    console.log('Before setIsModal(true):', isModal);
+    setIsModal(true);
+    console.log('After setIsModal(true):', isModal);
+  };
 
-  // const handleStopDelete = () => {
-  //   setIsModal(false);
-  //   console.log(isModal);
-  // };
+  const handleStopDelete = () => {
+    setIsModal(false);
+    console.log(isModal);
+  };
 
   const handleDelete = () => {
     console.log('handleDelete called');
@@ -303,6 +345,7 @@ function CommunityDetail() {
             ) : (
               <img
                 src={`http://kdt-sw-6-team10.elicecoding.com${data.picture}`}
+                onClick={() => setImageModalOpen(true)}
               />
             )}
           </PhotoContainer>
@@ -319,7 +362,6 @@ function CommunityDetail() {
                 src={`/profiles/profile${data.userId.profileImg}.webp`}
               />
             )}
-
             <PositionContainer>
               <Name>{data?.userId?.nickname}</Name>
               {/* 장소 날짜 컨테이너 */}
@@ -335,11 +377,10 @@ function CommunityDetail() {
               </LocAndDateContainer>
             </PositionContainer>
           </ProfileContainer>
-          {/* 타이틀 컨테이너 */}
+          {/* 타이틀과 컨텐츠 컨테이너 */}
           <TitleContainer>
             <Title>{data.title}</Title>
           </TitleContainer>
-          {/* 컨텐츠와 완료 뱃지 */}
           <Content>{data.content}</Content>
         </ContentContainer>
         {/* 리플 컨테이너 */}
@@ -350,7 +391,15 @@ function CommunityDetail() {
 
   return (
     <>
-      {/* {isModal && (
+      {isImageModalOpen && (
+        <StyledBackdrop onClick={onCloseImageModal}>
+          <ImageModal
+            src={`http://kdt-sw-6-team10.elicecoding.com${data.picture}`}
+            onClose={() => setImageModalOpen(false)}
+          />
+        </StyledBackdrop>
+      )}
+      {isModal && (
         <ModalBasic
           title="게시글 삭제"
           content="이 글을 삭제하시겠습니까?"
@@ -358,18 +407,21 @@ function CommunityDetail() {
           onCloseModal={handleStopDelete}
           getFunction={handleDelete}
         />
-      )} */}
+      )}
       <Background>
         <PostContainer style={{ height: '100%' }}>
           <ButtonContainer>
-            <StyledArrowIcon
-              fontSize="3.5rem"
-              onClick={() => navigate('/community')}
-            />
+            <StyledArrowIcon fontSize="3.5rem" onClick={() => navigate(-1)} />
             {data && data.userId.email === auth?.email && (
               <>
-                <button onClick={handleEdit}>수정</button>
-                <button onClick={handleDelete}>삭제</button>
+                <button onClick={handleEdit}>
+                  <ModeEditOutlineOutlinedIcon fontSize="medium" />
+                  {/* <div className="buttonName">수정</div> */}
+                </button>
+                <button onClick={handleStartDelete}>
+                  <DeleteOutlineOutlinedIcon fontSize="medium" />
+                  {/* <div className="buttonName">삭제</div> */}
+                </button>
               </>
             )}
           </ButtonContainer>
