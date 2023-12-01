@@ -28,7 +28,7 @@ const FooterBox1 = styled.div`
   letter-spacing: 2px;
 
   h3 {
-    margin: 0 0 2px 44px;
+    margin: 0 0 2px 128px;
     font-size: 12px;
   }
 

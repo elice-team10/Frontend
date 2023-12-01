@@ -2,6 +2,7 @@ import { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
 import { axiosPrivate } from '../../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 const columns = [
   { field: '_id', headerName: '게시물 번호', width: 190 },
@@ -33,6 +34,7 @@ const columns = [
 
 const AdminLostBoard = ({ onSelectionChange }, ref) => {
   const [rows, setRows] = useState([]); // 서버로부터 받은 데이터를 저장할 상태
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -58,6 +60,7 @@ const AdminLostBoard = ({ onSelectionChange }, ref) => {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
+        onRowClick={(params) => navigate(`/community/post/${params.id}`)}
         rows={rows}
         columns={columns}
         getRowId={(row) => row._id}
@@ -71,7 +74,9 @@ const AdminLostBoard = ({ onSelectionChange }, ref) => {
         }}
         sx={{
           borderRadius: '4px',
+          backgroundColor: '#eee',
           '& .MuiDataGrid-cell': {
+            outline: 'none !important',
             fontSize: theme.fontSizes.medium,
             '@media (max-width: 1200px)': {
               fontSize: theme.fontSizes.small,
@@ -79,12 +84,16 @@ const AdminLostBoard = ({ onSelectionChange }, ref) => {
             color: theme.colors.text,
           },
           '& .MuiDataGrid-columnHeader': {
+            outline: 'none !important',
             fontSize: theme.fontSizes.large,
             '@media (max-width: 1200px)': {
               fontSize: theme.fontSizes.medium,
             },
             color: theme.colors.text,
             borderBottom: '1.2px solid #7C9299',
+          },
+          '& .MuiDataGrid-row:hover': {
+            cursor: 'pointer', // 마우스 호버 시 커서 포인터로 변경
           },
         }}
       />
