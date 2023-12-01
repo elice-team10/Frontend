@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import theme from '../../config/theme';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
@@ -56,7 +56,6 @@ const MessageList = styled.div`
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
   height: 100%;
   overflow-y: scroll;
   padding: 10px;
@@ -130,6 +129,7 @@ const ChatRoom = () => {
   const navigate = useNavigate();
   const [isComposing, setIsComposing] = useState(false);
   const location = useLocation();
+  const messageListRef = useRef(null);
 
   const searchParams = new URLSearchParams(location.search);
   let opponentNickname = searchParams.get('nickname');
@@ -199,6 +199,13 @@ const ChatRoom = () => {
       }
     }
   };
+  // 메시지 목록의 길이가 변경될 때 스크롤 위치를 조정
+  useEffect(() => {
+    if (messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, [messages.length]);
+
   return (
     <ChatRoomcontainer>
       <Chatbox>
@@ -209,8 +216,8 @@ const ChatRoom = () => {
           />
           <HeaderNickname>{opponentNickname}</HeaderNickname>
         </ChatHeader>
-        <MessageList>
-          {messages.map((message, index) => (
+        <MessageList ref={messageListRef}> {/*  메시지 목록의 길이가 변경 참조 */}
+         {messages.map((message, index) => (
             <Message
               key={index}
               $mine={message.userId.nickname === localNickname}

@@ -4,8 +4,6 @@ import theme from '../../config/theme';
 import PlaceIcon from '@mui/icons-material/Place';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PhoneIcon from '@mui/icons-material/Phone';
-import SearchIcon from '@mui/icons-material/Search';
-import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 import axios from 'axios';
 import { Box, Modal, Chip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -31,7 +29,6 @@ async function fetchItemById(id) {
 
   try {
     const response = await axios.get(url, { params: queryParams });
-    console.log(response);
 
     const lostItem = response.data.response.body.item;
 
@@ -47,7 +44,6 @@ async function fetchItemById(id) {
       contentDetail: lostItem.uniq,
     };
 
-    console.log(item);
     return item;
   } catch (error) {
     console.error('Error:', error);
@@ -182,9 +178,6 @@ const style = {
 };
 
 function ItemModal({ open, onClose, data }) {
-  const ErrorUrl =
-    'https://www.lost112.go.kr/lostnfs/images/uploadImg/20171111/error-404.html';
-
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
@@ -194,7 +187,7 @@ function ItemModal({ open, onClose, data }) {
         <Box sx={{ mb: 2 }}>
           <PhotoContainer>
             <LargePhoto
-              src={data.imageUrl === ErrorUrl ? notfound : data.imageUrl}
+              src={data.imageUrl}
               onClick={() => {
                 window.open(data.imageUrl, '_blank');
               }}
@@ -240,8 +233,6 @@ function ResultCard({ name, content, imageUrl, location, date, id }) {
   const [modalData, setModalData] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-  const ErrorUrl =
-    'https://www.lost112.go.kr/lostnfs/images/uploadImg/20171111/error-404.html';
 
   const handleClick = async () => {
     if (id[0] === '6') {
@@ -261,7 +252,7 @@ function ResultCard({ name, content, imageUrl, location, date, id }) {
     <CardContainer>
       <Card onClick={handleClick}>
         <PhotoContainer>
-          <Photo src={imageUrl === ErrorUrl ? notfound : imageUrl} />
+          <Photo src={imageUrl} />
         </PhotoContainer>
         <TitleContainer>
           <Title>

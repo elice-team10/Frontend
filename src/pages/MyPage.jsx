@@ -43,8 +43,8 @@ const MyPageContainer = styled.div`
 
   /* 768px / 16px = 48 */
   @media (max-width: 48em) {
-    /* max-width: 54.4rem;
-    flex-direction: column; */
+    max-width: 54.4rem;
+    /* flex-direction: column; */
   }
 `;
 
@@ -54,6 +54,11 @@ const NavAside = styled.aside`
   /* 1200px / 16px = 75 */
   @media (max-width: 75em) {
     width: 22rem;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 16rem;
   }
 `;
 
@@ -65,6 +70,11 @@ const NavTitle = styled.h1`
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
     font-size: ${theme.fontSizes.subtitle};
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    font-size: ${theme.fontSizes.large};
   }
 `;
 
@@ -87,11 +97,6 @@ const NavigationItem = styled.li`
   transition: all 250ms ease-in-out;
   cursor: pointer;
 
-  /* 1024px / 16px = 64 */
-  @media (max-width: 64em) {
-    font-size: ${theme.fontSizes.medium};
-  }
-
   ${(props) =>
     props.$active &&
     css`
@@ -102,6 +107,11 @@ const NavigationItem = styled.li`
   &:hover {
     color: ${theme.colors.text};
     font-weight: bold;
+  }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    font-size: ${theme.fontSizes.medium};
   }
 `;
 
@@ -116,6 +126,11 @@ const UserInfoPanel = styled.div`
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
     margin-top: 0.6rem;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    margin: 0;
   }
 `;
 
@@ -185,13 +200,20 @@ const MyPage = () => {
   const [selectedImage, setSelectedImage] = useState('1');
 
   const [nickname, setNickname] = useState(auth?.nickname);
+  const [status, setStatus] = useState(null);
+
+  // 메모: 이메일 수정 기능은 없으면 좋을 것 같다는 피드백을 받아서 이메일 수정 관련 코드 주석 처리
   const [email, setEmail] = useState(auth?.email);
+
   const [tempNickname, setTempNickname] = useState('');
-  const [tempEmail, setTempEmail] = useState('');
+  // const [tempEmail, setTempEmail] = useState('');
+
   const [isNicknameEditMode, setIsNicknameEditMode] = useState(false);
-  const [isEmailEditMode, setIsEmailEditMode] = useState(false);
+  // const [isEmailEditMode, setIsEmailEditMode] = useState(false);
+
   const [errorMsgNickname, setErrorMsgNickname] = useState('');
-  const [errorMsgEmail, setErrorMsgEmail] = useState('');
+
+  // const [errorMsgEmail, setErrorMsgEmail] = useState('');
   const [isPasswordChangeModalOpen, setIsPasswordChangeModalOpen] =
     useState(false);
   const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] =
@@ -206,7 +228,9 @@ const MyPage = () => {
         const nickname = response?.data?.nickname;
         const email = response?.data?.email;
         const profileImg = response?.data?.profileImg;
+        const status = response?.data?.status;
 
+        setStatus(status);
         setSelectedImage(profileImg);
         setNickname(nickname);
         setEmail(email);
@@ -254,30 +278,30 @@ const MyPage = () => {
     }
   };
 
-  const handleEmailConfirm = async () => {
-    // 이메일 데이터 업데이트 요청
-    // 이메일 유효성 검사 필요
-    if (!EMAIL_REGEX.test(tempEmail)) {
-      setErrorMsgEmail('유효한 이메일 주소를 입력하세요.');
-      return;
-    }
+  // const handleEmailConfirm = async () => {
+  //   // 이메일 데이터 업데이트 요청
+  //   // 이메일 유효성 검사 필요
+  //   if (!EMAIL_REGEX.test(tempEmail)) {
+  //     setErrorMsgEmail('유효한 이메일 주소를 입력하세요.');
+  //     return;
+  //   }
 
-    try {
-      const response = await axiosPrivate().put('/user', {
-        email: tempEmail,
-      });
+  //   try {
+  //     const response = await axiosPrivate().put('/user', {
+  //       email: tempEmail,
+  //     });
 
-      // 닉네임 유효성 검사 통과 -> 로컬 스토리지 데이터 업데이트
-      updateAuth({ email: tempEmail });
+  //     // 닉네임 유효성 검사 통과 -> 로컬 스토리지 데이터 업데이트
+  //     updateAuth({ email: tempEmail });
 
-      // 이메일 유효성 검사 통과 -> 상태 업데이트
-      setEmail(tempEmail);
-      setErrorMsgEmail('');
-      setIsEmailEditMode(false);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  //     // 이메일 유효성 검사 통과 -> 상태 업데이트
+  //     setEmail(tempEmail);
+  //     setErrorMsgEmail('');
+  //     setIsEmailEditMode(false);
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   const handleDeleteAccount = async () => {
     try {
@@ -298,18 +322,18 @@ const MyPage = () => {
     setIsNicknameEditMode((prev) => !prev);
   };
 
-  const handleClickEditEmail = () => {
-    setTempEmail(email);
-    setIsEmailEditMode((prev) => !prev);
-  };
+  // const handleClickEditEmail = () => {
+  //   setTempEmail(email);
+  //   setIsEmailEditMode((prev) => !prev);
+  // };
 
   const handleNicknameChange = (e) => {
     setTempNickname(e.target.value);
   };
 
-  const handleEmailChange = (e) => {
-    setTempEmail(e.target.value);
-  };
+  // const handleEmailChange = (e) => {
+  //   setTempEmail(e.target.value);
+  // };
 
   const handleNicknameCancel = () => {
     setTempNickname('');
@@ -317,11 +341,11 @@ const MyPage = () => {
     setIsNicknameEditMode(false);
   };
 
-  const handleEmailCancel = () => {
-    setTempEmail('');
-    setErrorMsgEmail('');
-    setIsEmailEditMode(false);
-  };
+  // const handleEmailCancel = () => {
+  //   setTempEmail('');
+  //   setErrorMsgEmail('');
+  //   setIsEmailEditMode(false);
+  // };
 
   // 프로필 모달
   const handleOpenProfileModal = () => {
@@ -408,13 +432,13 @@ const MyPage = () => {
               <Label htmlFor="email">이메일</Label>
               <MyPageEmail
                 email={email}
-                tempEmail={tempEmail}
-                isEditMode={isEmailEditMode}
-                onEditMode={handleClickEditEmail}
-                onConfirmClick={handleEmailConfirm}
-                onCancelClick={handleEmailCancel}
-                onChange={handleEmailChange}
-                errorMsg={errorMsgEmail}
+                // tempEmail={tempEmail}
+                // isEditMode={isEmailEditMode}
+                // onEditMode={handleClickEditEmail}
+                // onConfirmClick={handleEmailConfirm}
+                // onCancelClick={handleEmailCancel}
+                // onChange={handleEmailChange}
+                // errorMsg={errorMsgEmail}
               />
             </UserInfoCard>
 
@@ -422,9 +446,11 @@ const MyPage = () => {
               <StyledChangePasswordLink onClick={handleOpenPasswordChangeModal}>
                 비밀번호 변경
               </StyledChangePasswordLink>
-              <StyledDeactivateLink onClick={handleOpenDeleteAccountModal}>
-                회원 탈퇴
-              </StyledDeactivateLink>
+              {status === 1 && (
+                <StyledDeactivateLink onClick={handleOpenDeleteAccountModal}>
+                  회원 탈퇴
+                </StyledDeactivateLink>
+              )}
             </ActionLinksContainer>
             {isDeleteAccountModalOpen && (
               <ModalBasic
@@ -508,6 +534,13 @@ const EditButton = styled.button`
   & + button {
     margin-left: 0.8rem;
   }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 3.6rem;
+    height: 2rem;
+    font-size: 1rem;
+  }
 `;
 
 const ErrorMessage = styled.span`
@@ -555,6 +588,7 @@ function MyPageNickname({
   );
 }
 
+// 메모: 이메일 수정 기능은 없으면 좋을 것 같다는 피드백을 받아서 이메일 수정 관련 코드 사용 안함
 /**
  * MyPageEmail
  */
@@ -570,23 +604,23 @@ const UserEmail = styled.p`
 
 function MyPageEmail({
   email,
-  tempEmail,
-  isEditMode,
-  onEditMode,
-  onConfirmClick,
-  onCancelClick,
-  onChange,
-  errorMsg,
+  // tempEmail,
+  // isEditMode,
+  // onEditMode,
+  // onConfirmClick,
+  // onCancelClick,
+  // onChange,
+  // errorMsg,
 }) {
   return (
     <>
       <UserInfoContainer>
         <UserInfoBox>
-          {!isEditMode && (
-            <>
-              <UserEmail>{email}</UserEmail>
-              <EditButton onClick={onEditMode}>수정</EditButton>
-            </>
+          {/* {!isEditMode && (
+            <> */}
+          <UserEmail>{email}</UserEmail>
+          {/* <EditButton onClick={onEditMode}>수정</EditButton> */}
+          {/* </>
           )}
           {isEditMode && (
             <>
@@ -600,10 +634,10 @@ function MyPageEmail({
               <EditButton onClick={onConfirmClick}>확인</EditButton>
               <EditButton onClick={onCancelClick}>취소</EditButton>
             </>
-          )}
+          )} */}
         </UserInfoBox>
       </UserInfoContainer>
-      {errorMsg && <ErrorMessage>{errorMsg}</ErrorMessage>}
+      {/* {errorMsg && <ErrorMessage>{errorMsg}</ErrorMessage>} */}
     </>
   );
 }

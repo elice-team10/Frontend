@@ -4,8 +4,6 @@ import Chip from '@mui/material/Chip';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Badge from '@mui/material/Badge';
 import LocationOnIcon from '@mui/icons-material/LocationOn'; // 위치 아이콘
 import SubwayIcon from '@mui/icons-material/DirectionsSubway';
@@ -20,6 +18,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import ResultCard from './ResultCard';
 import { useSearch } from '../../context/SearchProvider';
 import { fetchSubwayItems, fetchLostItems } from '../Home/fetchItems';
+import ScrollTopButton from '../UI/ScrollTopButton';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -105,29 +104,7 @@ function SearchResultBar() {
   useEffect(() => {
     // result 배열이 업데이트 될 때마다 searchResults 상태를 업데이트
     setSearchResults(result);
-    console.log('result: ', result);
   }, [result]);
-
-  useEffect(() => {
-    // searchTerm, subwayLine, district, page 중 하나라도 변경될 때 실행됩니다.
-    console.log(
-      searchTerm,
-      subwayLine,
-      district,
-      page,
-      searchResults,
-      policeCount,
-      subwayCount,
-    );
-  }, [
-    searchTerm,
-    subwayLine,
-    district,
-    page,
-    searchResults,
-    policeCount,
-    subwayCount,
-  ]);
 
   useEffect(() => {
     window.scrollTo(0, 0); // 페이지 컴포넌트 마운트 시 최상단으로 스크롤
@@ -210,7 +187,7 @@ function SearchResultBar() {
             sx={{
               fontSize: '1.6rem',
               backgroundColor: selectedChip === 'all' ? '#151618' : '',
-              color: selectedChip === 'all' ? '#767a87' : '',
+              color: selectedChip === 'all' ? 'white' : '',
             }}
           />
         </StyledBadge>
@@ -223,7 +200,7 @@ function SearchResultBar() {
             sx={{
               fontSize: '1.6rem',
               backgroundColor: selectedChip === 'police' ? '#151618' : '',
-              color: selectedChip === 'police' ? '#767a87' : '',
+              color: selectedChip === 'police' ? 'white' : '',
             }}
           />
         </StyledBadge>
@@ -236,7 +213,7 @@ function SearchResultBar() {
               fontSize: '1.6rem',
               padding: '1rem',
               backgroundColor: selectedChip === 'subway' ? '#151618' : '',
-              color: selectedChip === 'subway' ? '#767a87' : '',
+              color: selectedChip === 'subway' ? 'white' : '',
             }}
           />
         </StyledBadge>
@@ -274,6 +251,7 @@ function SearchResultBar() {
           <LoadButton onClick={handleLoadMore}>더보기</LoadButton>
         )}
       </LoadButtonContainer>
+      <ScrollTopButton />
     </Container>
   );
 }

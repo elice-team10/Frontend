@@ -1,24 +1,12 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import lafLogo from '../../assets/laf_logo.png';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, LinearProgress, CircularProgress } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 import { useSearch } from '../../context/SearchProvider';
 import { fetchSubwayItems, fetchLostItems, fetchCommunity } from './fetchItems';
 import { SearchHistoryIcon } from './SearchHistoryIcon';
-
-const shakeAnimation = keyframes`
-  0%, 100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-20px);
-  }
-  75% {
-    transform: translateX(20px);
-  }
-`;
 
 const HomeContainer = styled.div`
   max-width: 1200px;
@@ -26,12 +14,9 @@ const HomeContainer = styled.div`
 
 const Image = styled.img`
   display: block;
-  margin: 2rem auto 0 auto;
+  margin: 10rem auto 1rem auto;
   cursor: pointer;
   width: 170px;
-  &:hover {
-    animation: ${shakeAnimation} 0.5s ease-in-out infinite;
-  }
 `;
 
 const HomeSearchBarContainer = styled.div`
@@ -39,8 +24,8 @@ const HomeSearchBarContainer = styled.div`
   align-items: center;
   justify-content: center;
   max-width: 120rem;
-  //background-color: #7c9299;
   padding: 3rem 11.75rem;
+  padding-top: 0rem;
   border-radius: 12px;
 `;
 
@@ -55,6 +40,10 @@ const SearchBox = styled.form`
   transition:background-color 0.1s,
   &:hover {
     background-color: black;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); // 박스 쉐도우 추가
+  }
+  &:disabled {
+    cursor: not-allowed;
   }
 `;
 
@@ -72,6 +61,11 @@ const SearchButton = styled.button`
   &:hover {
     background-color: #ff6700;
     color: black;
+  }
+  &:disabled {
+    cursor: not-allowed;
+    background-color: #151618;
+    color: white;
   }
 `;
 
@@ -94,6 +88,9 @@ const SearchInput = styled.input`
   margin: auto 30px auto 30px;
   font-size: 1.8rem;
   font-family: 'Noto Sans KR', sans-serif; /* 폰트 적용 */
+  &:disabled {
+    cursor: not-allowed;
+  }
 `;
 
 const HomeSearchBar = () => {
@@ -115,27 +112,6 @@ const HomeSearchBar = () => {
   const [loading, setLoading] = useState(false); // 로딩 상태
   const navigate = useNavigate();
 
-  useEffect(() => {
-    // searchTerm, subwayLine, district, page 중 하나라도 변경될 때 실행됩니다.
-    console.log(
-      searchTerm,
-      subwayLine,
-      district,
-      page,
-      category,
-      policeCount,
-      subwayCount,
-    );
-  }, [
-    searchTerm,
-    subwayLine,
-    district,
-    page,
-    category,
-    policeCount,
-    subwayCount,
-  ]);
-
   const saveSearchTerm = (term) => {
     let searches = JSON.parse(localStorage.getItem('searchHistory')) || [];
     if (!searches.includes(term)) {
@@ -143,6 +119,10 @@ const HomeSearchBar = () => {
       localStorage.setItem('searchHistory', JSON.stringify(searches));
     }
   };
+
+  useEffect(() => {
+    setSearchTerm('');
+  }, []);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -203,10 +183,6 @@ const HomeSearchBar = () => {
     }
   };
 
-  useEffect(() => {
-    console.log('Results updated:', result);
-  }, [result]);
-
   return (
     <HomeContainer>
       <Image
@@ -230,10 +206,13 @@ const HomeSearchBar = () => {
             placeholder={loading ? '검색중' : '무엇을 잃어버렸나요?'}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            disabled={loading}
           />
           <SearchHistoryIcon />
         </SearchBox>
-        <SearchButton onClick={handleSubmit}>검색</SearchButton>
+        <SearchButton onClick={handleSubmit} disabled={loading}>
+          검색
+        </SearchButton>
       </HomeSearchBarContainer>
     </HomeContainer>
   );
