@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 import theme from '../../config/theme';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 const WriteButton = styled.button`
@@ -12,8 +12,9 @@ const WriteButton = styled.button`
   margin: 19px 0 19px auto;
   background-color: ${theme.colors.primary};
   border: 1px solid ${theme.colors.primary};
-  font-weight: bold;
+  font-weight: 400;
   border-radius: 12px;
+  cursor: pointer;
   &:hover {
     filter: brightness(1.15);
   }
@@ -54,7 +55,7 @@ const EachTab = styled.p`
     props.$active &&
     css`
       color: ${theme.colors.text};
-      font-weight: bold;
+      font-weight: 700;
       box-shadow: inset 0px -4px 0px ${theme.colors.primary};
     `}
 `;
@@ -67,7 +68,9 @@ CommunityTab.defaultProps = {
 const tabs = ['찾아요', '주웠어요'];
 
 function CommunityTab({ currentTab, onClick }) {
- const { auth } = useAuth();
+  const { auth } = useAuth();
+  const navigate = useNavigate();
+
   return (
     <Container>
       {tabs.map((tab, i) => {
@@ -81,17 +84,19 @@ function CommunityTab({ currentTab, onClick }) {
           </EachTab>
         );
       })}
-        { auth && (
-      <WriteButton>
-        <StyledLink
-          to={`/community/write?board_category=${
-            currentTab === '찾아요' ? 0 : 1
-          }`}
+      {auth && (
+        <WriteButton
+          onClick={() =>
+            navigate(
+              `/community/write?board_category=${
+                currentTab === '찾아요' ? 0 : 1
+              }`,
+            )
+          }
         >
           글 작성
-        </StyledLink>
-      </WriteButton>
-        )}
+        </WriteButton>
+      )}
     </Container>
   );
 }

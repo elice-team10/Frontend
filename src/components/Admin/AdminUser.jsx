@@ -22,6 +22,7 @@ const columns = [
   },
 ];
 
+
 const AdminUser = ({ onSelectionChange }, ref) => {
   const [user, setUser] = useState([]);
 
@@ -41,6 +42,7 @@ const AdminUser = ({ onSelectionChange }, ref) => {
   useImperativeHandle(ref, () => ({
     getUser,
   }));
+  
 
   return (
     <div style={{ height: '100%', width: '100%' }}>
@@ -58,7 +60,9 @@ const AdminUser = ({ onSelectionChange }, ref) => {
         }}
         sx={{
           borderRadius: '4px',
+          backgroundColor: '#eee',
           '& .MuiDataGrid-cell': {
+            outline: 'none !important',
             fontSize: theme.fontSizes.medium,
             '@media (max-width: 1200px)': {
               fontSize: theme.fontSizes.small,
@@ -66,12 +70,16 @@ const AdminUser = ({ onSelectionChange }, ref) => {
             color: theme.colors.text,
           },
           '& .MuiDataGrid-columnHeader': {
+            outline: 'none !important',
             fontSize: theme.fontSizes.large,
             '@media (max-width: 1200px)': {
               fontSize: theme.fontSizes.medium,
             },
             color: theme.colors.text,
             borderBottom: '1.2px solid #7C9299',
+          },
+          '& .MuiDataGrid-row:hover': {
+            backgroundColor: '#eee', // 행이 호버될 때 배경색 변경
           },
         }}
       />

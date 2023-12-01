@@ -96,7 +96,7 @@ const SubmitButton = styled.button`
   background-color: ${(props) =>
     props.$background || `${theme.colors.primary}`};
   border: 1px solid ${(props) => props.color || `${theme.colors.primary}`};
-  font-weight: bold;
+  font-weight: 400;
   border-radius: 12px;
   &:hover {
     filter: ${(props) =>
@@ -158,7 +158,6 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   const [date, setDate] = useState('');
   const [complete, setComplete] = useState(false);
   const [content, setContent] = useState('');
-  const [nickname, setNickname] = useState('');
   const [boardCategory, setBoardCategory] = useState(0);
   const [picture, setPicture] = useState(null);
   const [productCategory, setProductCategory] = useState('');
@@ -206,11 +205,12 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   }, [boardCategoryFromQuery]);
 
   const navigate = useNavigate();
+  
   //게시판 작성 데이터 변경
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: createNewEvent,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['events'] });
+      queryClient.invalidateQueries({ queryKey: ['events', 'write'] });
       navigate('/community');
     },
   });
@@ -298,7 +298,7 @@ function CommunityWrite({ inputData, onEditSubmit }) {
                 onChange={(event) => setDate(event.target.value)}
               />
               <ImageInput
-                defaultValue={inputData ? inputData.picture : picture}
+                defaultValue={inputData && inputData.picture ? picture : null}
                 onChange={handleFileChange}
               />
             </ToolbarContainer>

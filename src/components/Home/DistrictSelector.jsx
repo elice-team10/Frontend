@@ -69,6 +69,7 @@ const DistrictSelector = () => {
       <InputLabel htmlFor="district-select"></InputLabel>
       <StyledSelect
         onChange={handleChange}
+        defaultValue=""
         displayEmpty
         inputProps={{ id: 'district-select' }}
         MenuProps={{
@@ -80,7 +81,7 @@ const DistrictSelector = () => {
             vertical: 'top',
             horizontal: 'left',
           },
-          getContentAnchorEl: null, // This will make it expand downwards only
+          getcontentanchorel: null, // This will make it expand downwards only
           PaperProps: {
             style: {
               maxHeight: 150,
