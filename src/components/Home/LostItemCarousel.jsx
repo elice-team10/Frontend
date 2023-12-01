@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import IconButton from '@mui/material/IconButton';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import axios from 'axios';
 import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSearch } from '../../context/SearchProvider';
@@ -60,9 +58,7 @@ const CarouselSlide = styled.div`
   display: flex;
 `;
 
-const CardContainer = styled.div`
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
+const CardContainer = styled.div`  
   position: relative;
   width: 20rem;
   height 20rem;
@@ -71,17 +67,11 @@ const CardContainer = styled.div`
   flex-direction: column;
   margin: 0;
 
-  &:hover {
-    transform: scale(1.05);
-    div {
-      display: block;
-    }
-  }
 `;
 
 const CardImage = styled.img`
   margin: 1rem 1rem 0rem 1rem;
-  scroll-snap-align: start;
+  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -89,12 +79,20 @@ const CardImage = styled.img`
   border: none;
   width: 17rem;
   height: 17rem;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: ${({ isDisabled }) => (isDisabled ? 'none' : 'scale(1.04)')};
+    div {
+      display: ${({ isDisabled }) => (isDisabled ? 'none' : 'block')};
+    }
+  }
 `;
 
 const CardText = styled.div`
   display: none;
   position: absolute;
-  top: 1rem;
+  bottom: 1rem;
   left: 8rem;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
@@ -105,7 +103,7 @@ const CardText = styled.div`
 const CardContent = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: center !important;
   h3 {
     font-weight: 350;
     margin-bottom: 0;
@@ -223,26 +221,34 @@ const LostItemCarousel = () => {
         ) : (
           <CarouselText>최근에 찾은 물건들</CarouselText>
         )}
-        <CarouselText2 onClick={() => handleClick()}>
-          {'더보기 '}
-          <ArrowForwardIosIcon
-            style={{ color: '#7c9299', fontSize: '1.4rem' }}
-          />
-        </CarouselText2>
+        {loading ? (
+          ''
+        ) : (
+          <CarouselText2 onClick={() => handleClick()}>
+            {'더보기 '}
+            <ArrowForwardIosIcon
+              style={{ color: '#7c9299', fontSize: '1.4rem' }}
+            />
+          </CarouselText2>
+        )}
       </TextContainer>
 
       <CarouselContainer>
         <CarouselWrapper>
           <CarouselSlide>
             {cardsData.map((card, index) => (
-              <CardContainer key={index} onClick={() => handleClick()}>
-                <CardImage src={card.imageUrl} key={index} />
-
+              <CardContainer key={index}>
+                <CardImage
+                  src={card.imageUrl}
+                  key={index}
+                  onClick={() => handleClick()}
+                  isDisabled={loading}
+                />
+                <CardText>{card.location}</CardText>
                 <CardContent>
                   <h3>{card.name}</h3>
                   <p>{card.date}</p>
                 </CardContent>
-                <CardText>{card.location}</CardText>
               </CardContainer>
             ))}
           </CarouselSlide>
