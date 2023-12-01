@@ -52,14 +52,14 @@ const CarouselSlide = styled.div`
 `;
 
 const CardContainer = styled.div`
-  cursor: pointer;
+  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
   transition: transform 0.2s ease-in-out;
   position: relative;
 
   &:hover {
-    transform: scale(1.05);
+    transform: ${({ isDisabled }) => (isDisabled ? 'none' : 'scale(1.05)')};
     div {
-      display: block;
+      display: ${({ isDisabled }) => (isDisabled ? 'none' : 'block')};
     }
   }
 `;
@@ -159,16 +159,10 @@ async function fetchItemCategory(categoryCode, categoryCode2 = null) {
 
       results.push(item);
     }
-    // 결과 출력
-    console.log('Status:', response.status);
-    console.log('Headers:', response.headers);
-    console.log('Parsed Body:', results);
-    console.log(
-      `Num of Rows:${numOfRows}, Page No. : ${pageNo}, Total Count : ${totalCount}`,
-    );
+
     return results;
   } catch (error) {
-    console.error('Error:', error);
+    console.log(error);
   }
 }
 
@@ -269,7 +263,11 @@ const CardCarousel = () => {
             }}
           >
             {cardsData.map((card, index) => (
-              <CardContainer key={index} onClick={() => handleClick(card)}>
+              <CardContainer
+                key={index}
+                isDisabled={loading}
+                onClick={() => handleClick(card)}
+              >
                 <CardImage src={card.image} />
                 <CardText>{card.label}</CardText>
               </CardContainer>
