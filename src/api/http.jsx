@@ -5,7 +5,7 @@ export const queryClient = new QueryClient();
 
 // 게시판 정보 가져오는 함수
 export async function fetchEvents(endpoint) {
-  const response = await api.get(endpoint, { withCredentials: true });
+  const response = await api.get(`${endpoint}`, { withCredentials: true });
 
   if (response.status !== 200) {
     const error = new Error('게시판 정보를 가져오는데 실패했습니다.');
@@ -40,9 +40,7 @@ export async function createNewEvent(eventData) {
 
 // 게시글 삭제하는 함수
 export async function deleteEvent({ postId, userId }) {
-  console.log('deleteEvent called');
   const response = await axiosPrivate().delete(`/post/${postId}/${userId}`);
-  console.log('deleteEvent response:', response);
 
   if (response.status !== 200) {
     const error = new Error('게시글 삭제에 실패했습니다.');
@@ -133,7 +131,6 @@ export async function updateComment({ commentId, userId, content }) {
   const response = await axiosPrivate().put(`/comment/${commentId}/${userId}`, {
     content,
   });
-  console.log('updateEvent response:', response);
 
   if (response.status !== 200) {
     const error = new Error('댓글 수정에 실패했습니다.');

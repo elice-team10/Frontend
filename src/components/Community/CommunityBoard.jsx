@@ -6,6 +6,7 @@ import CommunityCard from './CommunityCard';
 import { fetchEvents } from '../../api/http';
 import ErrorBlock from '../UI/ErrorBlock';
 import CircularProgress from '@mui/material/CircularProgress';
+import theme from '../../config/theme';
 
 const Background = styled.div`
   background-color: #eee;
@@ -56,6 +57,34 @@ const FoundContainer = styled.div`
   @media (max-width: 64em) {
     grid-template-columns: repeat(2, 29.6rem);
   }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    grid-template-columns: repeat(1, 29.6rem);
+  }
+`;
+
+const LoadButtonContainer = styled.div`
+  margin: 3rem 0 5rem 0;
+  display: flex;
+  justify-content: center;
+`;
+
+const LoadButton = styled.button`
+  background:  #151618;
+  border: none;
+  color:  ${theme.colors.textWhite};
+  width: 8rem;
+  height: 4rem;
+  border-radius: 12px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease-in-out,
+    box-shadow 0.2s ease-in-out;
+  &:hover {
+    opacity: 0.9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
 
 function CommunityBoard() {
@@ -63,6 +92,21 @@ function CommunityBoard() {
   const clickTabHandle = (tab) => {
     setCurrentTab(tab);
   };
+  const [visibleLost, setVisibleLost] = useState(8);
+  const [visibleFound, setVisibleFound] = useState(8);
+  const [lostItems, setLostItems] = useState([]);
+  const [foundItems, setFoundItems] = useState([]);
+  const [disableMoreLost, setDisableMoreLost] = useState(false);
+  const [disableMoreFound, setDisableMoreFound] = useState(false);
+
+  const loadMoreLostItems = () => {
+    setVisibleLost(prevVisible => prevVisible + 8);
+  };
+
+  const loadMoreFoundItems = () => {
+    setVisibleFound(prevVisible => prevVisible + 8);
+  };
+
   // 게시글 정보
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ['events'],
@@ -70,17 +114,24 @@ function CommunityBoard() {
     staleTime: 5000,
   });
 
-  // 댓글 정보
-  // const { data: commentData } = useQuery({
-  //   queryKey: ['commentData'],
-  //   queryFn: () => fetchComments(`/comment/${postId}`),
-  // });
+  useEffect(() => {
+    if (data) {
+      const lost = data.filter((event) => event.board_category === 0);
+      const found = data.filter((event) => event.board_category === 1);
+      setLostItems(lost);
+      setFoundItems(found);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    setDisableMoreLost(visibleLost >= lostItems.length);
+    setDisableMoreFound(visibleFound >= foundItems.length);
+  }, [visibleLost, visibleFound, lostItems, foundItems]);
+
+  const visibleLostItems = lostItems.slice(0, visibleLost);
+  const visibleFoundItems = foundItems.slice(0, visibleFound);
 
   let content;
-
-  if (isLoading) {
-    content = <CircularProgress sx={{ color: '#ff6700' }} />;
-  }
 
   if (isError) {
     content = (
@@ -92,14 +143,11 @@ function CommunityBoard() {
   }
 
   if (data) {
-    const lostItem = data.filter((event) => event.board_category === 0);
-    const foundItem = data.filter((event) => event.board_category === 1);
-    
     content = (
       <>
         {currentTab === '찾아요' ? (
           <LostContainer>
-            {lostItem.map((item, index) => (
+            {visibleLostItems.map((item) => (
               <CommunityCard
                 key={item._id}
                 picture={item.picture}
@@ -108,15 +156,15 @@ function CommunityBoard() {
                 content={item.content}
                 location={item.event_location}
                 date={item.event_date}
+                profile={item.userId?.profileImg}
                 nickname={item.userId?.nickname}
-                replyCount={'0'}
                 postId={item._id}
               />
             ))}
           </LostContainer>
         ) : (
           <FoundContainer>
-            {foundItem.map((item, index) => (
+            {visibleFoundItems.map((item) => (
               <CommunityCard
                 key={item._id}
                 picture={item.picture}
@@ -125,8 +173,8 @@ function CommunityBoard() {
                 content={item.content}
                 location={item.event_location}
                 date={item.event_date}
+                profile={item.userId?.profileImg}
                 nickname={item.userId.nickname}
-                replyCount={'0'}
                 postId={item._id}
               />
             ))}
@@ -142,6 +190,17 @@ function CommunityBoard() {
         <CommunityTab currentTab={currentTab} onClick={clickTabHandle} />
         {content}
       </CommunityContainer>
+      <LoadButtonContainer>
+        {isLoading ? (
+          <CircularProgress sx={{ color: '#ff6700' }} />
+        ) : (
+          currentTab === '찾아요' ? (
+            <LoadButton disabled={visibleLost >= lostItems.length} onClick={loadMoreLostItems}>더보기</LoadButton>
+          ) : (
+            <LoadButton disabled={visibleFound >= foundItems.length} onClick={loadMoreFoundItems}>더보기</LoadButton>
+          )
+        )}
+      </LoadButtonContainer>
     </Background>
   );
 }
