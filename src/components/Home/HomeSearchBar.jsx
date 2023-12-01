@@ -36,11 +36,10 @@ const SearchBox = styled.form`
   height: 50px;
   border-radius: 32px;
   background-color: #fff;
-  border: 3px solid #ff6700;
-  transition:background-color 0.1s,
+  border: 4px solid #ff6700;
+  transition: background-color 0.1s;
   &:hover {
-    background-color: black;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); // 박스 쉐도우 추가
+    //box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   }
   &:disabled {
     cursor: not-allowed;
@@ -49,7 +48,7 @@ const SearchBox = styled.form`
 
 const SearchButton = styled.button`
   width: 9rem;
-  height: 50px;
+  height: 58px;
   border-radius: 32px;
   border: none;
   background-color: #151618;
