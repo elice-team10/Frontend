@@ -6,6 +6,7 @@ import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Badge from '@mui/material/Badge';
 import LocationOnIcon from '@mui/icons-material/LocationOn'; // 위치 아이콘
 import SubwayIcon from '@mui/icons-material/DirectionsSubway';
 import SearchIcon from '@mui/icons-material/Search';
@@ -21,10 +22,40 @@ import ResultCard from './ResultCard';
 import { useSearch } from '../../context/SearchProvider';
 import { fetchSubwayItems, fetchLostItems } from '../Home/fetchItems';
 
+const Container = styled.div`
+  min-height: 100vh;
+`;
+
+const StyledBadge = styled(Badge)(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: 1,
+    top: 2,
+    color: 'black',
+    fontSize: '12px',
+    padding: '0 4px',
+  },
+}));
+
+const NotFoundBox = styled.div`
+  height: 70vh; // 높이 설정
+  display: flex;
+  justify-content: center; // 가로 중앙 정렬
+  align-items: center; // 세로 중앙 정렬
+  text-align: center; // 텍스트 중앙 정렬
+  font-size: 3rem;
+  font-weight: 375;
+`;
+
+const StyledGridContainer = styled(Grid)`
+  max-width: 1200px;
+  width: 90%;
+  margin: 0 auto; // 중앙 정렬
+`;
+
 const LoadButton = styled.button`
   background:  #151618;
   border: none;
-  color:  rgba(160,165,182,.7);
+  color:  white;
   width: 15rem;
   height: 5rem;
   border-radius: 12px;
@@ -39,7 +70,8 @@ const LoadButton = styled.button`
 `;
 
 const GradationBox = styled.div`
-  width: 103rem;
+  width: 100%;
+  min-width: 117.6rem;
   height: 1rem;
   background: linear-gradient(135deg, #ffa500, #ff7f50, #ff6700);
   margin: 2rem 0;
@@ -98,6 +130,10 @@ function SearchResultBar() {
     subwayCount,
   ]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0); // 페이지 컴포넌트 마운트 시 최상단으로 스크롤
+  }, []);
+
   const handleLoadMore = async () => {
     setLoading(true);
     const nextPage = page + 1;
@@ -133,61 +169,79 @@ function SearchResultBar() {
   const handleChipClick = (chipKey) => {
     setSelectedChip(chipKey);
 
-    // '전체 검색결과' 칩을 클릭했을 때 모든 결과를 보여줍니다.
+    // 먼저 유효한 결과만 필터링
+    const validResults = result.filter((item) => item != null);
+
+    // '전체 검색결과' 칩을 클릭했을 때 모든 유효한 결과를 보여줍니다.
     if (chipKey === 'all') {
-      setSearchResults([...result]);
+      setSearchResults([...validResults]);
     }
     // '경찰서에서 보관중' 칩을 클릭했을 때 ID가 'F'로 시작하는 결과만 필터링합니다.
     else if (chipKey === 'police') {
-      setSearchResults(result.filter((item) => item.id[0] === 'F'));
+      setSearchResults(validResults.filter((item) => item.id[0] === 'F'));
     }
     // '지하철 및 기타기관' 칩을 클릭했을 때 해당 결과를 보여줍니다.
     else if (chipKey === 'subway') {
-      setSearchResults(result.filter((item) => item.id[0] === 'V'));
-    } else if (chipKey === 'community') {
-      setSearchResults(result.filter((item) => item.id[0] === '6'));
+      setSearchResults(validResults.filter((item) => item.id[0] === 'V'));
+    }
+    // '커뮤니티' 칩을 클릭했을 때 해당 결과를 보여줍니다.
+    else if (chipKey === 'community') {
+      setSearchResults(validResults.filter((item) => item.id[0] === '6'));
     }
   };
 
   const navigate = useNavigate();
 
   return (
-    <div style={{ maxWidth: '1200px', width: '70%' }}>
-      <Stack direction="row" spacing={1} mt={10} mb={1}>
+    <Container>
+      <Stack direction="row" spacing={2} mt={10} mb={1}>
         <IconButton onClick={() => navigate(-1)} sx={{ padding: '0' }}>
           <ArrowBackIosIcon style={{ color: '#ff6700', fontSize: '2.5rem' }} />
         </IconButton>
-        <Chip
-          icon={<SearchIcon sx={{ fontSize: '2.5rem' }} />}
-          label={`전체 검색결과 (${subwayCount + policeCount})`}
-          onClick={() => handleChipClick('all')}
-          sx={{
-            fontSize: '1.6rem',
-            backgroundColor: selectedChip === 'all' ? '#151618' : '',
-            color: selectedChip === 'all' ? '#767a87' : '',
-          }}
-        />
-        <Chip
-          icon={<LocationOnIcon sx={{ fontSize: '2.5rem' }} />}
-          label={`경찰서에서 보관중 (${policeCount})`}
-          onClick={() => handleChipClick('police')}
-          sx={{
-            fontSize: '1.6rem',
-            backgroundColor: selectedChip === 'police' ? '#151618' : '',
-            color: selectedChip === 'police' ? '#767a87' : '',
-          }}
-        />
-        <Chip
-          icon={<SubwayIcon sx={{ fontSize: '2.5rem' }} />}
-          label={`지하철 및 기타기관 (${subwayCount})`}
-          onClick={() => handleChipClick('subway')}
-          sx={{
-            fontSize: '1.6rem',
-            padding: '1rem',
-            backgroundColor: selectedChip === 'subway' ? '#151618' : '',
-            color: selectedChip === 'subway' ? '#767a87' : '',
-          }}
-        />
+
+        <StyledBadge
+          badgeContent={policeCount + subwayCount}
+          color="warning"
+          max={999}
+        >
+          <Chip
+            icon={<SearchIcon sx={{ fontSize: '2.5rem' }} />}
+            label={'전체 검색결과'}
+            onClick={() => handleChipClick('all')}
+            sx={{
+              fontSize: '1.6rem',
+              backgroundColor: selectedChip === 'all' ? '#151618' : '',
+              color: selectedChip === 'all' ? '#767a87' : '',
+            }}
+          />
+        </StyledBadge>
+
+        <StyledBadge badgeContent={policeCount} color="warning" max={999}>
+          <Chip
+            icon={<LocationOnIcon sx={{ fontSize: '2.5rem' }} />}
+            label={'경찰서에서 보관중'}
+            onClick={() => handleChipClick('police')}
+            sx={{
+              fontSize: '1.6rem',
+              backgroundColor: selectedChip === 'police' ? '#151618' : '',
+              color: selectedChip === 'police' ? '#767a87' : '',
+            }}
+          />
+        </StyledBadge>
+        <StyledBadge badgeContent={subwayCount} color="warning" max={999}>
+          <Chip
+            icon={<SubwayIcon sx={{ fontSize: '2.5rem' }} />}
+            label={'지하철 및 기타기관'}
+            onClick={() => handleChipClick('subway')}
+            sx={{
+              fontSize: '1.6rem',
+              padding: '1rem',
+              backgroundColor: selectedChip === 'subway' ? '#151618' : '',
+              color: selectedChip === 'subway' ? '#767a87' : '',
+            }}
+          />
+        </StyledBadge>
+
         <Chip
           avatar={<Avatar alt="LafButton" src={LafImage} />}
           label="게시판"
@@ -201,8 +255,8 @@ function SearchResultBar() {
         />
       </Stack>
       <GradationBox />
-      {result.length > 0 && (
-        <Grid container spacing={2}>
+      {searchResults.length ? (
+        <StyledGridContainer container spacing={3}>
           {searchResults.map((item, index) =>
             item ? (
               <Grid item xs={3} key={index}>
@@ -210,7 +264,9 @@ function SearchResultBar() {
               </Grid>
             ) : null,
           )}
-        </Grid>
+        </StyledGridContainer>
+      ) : (
+        <NotFoundBox>검색 결과가 없습니다. 🥲</NotFoundBox>
       )}
       <LoadButtonContainer>
         {loading ? (
@@ -219,7 +275,7 @@ function SearchResultBar() {
           <LoadButton onClick={handleLoadMore}>더보기</LoadButton>
         )}
       </LoadButtonContainer>
-    </div>
+    </Container>
   );
 }
 

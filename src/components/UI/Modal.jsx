@@ -1,24 +1,22 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
-import HelpOutlineSharpIcon from '@mui/icons-material/HelpOutlineSharp';
 import ClearIcon from '@mui/icons-material/Clear';
 
 const ModalContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 300px;
-  height: 300px;
+  width: 400px;
+  height: 200px;
   z-index: 999;
   position: absolute;
   top: 40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: #fffaf0;
-  border-radius: 12px;
-  border: 3px solid black;
-  padding-bottom: 20px;
+  background: white;
+  border: none;
+  padding-bottom: 5px;
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 `;
 
@@ -38,7 +36,7 @@ const Titlebox = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 0 12px !important;
+  padding: 8px 8px 0 0 !important;
   height: 30px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -53,58 +51,54 @@ const Text = styled.p`
   text-align: center;
   line-height: 50px;
   font-size: 20px;
-  margin: 8px !important;
+  font-weight: 375;
+  margin: 0 0 10px 0 !important;
 `;
 
 const BtnBox = styled.div`
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 12px !important;
+  gap: 24px;
+  margin-bottom: 14px !important;
 `;
 
 const styleClearIcon = {
-  color: '#ed7117',
-  fontSize: '25px',
+  color: '#7c9299',
+  fontSize: '32px',
   cursor: 'pointer',
   ':hover': {
-    color: '#ff6700',
+    color: 'black',
   },
-};
-
-const styleQuestionIcon = {
-  color: '#ed7117',
-  fontSize: '70px',
-  alignSelf: 'center',
 };
 
 const styleButton1 = {
   transition: 'all 0.2s',
-  width: '120px',
+  width: '140px',
   height: '40px',
   fontSize: '17px',
-  color: '#ed7117',
-  borderRadius: '12px',
-  border: '3px solid #ed7117',
-  backgroundColor: '#fff',
+  fontWeight: '350',
+  color: 'black',
+  //borderRadius: '8px',
+  border: 'none',
+  backgroundColor: '#7C9299',
   ':hover': {
-    borderColor: '#ff6700',
-    backgroundColor: '#fff',
+    backgroundColor: '#ddd',
   },
 };
 
 const styleButton2 = {
   transition: 'all 0.2s',
-  width: '120px',
+  width: '140px',
   height: '40px',
   fontSize: '17px',
-  borderRadius: '12px',
-  color: '#fffaf0',
-  backgroundColor: '#ed7117',
+  fontWeight: '350',
   boxShadow: 'none',
+  //borderRadius: '8px',
+  color: '#fff',
+  backgroundColor: '#151618',
   ':hover': {
-    backgroundColor: '#ff6700',
-    boxShadow: 'none',
+    backgroundColor: '#ddd',
+    color: 'black',
   },
 };
 
@@ -123,7 +117,7 @@ function ModalBasic({ getFunction, onCloseModal, title, content, btnText }) {
             <TitleText>{title}</TitleText>
             <ClearIcon onClick={onCloseModal} sx={styleClearIcon} />
           </Titlebox>
-          <HelpOutlineSharpIcon sx={styleQuestionIcon} />
+          {/* <HelpOutlineSharpIcon sx={styleQuestionIcon} /> */}
           {/* 모달 본문 */}
           <Text>{content}</Text>
           <BtnBox>

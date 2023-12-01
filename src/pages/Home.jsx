@@ -8,7 +8,6 @@ const HomeContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: white;
   flex-grow: 1;
 `;
 
@@ -26,8 +25,8 @@ const Home = () => {
       <HomeSearchBar />
       <HomeButtons />
       <CardCarousel />
-      <GradationBox />
       <LostItemCarousel />
+      {/* <GradationBox /> */}
     </HomeContainer>
   );
 };

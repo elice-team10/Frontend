@@ -315,17 +315,23 @@ function CommunityDetail() {
   };
 
   /* --------------------챗방 추가-------------------- */
-  const handleAddChat = () => {
-    addChat();
-  };
+  const authString = localStorage.getItem('auth'); // 'auth' 키 로컬 스토리지에서 사용자 정보 가져오기
+  let localNickname;
+  if (authString) {
+    const authObj = JSON.parse(authString);
+    localNickname = authObj.nickname; // 로컬 스토리지 닉네임 추출
+  }
 
-  const addChat = async () => {
+  const handleAddChat = async () => {
     try {
       const postingUserId = data.userId._id;
+      const opponentNickname = data?.userId?.nickname;
       const response = await axiosPrivate().post(`/chat/${postingUserId}`);
-      navigate(`/chat/${response.data.roomId}`);
+      navigate(`/chat/${response.data.roomId}?nickname=${opponentNickname}`);
+      console.log('Response:', response.data);
     } catch (error) {
       console.error('Error during the POST chat:', error);
+      alert('이미 대화중인 상대입니다.')
     }
   };
   /* --------------------챗방 추가-------------------- */
@@ -360,7 +366,9 @@ function CommunityDetail() {
           </PhotoContainer>
           <BadgeAndBtn>
             <Badge label={`${data.isFound ? '완료' : '미완료'}`} size="small" />
-            <ChatBtn onClick={handleAddChat}>채팅하기</ChatBtn>
+            {localNickname !== data?.userId?.nickname && (
+              <ChatBtn onClick={handleAddChat}>채팅하기</ChatBtn>
+            )}
           </BadgeAndBtn>
           {/* 프로필 컨테이너 */}
           <ProfileContainer>

@@ -28,12 +28,12 @@ const FooterBox1 = styled.div`
   letter-spacing: 2px;
 
   h3 {
-    margin: 0 0 2px 44px;
+    margin: 0 0 2px 128px;
     font-size: 12px;
   }
 
   p {
-    font-size: 14px;
+    font-size: 10px;
     margin: 0;
   }
 `;
@@ -58,8 +58,12 @@ const Footer = () => {
     <FooterLayout>
       <FooterContainer>
         <FooterBox1>
-          <h3>고객센터 1588 - 1588</h3>
-          <p>월-금 10:00-18:00 (주말·공휴일 휴무)</p>
+          <h3>법적고지사항</h3>
+          <p>
+            검색결과는 경찰청 및 산하기관으로 부터 제공받으며 해당 사이트는
+            <br />
+            내용에 대해 책임을 지지 않습니다.
+          </p>
         </FooterBox1>
         <FooterBox2>
           <p>

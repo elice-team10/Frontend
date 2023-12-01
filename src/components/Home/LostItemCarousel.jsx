@@ -3,33 +3,47 @@ import styled from 'styled-components';
 import IconButton from '@mui/material/IconButton';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import airpods from '../../assets/airpods.jpg';
-import watch from '../../assets/watch.jpg';
-import card from '../../assets/card.jpg';
-import wallet from '../../assets/wallet.jpg';
-import phone from '../../assets/iphone.jpg';
-import bag from '../../assets/bag.jpg';
-import jewerly from '../../assets/jewerly.jpg';
-import clothes from '../../assets/clothes.jpg';
-import laptop from '../../assets/laptop.jpg';
 import axios from 'axios';
 import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSearch } from '../../context/SearchProvider';
+import { fetchRecentItems } from './fetchRecentItems';
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  max-width: 120rem;
+  padding: 0rem 5rem 4rem 5rem;
 `;
 
 const CarouselText = styled.span`
-  margin-top: 5rem;
-  margin-bottom: 0.5rem;
-  margin-left: 5rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 2rem;
   display: block;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   flex-self: flex-start;
   color: #7c9299;
+`;
+
+const CarouselText2 = styled.span`
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  margin-left: 2rem;
+  display: block;
+  font-size: 1.4rem;
+  flex-self: flex-start;
+  color: #7c9299;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  &:hover {
+    color: black;
+  }
+`;
+
+const TextContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
 `;
 
 const CarouselContainer = styled.div`
@@ -39,19 +53,23 @@ const CarouselContainer = styled.div`
 `;
 
 const CarouselWrapper = styled.div`
-  overflow: hidden;
-  max-width: 70rem;
+  max-width: 105rem;
 `;
 
 const CarouselSlide = styled.div`
   display: flex;
-  scroll-snap-type: x mandatory;
 `;
 
 const CardContainer = styled.div`
   cursor: pointer;
   transition: transform 0.2s ease-in-out;
   position: relative;
+  width: 20rem;
+  height 20rem;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin: 0;
 
   &:hover {
     transform: scale(1.05);
@@ -62,201 +80,173 @@ const CardContainer = styled.div`
 `;
 
 const CardImage = styled.img`
-  margin: 1rem 1rem;
+  margin: 1rem 1rem 0rem 1rem;
   scroll-snap-align: start;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: none;
-  border-radius: 8px;
-  width: 15.5rem;
-  height: 15.5rem;
+  width: 17rem;
+  height: 17rem;
 `;
 
 const CardText = styled.div`
   display: none;
   position: absolute;
-  bottom: 1rem;
-  left: 7rem;
+  top: 1rem;
+  left: 8rem;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.5rem;
   border-radius: 5px;
 `;
 
+const CardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h3 {
+    font-weight: 350;
+    margin-bottom: 0;
+  }
+
+  p {
+    color: grey;
+    margin-top: 0;
+  }
+`;
+
 const cardsData = [
   {
-    image: airpods,
-    label: '이어폰',
-    categoryCode: 'PRG000',
-    categoryCode2: 'PRG900',
+    date: '2023-12-01',
+    id: 'F2023120100000069',
+    imageUrl:
+      'https://www.lost112.go.kr/lostnfs/images/uploadImg/20231201/20231201123258323.jpg',
+    location: '을지로3가파출소',
+    name: '삼성휴대폰',
   },
-  { image: wallet, label: '지갑', categoryCode: 'PRH000' },
-  { image: phone, label: '휴대폰', categoryCode: 'PRJ000' },
-  { image: card, label: '카드', categoryCode: 'PRP000' },
-  { image: bag, label: '가방', categoryCode: 'PRA000' },
-  { image: jewerly, label: '귀금속', categoryCode: 'PRO000' },
-  { image: clothes, label: '의류', categoryCode: 'PRK000' },
-  { image: laptop, label: '노트북', categoryCode: 'PRI000' },
   {
-    image: watch,
-    label: '시계',
-    categoryCode: 'PRO000',
-    categoryCode2: 'PRO400',
+    date: '2023-12-01',
+    id: 'F2023120100000036',
+    imageUrl:
+      'https://www.lost112.go.kr/lostnfs/images/uploadImg/20231201/20231201010933266.jpg',
+    location: '신사지구대',
+    name: '아이폰14프로',
+  },
+  {
+    date: '2023-12-01',
+    id: 'F2023120100000023',
+    imageUrl:
+      'https://www.lost112.go.kr/lostnfs/images/uploadImg/20231201/20231201120731235.jpg',
+    location: '논현1파출소',
+    name: '구찌 여성용 카드지갑',
+  },
+  {
+    date: '2023-12-01',
+    id: 'F2023120100000008',
+    imageUrl:
+      'https://www.lost112.go.kr/lostnfs/images/uploadImg/20231201/20231201122224801.jpg',
+    location: '당현지구대',
+    name: '빌포드 가방',
+  },
+  {
+    date: '2023-12-01',
+    id: 'F2023120100000022',
+    imageUrl:
+      'https://www.lost112.go.kr/lostnfs/images/uploadImg/20231201/20231201123924746.jpg',
+    location: '금천지구대',
+    name: '아이폰',
   },
 ];
 
-async function fetchItemCategory(categoryCode, categoryCode2 = null) {
-  const url =
-    'http://apis.data.go.kr/1320000/LosfundInfoInqireService/getLosfundInfoAccToClAreaPd';
-  const serviceKey = decodeURIComponent(
-    'ANqqJt8CTWuvlA%2BWsV9WzIpKzY3RQAarn%2F2QkJD1AN3FYzZS6zMsDuq%2B8jDbXE6fXW8u50ZbGWdAWYLEzXK2TQ%3D%3D',
-  );
-
-  const queryParams = {
-    serviceKey, // 서비스 키
-    PRDT_CL_CD_01: categoryCode, // 상품명
-    N_FD_LCT_CD: 'LCA000',
-    pageNo: 1, // 페이지 번호
-    numOfRows: '20', // 행 수
-  };
-
-  if (categoryCode2) {
-    queryParams.PRDT_CL_CD_02 = categoryCode2;
-  }
-
-  try {
-    const response = await axios.get(url, { params: queryParams });
-
-    // XML 파싱을 위한 파서 생성
-    // const parser = new XMLParser();
-    // const parsedResponse = parser.parse(response.data);
-
-    const lostItems = response.data.response.body.items.item;
-    const numOfRows = response.data.response.body.numOfRows;
-    const pageNo = response.data.response.body.pageNo;
-    const totalCount = response.data.response.body.totalCount;
-
-    const results = [];
-    for (const lostItem of lostItems) {
-      const item = {
-        id: lostItem.atcId,
-        content: lostItem.fdSbjt,
-        name: lostItem.fdPrdtNm,
-        imageUrl: lostItem.fdFilePathImg,
-        date: lostItem.fdYmd,
-        location: lostItem.depPlace,
-        productCategory: lostItem.prdtClNm,
-      };
-
-      results.push(item);
-    }
-    // 결과 출력
-    console.log('Status:', response.status);
-    console.log('Headers:', response.headers);
-    console.log('Parsed Body:', results);
-    console.log(
-      `Num of Rows:${numOfRows}, Page No. : ${pageNo}, Total Count : ${totalCount}`,
-    );
-    return results;
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
 const LostItemCarousel = () => {
   // 초기 인덱스를 0으로 설정합니다.
-  const [activeStep, setActiveStep] = useState(0);
-  const [carouselTransition, setCarouselTransition] = useState(
-    'transform 0.3s ease-in-out',
-  );
   const [loading, setLoading] = useState(false);
-  const { setResult, result } = useSearch('');
+  const { setResult, result, setPoliceCount, setSubwayCount, setPage } =
+    useSearch('');
   const navigate = useNavigate();
 
-  const handleClick = async (card) => {
+  const handleClick = async () => {
     setLoading(true); // 로딩 시작
     setResult([]);
+    setPage(1);
+    setSubwayCount(0);
+    setPoliceCount(0);
+
     const requests = [];
-    if (card.categoryCode2) {
-      requests.push(fetchItemCategory(card.categoryCode, card.categoryCode2));
-    } else {
-      requests.push(fetchItemCategory(card.categoryCode));
-    }
+    requests.push(fetchRecentItems());
 
     try {
       const responses = await Promise.all(requests);
-      if (responses) {
-        const flattenedResults = responses.flat(); // 중첩된 배열을 하나의 배열로 펼침
+
+      const filteredResponses = responses.filter((item) => item != null);
+
+      if (filteredResponses) {
+        const flattenedResults = filteredResponses.flat(); // 중첩된 배열을 하나의 배열로 펼침
+        const policeItem = flattenedResults.find((item) => {
+          return item.id && item.id.startsWith('F');
+        });
+        const subwayItem = flattenedResults.find((item) => {
+          return item.id && item.id.startsWith('V');
+        });
+
+        if (policeItem) {
+          setPoliceCount(policeItem.totalCount);
+        }
+
+        if (subwayItem) {
+          setSubwayCount(subwayItem.totalCount);
+        }
         setResult(flattenedResults);
       }
 
-      setLoading(false);
+      setLoading(false); // 로딩 종료
+
       navigate('/search'); // 리다이렉트
     } catch (error) {
       console.log(error);
     }
   };
 
-  const handleNext = () => {
-    // 애니메이션 효과를 비활성화하는 조건을 체크합니다.
-    if (activeStep === cardsData.length - 4) {
-      setCarouselTransition('none'); // 애니메이션 효과 제거
-      setActiveStep(0);
-    } else {
-      setCarouselTransition('transform 0.3s ease-out'); // 기본 애니메이션 복구
-      setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    }
-  };
-
-  const handleBack = () => {
-    // 애니메이션 효과를 비활성화하는 조건을 체크합니다.
-    if (activeStep === 0) {
-      setCarouselTransition('none'); // 애니메이션 효과 제거
-      setActiveStep(cardsData.length - 4);
-    } else {
-      setCarouselTransition('transform 0.3s ease-out'); // 기본 애니메이션 복구
-      setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    }
-  };
-
   return (
     <Container>
-      {loading ? (
-        <CarouselText>
-          <CircularProgress
-            sx={{ color: '#7c9299', marginRight: '1rem' }}
-            size="1.2rem"
+      <TextContainer>
+        {loading ? (
+          <CarouselText>
+            <CircularProgress
+              sx={{ color: '#7c9299', marginRight: '1rem' }}
+              size="1.2rem"
+            />
+            {'검색중입니다. 잠시만 기다려주세요!'}
+          </CarouselText>
+        ) : (
+          <CarouselText>최근에 찾은 물건들</CarouselText>
+        )}
+        <CarouselText2 onClick={() => handleClick()}>
+          {'더보기 '}
+          <ArrowForwardIosIcon
+            style={{ color: '#7c9299', fontSize: '1.4rem' }}
           />
-          {'검색중입니다. 잠시만 기다려주세요!'}
-        </CarouselText>
-      ) : (
-        <CarouselText>오늘 습득한 물건들!</CarouselText>
-      )}
+        </CarouselText2>
+      </TextContainer>
 
       <CarouselContainer>
-        <IconButton onClick={handleBack}>
-          <ArrowBackIosIcon style={{ color: '#ff6700', fontSize: '2rem' }} />
-        </IconButton>
         <CarouselWrapper>
-          <CarouselSlide
-            style={{
-              transition: `${carouselTransition}`,
-              transform: `translateX(-${activeStep * 25}%)`,
-            }}
-          >
+          <CarouselSlide>
             {cardsData.map((card, index) => (
-              <CardContainer key={index} onClick={() => handleClick(card)}>
-                <CardImage src={card.image} key={index} />
-                <CardText>{card.label}</CardText>
+              <CardContainer key={index} onClick={() => handleClick()}>
+                <CardImage src={card.imageUrl} key={index} />
+
+                <CardContent>
+                  <h3>{card.name}</h3>
+                  <p>{card.date}</p>
+                </CardContent>
+                <CardText>{card.location}</CardText>
               </CardContainer>
             ))}
           </CarouselSlide>
         </CarouselWrapper>
-        <IconButton onClick={handleNext}>
-          <ArrowForwardIosIcon style={{ color: '#ff6700', fontSize: '2rem' }} />
-        </IconButton>
       </CarouselContainer>
     </Container>
   );

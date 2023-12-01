@@ -11,7 +11,7 @@ export async function fetchSubwayItems(productName, place, page) {
     PRDT_NM: productName, // 상품명
     DEP_PLACE: place, // 보관 장소
     pageNo: page, // 페이지 번호
-    numOfRows: '20', // 행 수
+    numOfRows: '40', // 행 수
   };
 
   try {
@@ -28,6 +28,13 @@ export async function fetchSubwayItems(productName, place, page) {
 
     const arr = [];
     for (const lostItem of lostItems) {
+      if (
+        lostItem.fdFilePathImg ===
+        'https://www.lost112.go.kr/lostnfs/images/sub/img02_no_img.gif'
+      ) {
+        continue; // 이 이미지 URL을 가진 아이템은 건너뛰고 다음 반복으로 넘어감
+      }
+
       const item = {
         id: lostItem.atcId,
         content: lostItem.fdSbjt,
@@ -62,7 +69,7 @@ export async function fetchLostItems(productName, place, page) {
     PRDT_NM: productName, // 상품명
     DEP_PLACE: place, // 보관 장소
     pageNo: page, // 페이지 번호
-    numOfRows: '20', // 행 수
+    numOfRows: '40', // 행 수
   };
 
   try {
@@ -75,7 +82,15 @@ export async function fetchLostItems(productName, place, page) {
     const totalCount = response.data.response.body.totalCount;
 
     const arr = [];
+
     for (const lostItem of lostItems) {
+      if (
+        lostItem.fdFilePathImg ===
+        'https://www.lost112.go.kr/lostnfs/images/sub/img02_no_img.gif'
+      ) {
+        continue; // 이 이미지 URL을 가진 아이템은 건너뛰고 다음 반복으로 넘어감
+      }
+
       const item = {
         id: lostItem.atcId,
         content: lostItem.fdSbjt,
@@ -120,7 +135,7 @@ export async function fetchCommunity(searchTerm, category) {
         id: res._id,
         content: res.content,
         name: res.title,
-        imageUrl: res.picture,
+        imageUrl: 'http://kdt-sw-6-team10.elicecoding.com' + res.picture,
         date: res.event_date,
         location: res.event_location,
       };
