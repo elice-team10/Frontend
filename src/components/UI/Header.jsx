@@ -72,6 +72,8 @@ const Navigation = styled.nav`
   display: flex;
   gap: 3rem; // 텍스트들 사이의 간격
 
+  transition: all 300ms ease;
+
   /* 768px / 16px = 48  */
   @media (max-width: 48em) {
     display: ${({ $isOpen }) => ($isOpen ? 'flex' : 'none')};
