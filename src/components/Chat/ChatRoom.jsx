@@ -21,6 +21,9 @@ const Chatbox = styled.div`
   justify-content: space-between;
   margin: 60px 0;
   width: 800px;
+  @media (max-width: 1024px) {
+    width:  500px !important;
+  }
   height: 90vh;
   background-color: #fff;
   border-radius: 12px;
@@ -69,7 +72,7 @@ const Message = styled.div`
   align-self: ${(props) => (props.$mine ? 'flex-end' : 'flex-start')};
 `;
 const Avartar = styled.img`
-  border-radius: 35%;
+  border-radius: 50%;
   object-fit: cover;
   width: 34px;
   height: 34px;
@@ -158,7 +161,7 @@ const ChatRoom = () => {
     return response.data;
   };
 
-  // useQuery를 사용하여 2초마다 채팅 데이터를 가져옵니다.
+  // useQuery를 사용하여 0.4초마다 채팅 데이터를 가져옵니다.
   const { data } = useQuery(['chat', roomId], () => fetchChat(roomId), {
     refetchInterval: 400,
     staleTime: 100000, // 10초 동안 데이터는 최신으로 간주

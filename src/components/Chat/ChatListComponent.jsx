@@ -43,6 +43,9 @@ const ChatListbox = styled.div`
   display: flex;
   flex-direction: column;
   width: 700px;
+  @media (max-width: 1024px) {
+    width:  500px !important;
+  }
   background-color: #fff;
   border-top-right-radius: 12px;
   border-bottom-right-radius: 12px;
@@ -83,7 +86,6 @@ const Avartar = styled.img`
   object-fit: cover;
   width: 47px;
   height: 47px;
-  border: 0.5px solid black;
 `;
 const StyledAccountCircleIcon = styled(AccountCircleIcon)`
   color: #ccc;

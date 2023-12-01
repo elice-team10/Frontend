@@ -51,7 +51,6 @@ const Button = styled.button`
     font-size: ${theme.fontSizes.small};
   }
   cursor: pointer;
-  transition: all 0.1s;
 
   &:hover {
     filter: brightness(1.15);
@@ -62,7 +61,6 @@ const AdminSubNavContainer = styled.div`
   display: flex;
   width: 1200px;
   height: 40px;
-  gap: 1.5rem;
 `;
 
 const AdminSubNavBox = styled.div`
@@ -71,8 +69,9 @@ const AdminSubNavBox = styled.div`
   align-items: center;
   width: ${(props) => props.$width};
   height: 40px;
-  gap: 1.5rem;
+  gap: 8px;
   @media (max-width: 1200px) {
+    height: 35px;
     width: ${(props) =>
       props.$activeMenu === '찾아요'
         ? '880px'
