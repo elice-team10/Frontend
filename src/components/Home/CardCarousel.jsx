@@ -81,8 +81,9 @@ const CardText = styled.div`
   display: none;
   position: absolute;
   bottom: 1rem;
-  left: 10rem;
+  left: 9rem;
   color: white;
+  font-size: 1.4rem;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.5rem;
   border-radius: 5px;
@@ -253,7 +254,7 @@ const CardCarousel = () => {
 
       <CarouselContainer>
         <IconButton onClick={handleBack}>
-          <ArrowBackIosIcon style={{ color: '#ff6700', fontSize: '2rem' }} />
+          <ArrowBackIosIcon style={{ color: '#ff6700', fontSize: '2.5rem' }} />
         </IconButton>
         <CarouselWrapper>
           <CarouselSlide
@@ -275,7 +276,9 @@ const CardCarousel = () => {
           </CarouselSlide>
         </CarouselWrapper>
         <IconButton onClick={handleNext}>
-          <ArrowForwardIosIcon style={{ color: '#ff6700', fontSize: '2rem' }} />
+          <ArrowForwardIosIcon
+            style={{ color: '#ff6700', fontSize: '2.5rem' }}
+          />
         </IconButton>
       </CarouselContainer>
     </Container>

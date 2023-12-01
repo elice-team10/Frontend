@@ -39,7 +39,7 @@ const SearchBox = styled.form`
   border: 4px solid #ff6700;
   transition: background-color 0.1s;
   &:hover {
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); // 박스 쉐도우 추가
+    //box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   }
   &:disabled {
     cursor: not-allowed;
