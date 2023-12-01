@@ -44,7 +44,7 @@ const ChatListbox = styled.div`
   flex-direction: column;
   width: 700px;
   @media (max-width: 1024px) {
-    width:  500px !important;
+    width:  450px !important;
   }
   background-color: #fff;
   border-top-right-radius: 12px;
@@ -151,14 +151,12 @@ const ChatListComponent = () => {
   };
 
   const handleChatClick = (event, roomId, opponentNickname) => {
-    console.log('Opponent Nickname:', opponentNickname);
     event.stopPropagation();
     navigate(`/chat/${roomId}?nickname=${opponentNickname}`);
   };
 
-  const getFunction = (roomId) => {
+  const getFunction = () => {
     deleteChat(selectedRoomId);
-    console.log(`Deleting chat room with ID: ${roomId}`);
     onCloseModal();
   };
 
