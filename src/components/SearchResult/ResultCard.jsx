@@ -56,7 +56,7 @@ async function fetchItemById(id) {
 }
 
 const Card = styled.div`
-  background-color: #fffaf0;
+  background-color: #eee;
   border: none; // 변경
   border-radius: 8px;
   width: 29.6rem;
@@ -167,22 +167,14 @@ const PositionContainer = styled.div`
   justify-contents: space-between;
 `;
 
-const DividerLine = styled.div`
-  width: 100%;
-  height: 0.1rem;
-  background-color: #fffaf0;
-  position: absolute;
-  left: 0;
-`;
-
 const style = {
   position: 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  bgcolor: '#fffaf0',
-  border: '3px solid black !Important',
+  bgcolor: '#eee',
+  border: 'none',
   boxShadow: 24,
   borderRadius: '12px',
   maxHeight: '90vh', // 최대 높이 조정
@@ -210,8 +202,6 @@ function ItemModal({ open, onClose, data }) {
             />
           </PhotoContainer>
         </Box>
-
-        <DividerLine />
 
         <Box sx={{ my: 2 }}>
           <TitleContainer>
@@ -274,15 +264,14 @@ function ResultCard({ name, content, imageUrl, location, date, id }) {
         <PhotoContainer>
           <Photo src={imageUrl === ErrorUrl ? notfound : imageUrl} />
         </PhotoContainer>
-        <DividerLine />
         <TitleContainer>
-          <Title>{name}</Title>
+          <Title>
+            {name.length > 30 ? `${name.substring(0, 30)}...` : name}
+          </Title>
         </TitleContainer>
-        {/* <Location>
-          <SearchIcon />
-          {` ${location}에서 보관중`}
-        </Location> */}
-        <Content>{content}</Content>
+        <Content>
+          {content.length > 50 ? `${content.substring(0, 50)}...` : content}
+        </Content>
         <Box
           sx={{
             display: 'flex',

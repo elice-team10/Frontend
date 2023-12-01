@@ -3,16 +3,16 @@ import styled from 'styled-components';
 import IconButton from '@mui/material/IconButton';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import airpods from '../../assets/airpods.jpg';
-import watch from '../../assets/watch.jpg';
-import card from '../../assets/card.jpg';
-import wallet from '../../assets/wallet.jpg';
-import phone from '../../assets/iphone.jpg';
-import bag from '../../assets/bag.jpg';
-import jewerly from '../../assets/jewerly.jpg';
-import clothes from '../../assets/clothes.jpg';
-import laptop from '../../assets/laptop.jpg';
 import axios from 'axios';
+import airpods from '../../assets/airpods.jpg';
+import watch from '../../assets/watch.png';
+import card from '../../assets/card.png';
+import wallet from '../../assets/wallet.webp';
+import phone from '../../assets/iphone.png';
+import bag from '../../assets/bag.png';
+import jewerly from '../../assets/jewerly.jpg';
+import clothes from '../../assets/clothes.png';
+import laptop from '../../assets/laptop.png';
 import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useSearch } from '../../context/SearchProvider';
@@ -21,7 +21,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   max-width: 120rem;
-  // background-color: #f7f3f0;
   padding: 0rem 5rem 4rem 5rem;
   margin-bottom: 2rem;
 `;
@@ -44,7 +43,7 @@ const CarouselContainer = styled.div`
 
 const CarouselWrapper = styled.div`
   overflow: hidden;
-  max-width: 88rem;
+  max-width: 96.5rem;
 `;
 
 const CarouselSlide = styled.div`
@@ -66,23 +65,23 @@ const CardContainer = styled.div`
 `;
 
 const CardImage = styled.img`
-  margin: 1rem 1rem;
+  margin: 1rem 1.2rem;
   scroll-snap-align: start;
+  border: none;
+  border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: none;
-  border-radius: 8px;
-  width: 20rem;
-  height: 20rem;
+  width: 17rem;
+  height: 17rem;
 `;
 
 const CardText = styled.div`
   display: none;
   position: absolute;
   bottom: 1rem;
-  left: 10rem;
+  left: 8rem;
   color: white;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 0.5rem;
@@ -98,17 +97,17 @@ const cardsData = [
   },
   { image: wallet, label: '지갑', categoryCode: 'PRH000' },
   { image: phone, label: '휴대폰', categoryCode: 'PRJ000' },
-  { image: card, label: '카드', categoryCode: 'PRP000' },
-  { image: bag, label: '가방', categoryCode: 'PRA000' },
-  { image: jewerly, label: '귀금속', categoryCode: 'PRO000' },
-  { image: clothes, label: '의류', categoryCode: 'PRK000' },
-  { image: laptop, label: '노트북', categoryCode: 'PRI000' },
   {
     image: watch,
     label: '시계',
     categoryCode: 'PRO000',
     categoryCode2: 'PRO400',
   },
+  { image: jewerly, label: '귀금속', categoryCode: 'PRO000' },
+  { image: card, label: '카드', categoryCode: 'PRP000' },
+  { image: bag, label: '가방', categoryCode: 'PRA000' },
+  { image: clothes, label: '의류', categoryCode: 'PRK000' },
+  { image: laptop, label: '노트북', categoryCode: 'PRI000' },
 ];
 
 async function fetchItemCategory(categoryCode, categoryCode2 = null) {
@@ -123,7 +122,7 @@ async function fetchItemCategory(categoryCode, categoryCode2 = null) {
     PRDT_CL_CD_01: categoryCode, // 상품명
     N_FD_LCT_CD: 'LCA000',
     pageNo: 1, // 페이지 번호
-    numOfRows: '20', // 행 수
+    numOfRows: '40', // 행 수
   };
 
   if (categoryCode2) {
@@ -133,10 +132,6 @@ async function fetchItemCategory(categoryCode, categoryCode2 = null) {
   try {
     const response = await axios.get(url, { params: queryParams });
 
-    // XML 파싱을 위한 파서 생성
-    // const parser = new XMLParser();
-    // const parsedResponse = parser.parse(response.data);
-
     const lostItems = response.data.response.body.items.item;
     const numOfRows = response.data.response.body.numOfRows;
     const pageNo = response.data.response.body.pageNo;
@@ -144,6 +139,13 @@ async function fetchItemCategory(categoryCode, categoryCode2 = null) {
 
     const results = [];
     for (const lostItem of lostItems) {
+      if (
+        lostItem.fdFilePathImg ===
+        'https://www.lost112.go.kr/lostnfs/images/sub/img02_no_img.gif'
+      ) {
+        continue; // 이 이미지 URL을 가진 아이템은 건너뛰고 다음 반복으로 넘어감
+      }
+
       const item = {
         id: lostItem.atcId,
         content: lostItem.fdSbjt,
@@ -197,10 +199,10 @@ const CardCarousel = () => {
         setResult(flattenedResults);
 
         const policeItem = flattenedResults.find(
-          (item) => item.id && item.id.startsWith('f'),
+          (item) => item.id && item.id.startsWith('F'),
         );
         const subwayItem = flattenedResults.find(
-          (item) => item.id && item.id.startsWith('v'),
+          (item) => item.id && item.id.startsWith('V'),
         );
 
         if (policeItem) {
@@ -221,7 +223,7 @@ const CardCarousel = () => {
 
   const handleNext = () => {
     // 애니메이션 효과를 비활성화하는 조건을 체크합니다.
-    if (activeStep === cardsData.length - 4) {
+    if (activeStep === cardsData.length - 5) {
       setCarouselTransition('none'); // 애니메이션 효과 제거
       setActiveStep(0);
     } else {
@@ -234,7 +236,7 @@ const CardCarousel = () => {
     // 애니메이션 효과를 비활성화하는 조건을 체크합니다.
     if (activeStep === 0) {
       setCarouselTransition('none'); // 애니메이션 효과 제거
-      setActiveStep(cardsData.length - 4);
+      setActiveStep(cardsData.length - 5);
     } else {
       setCarouselTransition('transform 0.3s ease-out'); // 기본 애니메이션 복구
       setActiveStep((prevActiveStep) => prevActiveStep - 1);
@@ -263,12 +265,12 @@ const CardCarousel = () => {
           <CarouselSlide
             style={{
               transition: `${carouselTransition}`,
-              transform: `translateX(-${activeStep * 25}%)`,
+              transform: `translateX(-${activeStep * 20}%)`,
             }}
           >
             {cardsData.map((card, index) => (
               <CardContainer key={index} onClick={() => handleClick(card)}>
-                <CardImage src={card.image} key={index} />
+                <CardImage src={card.image} />
                 <CardText>{card.label}</CardText>
               </CardContainer>
             ))}

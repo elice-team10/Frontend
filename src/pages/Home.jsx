@@ -25,7 +25,7 @@ const Home = () => {
       <HomeSearchBar />
       <HomeButtons />
       <CardCarousel />
-      {/* <LostItemCarousel /> */}
+      <LostItemCarousel />
       {/* <GradationBox /> */}
     </HomeContainer>
   );

@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import theme from '../../config/theme';
 import FileDownloadIcon from '@mui/icons-material/FileDownload';
+import ToastAlert from './ToastAlert';
 
 const InputContainer = styled.div`
   width: 208px;
@@ -42,7 +43,10 @@ const Input = styled.input`
 `;
 
 function ImageInput({ onChange, defaultValue }) {
-  const [placeholder, setPlaceholder] = useState(defaultValue ? defaultValue : '사진 등록');
+  const [placeholder, setPlaceholder] = useState(
+    defaultValue || '사진 등록',
+  );
+  const [showAlert, setShowAlert] = useState(false);
   const imgRef = useRef(null);
 
   return (
@@ -61,11 +65,30 @@ function ImageInput({ onChange, defaultValue }) {
           onChange(event);
           // 파일 이름으로 placeholder 지정
           if (imgRef.current && imgRef.current.files.length > 0) {
+            // 파일 크기 체크
+            const filesize = imgRef.current.files[0].size / 1024 / 1024; 
+            if (filesize > 1) {
+              setShowAlert(true);
+              // 파일 선택 초기화
+              imgRef.current.value = '';
+              setPlaceholder('사진 등록');
+              return;
+            }
+            // 파일 콜백 호출
+            onChange(event);
+            // 파일 이름으로 placeholder 지정
             const filename = imgRef.current.files[0].name;
             setPlaceholder(filename);
           }
+          setShowAlert(false);
         }}
       />
+      {showAlert && (
+        <ToastAlert
+          icon="error"
+          title="파일 크기는 1MB를 초과할 수 없습니다."
+        />
+      )}
     </InputContainer>
   );
 }

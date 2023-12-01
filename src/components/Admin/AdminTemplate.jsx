@@ -51,7 +51,6 @@ const Button = styled.button`
     font-size: ${theme.fontSizes.small};
   }
   cursor: pointer;
-  transition: all 0.1s;
 
   &:hover {
     filter: brightness(1.15);
@@ -62,7 +61,6 @@ const AdminSubNavContainer = styled.div`
   display: flex;
   width: 1200px;
   height: 40px;
-  gap: 1.5rem;
 `;
 
 const AdminSubNavBox = styled.div`
@@ -71,8 +69,9 @@ const AdminSubNavBox = styled.div`
   align-items: center;
   width: ${(props) => props.$width};
   height: 40px;
-  gap: 1.5rem;
+  gap: 8px;
   @media (max-width: 1200px) {
+    height: 35px;
     width: ${(props) =>
       props.$activeMenu === '찾아요'
         ? '880px'
@@ -106,7 +105,6 @@ const AdminSubMenu = styled.div`
 const AdminFormContainer = styled.div`
   height: 631px;
   width: 1200px;
-  background-color: #eee;
   @media (max-width: 1200px) {
     width: 768px;
   }
@@ -266,7 +264,7 @@ const AdminTemplate = () => {
               ? '정말 탈퇴시키겠습니까?'
               : '정말 삭제하시겠습니까?'
           }
-          btnText={activeMenu === '회원정보' ? '선택한 회원 탈퇴' : '삭제'}
+          btnText={activeMenu === '회원정보' ? '탈퇴' : '삭제'}
           onCloseModal={onCloseModal}
           getFunction={getFunction}
         />

@@ -20,7 +20,8 @@ import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../utils/FormatDate';
 
 const columns = [
-  { id: 'commentId', label: '댓글 번호', minWidth: '22rem', align: 'center' },
+  // 메모: 댓글 번호는 중요하지 않을 것 같다는 피드백으로 주석 처리
+  // { id: 'commentId', label: '댓글 번호', minWidth: '22rem', align: 'center' },
   {
     id: 'commentDate',
     label: '댓글 작성일',
@@ -52,6 +53,11 @@ const MyPaper = styled(Paper)`
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
     margin-top: 0rem !important;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 48rem;
   }
 `;
 

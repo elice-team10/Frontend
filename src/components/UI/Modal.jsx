@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Button from '@mui/material/Button';
-import HelpOutlineSharpIcon from '@mui/icons-material/HelpOutlineSharp';
 import ClearIcon from '@mui/icons-material/Clear';
 
 const ModalContainer = styled.div`
@@ -37,7 +36,7 @@ const Titlebox = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 0 12px !important;
+  padding: 8px 8px 0 0 !important;
   height: 30px;
   border-top-left-radius: 12px;
   border-top-right-radius: 12px;
@@ -53,37 +52,31 @@ const Text = styled.p`
   line-height: 50px;
   font-size: 20px;
   font-weight: 375;
-  margin: 8px !important;
+  margin: 0 0 10px 0 !important;
 `;
 
 const BtnBox = styled.div`
   display: flex;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 12px !important;
+  gap: 24px;
+  margin-bottom: 14px !important;
 `;
 
 const styleClearIcon = {
   color: '#7c9299',
-  fontSize: '25px',
+  fontSize: '32px',
   cursor: 'pointer',
   ':hover': {
-    color: '#ff6700',
+    color: 'black',
   },
-};
-
-const styleQuestionIcon = {
-  color: '#ed7117',
-  fontSize: '70px',
-  alignSelf: 'center',
 };
 
 const styleButton1 = {
   transition: 'all 0.2s',
-  width: '120px',
+  width: '140px',
   height: '40px',
   fontSize: '17px',
-  fontWeight: '375',
+  fontWeight: '350',
   color: 'black',
   //borderRadius: '8px',
   border: 'none',
@@ -95,10 +88,10 @@ const styleButton1 = {
 
 const styleButton2 = {
   transition: 'all 0.2s',
-  width: '120px',
+  width: '140px',
   height: '40px',
   fontSize: '17px',
-  fontWeight: '375',
+  fontWeight: '350',
   boxShadow: 'none',
   //borderRadius: '8px',
   color: '#fff',
