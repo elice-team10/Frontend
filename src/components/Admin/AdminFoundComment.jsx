@@ -2,6 +2,7 @@ import { useState, useEffect, useImperativeHandle, forwardRef } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import theme from '../../config/theme';
 import { axiosPrivate } from '../../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 const columns = [
   { field: '_id', headerName: '댓글 번호', width: 230 },
@@ -27,6 +28,7 @@ const columns = [
 
 const AdminFoundComment = ({ onSelectionChange }, ref) => {
   const [filteredComments, setFilteredComments] = useState([]); // 필터된 댓글 데이터
+  const navigate = useNavigate();
 
   const fetchData = async () => {
     try {
@@ -51,6 +53,16 @@ const AdminFoundComment = ({ onSelectionChange }, ref) => {
   return (
     <div style={{ height: '100%', width: '100%' }}>
       <DataGrid
+        onRowClick={(params) => {
+          // params.row.postId._id를 사용하여 postId._id 값에 접근
+          const postId = params.row.postId?._id; // postId가 존재하는지 확인
+          if (postId) {
+            navigate(`/community/post/${postId}`);
+          } else {
+            // postId가 없는 경우의 처리
+            console.log('Post ID not found for this comment');
+          }
+        }}
         rows={filteredComments}
         columns={columns}
         getRowId={(row) => row._id}
@@ -64,7 +76,9 @@ const AdminFoundComment = ({ onSelectionChange }, ref) => {
         }}
         sx={{
           borderRadius: '4px',
+          backgroundColor: '#eee',
           '& .MuiDataGrid-cell': {
+            outline: 'none !important',
             fontSize: theme.fontSizes.medium,
             '@media (max-width: 1200px)': {
               fontSize: theme.fontSizes.small,
@@ -72,12 +86,16 @@ const AdminFoundComment = ({ onSelectionChange }, ref) => {
             color: theme.colors.text,
           },
           '& .MuiDataGrid-columnHeader': {
+            outline: 'none !important',
             fontSize: theme.fontSizes.large,
             '@media (max-width: 1200px)': {
               fontSize: theme.fontSizes.medium,
             },
             color: theme.colors.text,
             borderBottom: '1.2px solid #7C9299',
+          },
+          '& .MuiDataGrid-row:hover': {
+            cursor: 'pointer', // 마우스 호버 시 커서 포인터로 변경
           },
         }}
       />

@@ -211,7 +211,6 @@ const ChatBtn = styled.div`
 
 function CommunityDetail() {
   // const [isModalOpen, setIsModalOpen] = useState(false);
-  const [chatOpponent, setchatOpponent] = useState(false);
 
   const navigate = useNavigate();
   const params = useParams();
@@ -264,11 +263,7 @@ function CommunityDetail() {
     localNickname = authObj.nickname; // 로컬 스토리지 닉네임 추출
   }
 
-  const handleAddChat = () => {
-    addChat();
-  };
-
-  const addChat = async () => {
+  const handleAddChat = async () => {
     try {
       const postingUserId = data.userId._id;
       const opponentNickname = data?.userId?.nickname;
@@ -277,6 +272,7 @@ function CommunityDetail() {
       console.log('Response:', response.data);
     } catch (error) {
       console.error('Error during the POST chat:', error);
+      alert('이미 대화중인 상대입니다.')
     }
   };
   /* --------------------챗방 추가-------------------- */

@@ -21,6 +21,9 @@ const Chatbox = styled.div`
   justify-content: space-between;
   margin: 60px 0;
   width: 800px;
+  @media (max-width: 1024px) {
+    width:  500px !important;
+  }
   height: 90vh;
   background-color: #fff;
   border-radius: 12px;
@@ -42,13 +45,10 @@ const StyledArrowBackIosIcon = styled(ArrowBackIosIcon)`
     filter: brightness(1.15);
   }
 `;
-const StyledAccountCircleIcon = styled(AccountCircleIcon)`
-  margin-right: 10px;
-  color: #ccc;
-`;
 const HeaderNickname = styled.p`
-  font-size: ${theme.fontSizes.medium};
+  font-size: ${theme.fontSizes.large};
   color: ${theme.colors.text};
+  font-weight: 500;
   letter-spacing: 1px;
 `;
 
@@ -63,14 +63,29 @@ const MessageList = styled.div`
 `;
 
 const Message = styled.div`
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
   margin-bottom: 10px;
   font-size: ${theme.fontSizes.medium};
-  padding: 8px 12px;
-  border-radius: 10px;
-  color: ${(props) => (props.$mine ? 'white' : '${theme.colors.text}')};
-  background-color: ${(props) =>
-    props.$mine ? 'rgba(255, 103, 0, 0.9)' : 'rgba(0, 190, 0, 0.9)'};
+  color: ${(props) => (props.$mine ? 'white' : '#004000')};
   align-self: ${(props) => (props.$mine ? 'flex-end' : 'flex-start')};
+`;
+const Avartar = styled.img`
+  border-radius: 50%;
+  object-fit: cover;
+  width: 34px;
+  height: 34px;
+  margin-right: 4px;
+`;
+const MessageText = styled.div`
+padding: 6px 10px;
+border-radius: 10px;
+background-color: ${(props) =>
+  props.$mine ? 'rgba(255, 103, 0, 0.9)' : 'rgba(0, 190, 0, 0.8)'};
+`;
+const StyledAccountCircleIcon = styled(AccountCircleIcon)`
+  color: #ccc;
 `;
 
 const MessageInput = styled.div`
@@ -95,7 +110,7 @@ const Input = styled.input`
 const StyledSendIcon = styled(SendIcon)`
   padding: 10px 15px;
   margin-left: 10px;
-  background-color: ${theme.colors.primary};
+  background-color: rgba(300, 40, 0, 0.8);
   color: ${theme.colors.textWhite};
   border: none;
   border-radius: 8px;
@@ -146,7 +161,7 @@ const ChatRoom = () => {
     return response.data;
   };
 
-  // useQuery를 사용하여 2초마다 채팅 데이터를 가져옵니다.
+  // useQuery를 사용하여 0.4초마다 채팅 데이터를 가져옵니다.
   const { data } = useQuery(['chat', roomId], () => fetchChat(roomId), {
     refetchInterval: 400,
     staleTime: 100000, // 10초 동안 데이터는 최신으로 간주
@@ -158,7 +173,7 @@ const ChatRoom = () => {
   useEffect(() => {
     if (data) {
       setMessages(data);
-      console.log('123', { messages });
+      console.log('123', data);
     }
   }, [data]);
 
@@ -192,7 +207,6 @@ const ChatRoom = () => {
             sx={{ fontSize: 32 }}
             onClick={() => navigate('/chatList')}
           />
-          <StyledAccountCircleIcon sx={{ fontSize: 36 }} />
           <HeaderNickname>{opponentNickname}</HeaderNickname>
         </ChatHeader>
         <MessageList>
@@ -201,7 +215,14 @@ const ChatRoom = () => {
               key={index}
               $mine={message.userId.nickname === localNickname}
             >
-              {message.content}
+              {message.userId.profileImg === '1' ? (
+                <StyledAccountCircleIcon sx={{ fontSize: 40 }} />
+              ) : (
+                <Avartar
+                  src={`/profiles/profile${message.userId.profileImg}.webp`}
+                />
+              )}
+              <MessageText $mine={message.userId.nickname === localNickname}>{message.content}</MessageText>
             </Message>
           ))}
         </MessageList>
