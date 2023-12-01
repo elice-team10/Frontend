@@ -1,12 +1,24 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import lafLogo from '../../assets/laf_logo.png';
 import SearchIcon from '@mui/icons-material/Search';
 import { Box, LinearProgress, CircularProgress } from '@mui/material';
 import { useSearch } from '../../context/SearchProvider';
 import { fetchSubwayItems, fetchLostItems, fetchCommunity } from './fetchItems';
 import { SearchHistoryIcon } from './SearchHistoryIcon';
+
+const shakeAnimation = keyframes`
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-20px);
+  }
+  75% {
+    transform: translateX(20px);
+  }
+`;
 
 const HomeContainer = styled.div`
   max-width: 1200px;
@@ -17,6 +29,9 @@ const Image = styled.img`
   margin: 2rem auto 0 auto;
   cursor: pointer;
   width: 170px;
+  &:hover {
+    animation: ${shakeAnimation} 0.5s ease-in-out infinite;
+  }
 `;
 
 const HomeSearchBarContainer = styled.div`
@@ -24,7 +39,7 @@ const HomeSearchBarContainer = styled.div`
   align-items: center;
   justify-content: center;
   max-width: 120rem;
-  // background-color: #7c9299;
+  //background-color: #7c9299;
   padding: 3rem 11.75rem;
   border-radius: 12px;
 `;
@@ -55,7 +70,7 @@ const SearchButton = styled.button`
   font-size: 1.6rem;
   transition: all 0.1s ease-in-out;
   &:hover {
-    background-color: #ddd;
+    background-color: #ff6700;
     color: black;
   }
 `;
@@ -159,8 +174,10 @@ const HomeSearchBar = () => {
 
     try {
       const responses = await Promise.all(requests);
-      if (responses) {
-        const flattenedResults = responses.flat(); // 중첩된 배열을 하나의 배열로 펼침
+
+      const filteredResponses = responses.filter((item) => item != null);
+      if (filteredResponses) {
+        const flattenedResults = filteredResponses.flat(); // 중첩된 배열을 하나의 배열로 펼침
         const policeItem = flattenedResults.find((item) => {
           return item.id && item.id.startsWith('F');
         });

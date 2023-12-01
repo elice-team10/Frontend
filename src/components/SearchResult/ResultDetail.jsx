@@ -16,9 +16,7 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import IconButton from '@mui/material/IconButton';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import { Navigate, useNavigate } from 'react-router-dom';
-import airpods from '../../assets/airpods.jpg';
-import iphone from '../../assets/iphone.jpg';
-import notfound from '../../assets/notfound.jpg';
+
 import ResultCard from './ResultCard';
 
 const LoadButton = styled.button`

@@ -102,6 +102,7 @@ const SubwaySelector = () => {
       <StyledSelect
         onChange={handleChange}
         displayEmpty
+        defaultValue=""
         inputProps={{ id: 'subway-line-select' }}
         MenuProps={{
           anchorOrigin: {
