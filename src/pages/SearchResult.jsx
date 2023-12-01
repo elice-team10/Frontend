@@ -2,8 +2,6 @@ import Header from '../components/UI/Header';
 import React from 'react';
 import styled from 'styled-components';
 import SearchResultBar from '../components/SearchResult/SearchResultBar';
-import SearchResultDetail from '../components/SearchResult/ResultDetail';
-import theme from '../config/theme';
 
 const Container = styled.div`
   display: flex;
