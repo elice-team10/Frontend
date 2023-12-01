@@ -14,7 +14,7 @@ const HomeContainer = styled.div`
 
 const Image = styled.img`
   display: block;
-  margin: 10rem auto 1rem auto;
+  margin: 5rem auto 1rem auto;
   cursor: pointer;
   width: 170px;
 `;

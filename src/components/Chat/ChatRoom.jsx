@@ -22,7 +22,7 @@ const Chatbox = styled.div`
   margin: 60px 0;
   width: 800px;
   @media (max-width: 1024px) {
-    width:  500px !important;
+    width:  450px !important;
   }
   height: 90vh;
   background-color: #fff;
@@ -173,7 +173,6 @@ const ChatRoom = () => {
   useEffect(() => {
     if (data) {
       setMessages(data);
-      console.log('123', data);
     }
   }, [data]);
 
