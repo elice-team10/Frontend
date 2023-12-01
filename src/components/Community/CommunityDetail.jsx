@@ -329,7 +329,6 @@ function CommunityDetail() {
       const opponentNickname = data?.userId?.nickname;
       const response = await axiosPrivate().post(`/chat/${postingUserId}`);
       navigate(`/chat/${response.data.roomId}?nickname=${opponentNickname}`);
-      console.log('Response:', response.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         // 에러가 Axios 에러인 경우
