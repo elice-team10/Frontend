@@ -343,7 +343,7 @@ function Comment({ postId }) {
                 suppressContentEditableWarning={isEdit[item._id] || false}
                 // 각각 댓글 요소의 개별 참조 설정
                 ref={(el) => (commentRef.current[item._id] = el)}
-                onKeyDown={(event) => {
+                onKeyPress={(event) => {
                   if (event.key === 'Enter') {
                     event.preventDefault(); // Enter 키 누르면 생기는 줄바꿈 방지
                     handleEditComment(
@@ -379,7 +379,7 @@ function Comment({ postId }) {
               placeholder={commentPlaceholder}
               value={comment}
               onChange={(event) => setComment(event.target.value)}
-              onKeyDown={(event) => {
+              onKeyPress={(event) => {
                 if (event.key === 'Enter') {
                   event.preventDefault(); // Enter 키 누르면 생기는 줄바꿈 방지
                   handleAddComment(event);
