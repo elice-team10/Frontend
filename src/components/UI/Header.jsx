@@ -8,20 +8,42 @@ import theme from '../../config/theme';
 import { IoMenu } from 'react-icons/io5';
 
 const HeaderContainer = styled.header`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
   background-color: #000000;
   height: 6.8rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem;
 
   /* 768px / 16px = 48  */
   @media (max-width: 48em) {
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    padding: 0;
     z-index: 9999;
+  }
+`;
+
+const ContentContainer = styled.div`
+  width: 120rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    max-width: 102.4rem;
+  }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    max-width: 76.8rem;
+  }
+
+  /* 768px / 16px = 48  */
+  @media (max-width: 48em) {
+    /* 가장 작은 사이즈 */
+    max-width: 68rem;
   }
 `;
 
@@ -37,6 +59,7 @@ const Logo = styled.img`
 
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
+    max-height: 4.5rem;
   }
 
   /* 768px / 16px = 48  */
@@ -57,9 +80,9 @@ const Navigation = styled.nav`
     position: absolute;
     width: 100%;
     background-color: #000000;
+    padding-bottom: 1rem;
     top: 6.8rem;
-    padding: 1rem 0;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 `;
 
@@ -68,8 +91,6 @@ const NavLink = styled.div`
   cursor: pointer;
   font-size: ${theme.fontSizes.medium};
   transition: color 0.2s;
-
-  /* padding: 0.5rem; */
   display: ${({ $isMobile }) => ($isMobile ? 'none' : 'block')};
 
   &:hover {
@@ -79,6 +100,8 @@ const NavLink = styled.div`
   /* 768px / 16px = 48  */
   @media (max-width: 48em) {
     display: ${({ $isMobile }) => ($isMobile ? 'block' : 'none')};
+    padding: 0.6rem 12.8rem;
+    border-bottom: 1px solid transparent;
   }
 `;
 
@@ -117,53 +140,137 @@ const Header = () => {
 
   return (
     <HeaderContainer>
-      <Logo src={logoImage} alt="LAF Logo" onClick={() => navigate('/')} />
-      <Navigation $isOpen={isMenuOpen}>
-        {(auth?.status === 0 || auth?.status === 1) && (
-          <NavLink $isMobile onClick={() => navigate('/chatList')}>
-            채팅
+      <ContentContainer>
+        <Logo src={logoImage} alt="LAF Logo" onClick={() => navigate('/')} />
+        <Navigation $isOpen={isMenuOpen}>
+          {(auth?.status === 0 || auth?.status === 1) && (
+            <NavLink
+              $isMobile
+              onClick={() => {
+                handleMenuToggle();
+                navigate('/chatList');
+              }}
+            >
+              채팅
+            </NavLink>
+          )}
+          <NavLink
+            $isMobile
+            onClick={() => {
+              handleMenuToggle();
+              navigate('/community');
+            }}
+          >
+            게시판
           </NavLink>
-        )}
-        <NavLink $isMobile onClick={() => navigate('/community')}>
-          게시판
-        </NavLink>
-        {(auth?.status === 0 || auth?.status === 1) && (
-          <NavLink $isMobile onClick={() => navigate('/mypage')}>
-            마이 페이지
-          </NavLink>
-        )}
-        {auth?.status === 0 && (
-          <NavLink $isMobile onClick={() => navigate('/admin')}>
-            관리자 페이지
-          </NavLink>
-        )}
-        {auth && (
-          <NavLink $isMobile onClick={signOut}>
-            로그아웃
-          </NavLink>
-        )}
-        {!auth && (
-          <NavLink $isMobile onClick={() => navigate('/login')}>
-            로그인
-          </NavLink>
-        )}
-      </Navigation>
+          {(auth?.status === 0 || auth?.status === 1) && (
+            <NavLink
+              $isMobile
+              onClick={() => {
+                handleMenuToggle();
+                navigate('/mypage');
+              }}
+            >
+              마이 페이지
+            </NavLink>
+          )}
+          {auth?.status === 0 && (
+            <NavLink
+              $isMobile
+              onClick={() => {
+                handleMenuToggle();
+                navigate('/admin');
+              }}
+            >
+              관리자 페이지
+            </NavLink>
+          )}
+          {auth && (
+            <NavLink
+              $isMobile
+              onClick={() => {
+                handleMenuToggle();
+                signOut();
+              }}
+            >
+              로그아웃
+            </NavLink>
+          )}
+          {!auth && (
+            <NavLink
+              $isMobile
+              onClick={() => {
+                handleMenuToggle();
+                navigate('/login');
+              }}
+            >
+              로그인
+            </NavLink>
+          )}
+        </Navigation>
 
-      <Navigation>
-        {(auth?.status === 0 || auth?.status === 1) && (
-          <NavLink onClick={() => navigate('/chatList')}>채팅</NavLink>
-        )}
-        <NavLink onClick={() => navigate('/community')}>게시판</NavLink>
-        {(auth?.status === 0 || auth?.status === 1) && (
-          <NavLink onClick={() => navigate('/mypage')}>마이 페이지</NavLink>
-        )}
-        {auth?.status === 0 && (
-          <NavLink onClick={() => navigate('/admin')}>관리자 페이지</NavLink>
-        )}
-        {auth && <NavLink onClick={signOut}>로그아웃</NavLink>}
-        {!auth && <NavLink onClick={() => navigate('/login')}>로그인</NavLink>}
-      </Navigation>
-      <MenuButton onClick={handleMenuToggle} />
+        <Navigation>
+          {(auth?.status === 0 || auth?.status === 1) && (
+            <NavLink
+              onClick={() => {
+                handleMenuToggle();
+                navigate('/chatList');
+              }}
+            >
+              채팅
+            </NavLink>
+          )}
+          <NavLink
+            onClick={() => {
+              handleMenuToggle();
+              navigate('/community');
+            }}
+          >
+            게시판
+          </NavLink>
+          {(auth?.status === 0 || auth?.status === 1) && (
+            <NavLink
+              onClick={() => {
+                handleMenuToggle();
+                navigate('/mypage');
+              }}
+            >
+              마이 페이지
+            </NavLink>
+          )}
+          {auth?.status === 0 && (
+            <NavLink
+              onClick={() => {
+                handleMenuToggle();
+                navigate('/admin');
+              }}
+            >
+              관리자 페이지
+            </NavLink>
+          )}
+          {auth && (
+            <NavLink
+              onClick={() => {
+                handleMenuToggle();
+                signOut();
+              }}
+            >
+              로그아웃
+            </NavLink>
+          )}
+          {!auth && (
+            <NavLink
+              onClick={() => {
+                handleMenuToggle();
+                navigate('/login');
+              }}
+            >
+              로그인
+            </NavLink>
+          )}
+        </Navigation>
+        <MenuButton onClick={handleMenuToggle} />
+      </ContentContainer>
     </HeaderContainer>
   );
 };
