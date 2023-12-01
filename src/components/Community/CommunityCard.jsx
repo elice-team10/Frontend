@@ -151,7 +151,7 @@ const Nickname = styled.p`
   align-items: center;
   gap: 0.4rem;
 
-  && p {
+  && span {
     color: ${theme.colors.textLightgray};
     font-weight: normal;
   }
@@ -228,7 +228,7 @@ function CommunityCard({
             )}
 
             <Nickname>
-              <p>by</p>
+              <span>by</span>
               {nickname}
             </Nickname>
             {/* <ReplyContainer>

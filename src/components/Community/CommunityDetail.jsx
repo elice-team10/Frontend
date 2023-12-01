@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { PostContainer } from './CommunityWrite';
+// import { PostContainer } from './CommunityWrite';
 import theme from '../../config/theme';
 import PlaceIcon from '@mui/icons-material/Place';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -19,6 +19,20 @@ import { axiosPrivate } from '../../api/axios';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ModeEditOutlineOutlinedIcon from '@mui/icons-material/ModeEditOutlineOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+
+
+const DetailContainer = styled.div`
+width: 56rem;
+height: 70%;
+display: flex;
+position: relative;
+flex-direction: column;
+margin: 5rem auto;
+padding: 3rem;
+background-color: white;
+border-radius: 1.2rem;
+box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+`;
 
 const Background = styled.div`
   background-color: #eee;
@@ -409,7 +423,7 @@ function CommunityDetail() {
         />
       )}
       <Background>
-        <PostContainer style={{ height: '100%' }}>
+        <DetailContainer style={{ height: '100%' }}>
           <ButtonContainer>
             <StyledArrowIcon fontSize="3.5rem" onClick={() => navigate(-1)} />
             {data && data.userId.email === auth?.email && (
@@ -426,7 +440,7 @@ function CommunityDetail() {
             )}
           </ButtonContainer>
           {content}
-        </PostContainer>
+        </DetailContainer>
       </Background>
     </>
   );
