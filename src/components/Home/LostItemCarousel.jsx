@@ -12,6 +12,7 @@ const Container = styled.div`
   flex-direction: column;
   max-width: 120rem;
   padding: 0rem 5rem 4rem 5rem;
+  margin-bottom: 10rem;
 `;
 
 const CarouselText = styled.span`
