@@ -211,7 +211,7 @@ function SearchResultBar() {
             sx={{
               fontSize: '1.6rem',
               backgroundColor: selectedChip === 'all' ? '#151618' : '',
-              color: selectedChip === 'all' ? '#767a87' : '',
+              color: selectedChip === 'all' ? 'white' : '',
             }}
           />
         </StyledBadge>
@@ -224,7 +224,7 @@ function SearchResultBar() {
             sx={{
               fontSize: '1.6rem',
               backgroundColor: selectedChip === 'police' ? '#151618' : '',
-              color: selectedChip === 'police' ? '#767a87' : '',
+              color: selectedChip === 'police' ? 'white' : '',
             }}
           />
         </StyledBadge>
@@ -237,7 +237,7 @@ function SearchResultBar() {
               fontSize: '1.6rem',
               padding: '1rem',
               backgroundColor: selectedChip === 'subway' ? '#151618' : '',
-              color: selectedChip === 'subway' ? '#767a87' : '',
+              color: selectedChip === 'subway' ? 'white' : '',
             }}
           />
         </StyledBadge>
