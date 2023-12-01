@@ -51,13 +51,19 @@ const Avatar = styled.img`
     width: 12rem;
     height: 12rem;
   }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 10rem;
+    height: 10rem;
+  }
 `;
 
 const MyCameraIcon = styled(PhotoCameraIcon)`
   position: absolute;
   font-size: 3.4rem !important;
-  right: ${(props) => (props.type === 'basic' ? '3rem' : '1.4rem')};
-  bottom: ${(props) => (props.type === 'basic' ? '2rem' : '1.8rem')};
+  right: ${(props) => (props.type === 'basic' ? '3rem' : '2.2rem')};
+  bottom: ${(props) => (props.type === 'basic' ? '2rem' : '3.2rem')};
   border-radius: 50%;
   border: 1px solid ${theme.colors.border};
   padding: 0.4rem !important;
@@ -66,15 +72,15 @@ const MyCameraIcon = styled(PhotoCameraIcon)`
 
   /* 1200px / 16px = 75 */
   @media (max-width: 75em) {
-    right: ${(props) => (props.type === 'basic' ? '2.8rem' : '2.6rem')};
-    bottom: ${(props) => (props.type === 'basic' ? '2.2rem' : '1.6rem')};
+    right: ${(props) => (props.type === 'basic' ? '2.8rem' : '2.2rem')};
+    bottom: ${(props) => (props.type === 'basic' ? '2.2rem' : '2.2rem')};
     font-size: 2.8rem !important;
   }
 
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
-    right: ${(props) => (props.type === 'basic' ? '1.8rem' : '0.8rem')};
-    bottom: ${(props) => (props.type === 'basic' ? '1rem' : '1.2rem')};
+    right: ${(props) => (props.type === 'basic' ? '1.8rem' : '1.4rem')};
+    bottom: ${(props) => (props.type === 'basic' ? '1rem' : '1.4rem')};
     font-size: 2.4rem !important;
   }
 `;

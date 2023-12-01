@@ -43,8 +43,8 @@ const MyPageContainer = styled.div`
 
   /* 768px / 16px = 48 */
   @media (max-width: 48em) {
-    /* max-width: 54.4rem;
-    flex-direction: column; */
+    max-width: 54.4rem;
+    /* flex-direction: column; */
   }
 `;
 
@@ -54,6 +54,11 @@ const NavAside = styled.aside`
   /* 1200px / 16px = 75 */
   @media (max-width: 75em) {
     width: 22rem;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 16rem;
   }
 `;
 
@@ -65,6 +70,11 @@ const NavTitle = styled.h1`
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
     font-size: ${theme.fontSizes.subtitle};
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    font-size: ${theme.fontSizes.large};
   }
 `;
 
@@ -87,11 +97,6 @@ const NavigationItem = styled.li`
   transition: all 250ms ease-in-out;
   cursor: pointer;
 
-  /* 1024px / 16px = 64 */
-  @media (max-width: 64em) {
-    font-size: ${theme.fontSizes.medium};
-  }
-
   ${(props) =>
     props.$active &&
     css`
@@ -102,6 +107,11 @@ const NavigationItem = styled.li`
   &:hover {
     color: ${theme.colors.text};
     font-weight: bold;
+  }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    font-size: ${theme.fontSizes.medium};
   }
 `;
 
@@ -116,6 +126,11 @@ const UserInfoPanel = styled.div`
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
     margin-top: 0.6rem;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    margin: 0;
   }
 `;
 
@@ -518,6 +533,13 @@ const EditButton = styled.button`
   cursor: pointer;
   & + button {
     margin-left: 0.8rem;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 3.6rem;
+    height: 2rem;
+    font-size: 1rem;
   }
 `;
 

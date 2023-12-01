@@ -54,6 +54,11 @@ const MyPaper = styled(Paper)`
   @media (max-width: 64em) {
     margin-top: 0rem !important;
   }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 48rem;
+  }
 `;
 
 const MyTableCell = styled(TableCell)`
