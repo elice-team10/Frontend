@@ -16,6 +16,7 @@ const Background = styled.div`
   background-color: #eee;
   height: 100%;
   padding: 3px;
+  flex-grow: 1;
 `;
 
 export const PostContainer = styled.form`

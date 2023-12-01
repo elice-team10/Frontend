@@ -20,7 +20,6 @@ export async function fetchSubwayItems(productName, place, page) {
     // XML 파싱을 위한 파서 생성
     // const parser = new XMLParser();
     // const parsedResponse = parser.parse(response.data);
-    console.log(response);
     const lostItems = response.data.response.body.items.item;
     const numOfRows = response.data.response.body.numOfRows;
     const pageNo = response.data.response.body.pageNo;
