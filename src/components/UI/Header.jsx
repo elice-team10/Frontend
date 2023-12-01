@@ -213,62 +213,24 @@ const Header = () => {
 
         <Navigation>
           {(auth?.status === 0 || auth?.status === 1) && (
-            <NavLink
-              onClick={() => {
-                handleMenuToggle();
-                navigate('/chatList');
-              }}
-            >
-              채팅
-            </NavLink>
+            <NavLink onClick={() => navigate('/chatList')}>채팅</NavLink>
           )}
           <NavLink
             onClick={() => {
-              handleMenuToggle();
               navigate('/community');
             }}
           >
             게시판
           </NavLink>
           {(auth?.status === 0 || auth?.status === 1) && (
-            <NavLink
-              onClick={() => {
-                handleMenuToggle();
-                navigate('/mypage');
-              }}
-            >
-              마이 페이지
-            </NavLink>
+            <NavLink onClick={() => navigate('/mypage')}>마이 페이지</NavLink>
           )}
           {auth?.status === 0 && (
-            <NavLink
-              onClick={() => {
-                handleMenuToggle();
-                navigate('/admin');
-              }}
-            >
-              관리자 페이지
-            </NavLink>
+            <NavLink onClick={() => navigate('/admin')}>관리자 페이지</NavLink>
           )}
-          {auth && (
-            <NavLink
-              onClick={() => {
-                handleMenuToggle();
-                signOut();
-              }}
-            >
-              로그아웃
-            </NavLink>
-          )}
+          {auth && <NavLink onClick={() => signOut()}>로그아웃</NavLink>}
           {!auth && (
-            <NavLink
-              onClick={() => {
-                handleMenuToggle();
-                navigate('/login');
-              }}
-            >
-              로그인
-            </NavLink>
+            <NavLink onClick={() => navigate('/login')}>로그인</NavLink>
           )}
         </Navigation>
         <MenuButton onClick={handleMenuToggle} />
