@@ -18,6 +18,12 @@ const WriteButton = styled.button`
   &:hover {
     filter: brightness(1.15);
   }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    font-size: ${theme.fontSizes.medium};
+    width: 8rem;
+  }
 `;
 
 const Container = styled.div`
@@ -33,6 +39,7 @@ const Container = styled.div`
   /* 1024px / 16px = 64 */
   @media (max-width: 64em) {
     max-width: 76.8rem;
+    width: 73%;
   }
 `;
 
@@ -58,6 +65,15 @@ const EachTab = styled.p`
       font-weight: 700;
       box-shadow: inset 0px -4px 0px ${theme.colors.primary};
     `}
+
+  /* 1024px / 16px = 64 */
+    @media (max-width: 64em) {
+    font-size: ${theme.fontSizes.medium};
+    line-height: 30px;
+    + p {
+      margin-left: 0.4rem;
+    }
+  }
 `;
 
 CommunityTab.defaultProps = {
