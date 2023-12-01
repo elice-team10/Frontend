@@ -10,12 +10,10 @@ import { useNavigate } from 'react-router-dom';
 
 const Card = styled.div`
   background-color: ${theme.colors.background};
-  // border: 0.1rem solid ${theme.colors.border};
   border-radius: 12px;
   width: 29.6rem;
   height: 40.7rem;
   box-sizing: border-box;
-  // padding: 2.8rem 2.4rem 0;
   position: relative;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   top: 0;
@@ -49,6 +47,11 @@ const CardContainer = styled.div`
 
 const ContentContainer = styled.div`
   padding: 0.7rem 2.4rem;
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    padding: 0.7rem 1.4rem;
+  }
 `;
 
 const TitleContainer = styled.div`

@@ -1,5 +1,5 @@
 export const LOCATION_CATEGORY = [
-  '지역 선택',
+  '분실지역 선택',
   '강남구',
   '강동구',
   '강북구',

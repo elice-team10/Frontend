@@ -29,10 +29,25 @@ export const PostContainer = styled.form`
   background-color: white;
   border-radius: 1.2rem;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    width: 46rem;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 36rem;
+  }
 `;
 const TitleContainer = styled.div`
   align-items: center;
   height: 7rem;
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    height: 11rem;
+  }
 `;
 const Title = styled.input`
   font-size: ${theme.fontSizes.title};
@@ -47,6 +62,24 @@ const Title = styled.input`
     color: ${theme.colors.textLightgray}
     font-size: ${theme.fontSizes.title};
   }
+  /* 1200px / 16px = 75 */
+  @media (max-width: 75em) {
+    width: 53rem;
+  }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    width: 70%;
+    margin-left: 4.8rem;
+    font-size: ${theme.fontSizes.large};
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 55%;
+    margin-left: 3.8rem;
+    font-size: ${theme.fontSizes.large};
+  }
 `;
 
 const ToolbarContainer = styled.div`
@@ -54,6 +87,14 @@ const ToolbarContainer = styled.div`
   height: 7rem;
   align-items: center;
   justify-content: center;
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 50%;
+    margin-left: 3.8rem;
+    flex-direction: column;
+    align-items: initial;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -80,6 +121,17 @@ const Content = styled.textarea`
     font-family: 'Noto Sans KR', sans-serif;
     font-size: ${theme.fontSizes.medium};
     color: ${theme.colors.textLightgray};
+  }
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    width: 80%;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 75%;
+    height: 19rem;
   }
 `;
 
@@ -142,6 +194,12 @@ const CalInput = styled.input`
   &:hover {
     border: 1px solid ${theme.colors.text};
   }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 16.8rem;
+    padding: 1.4rem
+  }
 `;
 
 const GradationBox = styled.div`
@@ -150,6 +208,18 @@ const GradationBox = styled.div`
   background: linear-gradient(135deg, #ffa500, #ff7f50, #ff6700);
   margin-left: 0.8rem;
   border-radius: 12px;
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    margin-left: 4.8rem;
+    width: 80%;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 75%;
+    margin-left: 3.8rem;
+  }
 `;
 
 function CommunityWrite({ inputData, onEditSubmit }) {
@@ -162,10 +232,9 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   const [picture, setPicture] = useState(null);
   const [productCategory, setProductCategory] = useState('');
   const { auth } = useAuth();
+  const [validInput, setValidInput] = useState(false);
   // 수정 버튼 상태
   const [isEditMode, setIsEditMode] = useState(false);
-  // 에러 툴팁 상태
-  // const [tooltip, setTooltip] = useState('');
 
   useEffect(() => {
     if (inputData) {
@@ -196,8 +265,6 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   const searchParams = new URLSearchParams(urlLocation.search);
   const boardCategoryFromQuery = searchParams.get('board_category');
 
-  // const userId = urlLocation.state.userId;
-
   useEffect(() => {
     if (boardCategoryFromQuery !== null) {
       setBoardCategory(Number(boardCategoryFromQuery));
@@ -205,7 +272,7 @@ function CommunityWrite({ inputData, onEditSubmit }) {
   }, [boardCategoryFromQuery]);
 
   const navigate = useNavigate();
-  
+
   //게시판 작성 데이터 변경
   const { mutate, isPending, isError, error } = useMutation({
     mutationFn: createNewEvent,
@@ -214,11 +281,22 @@ function CommunityWrite({ inputData, onEditSubmit }) {
       navigate('/community');
     },
   });
-  
+
   // 게시판 작성 데이터 전송 formdata
   function handleSubmit(event) {
-
     event.preventDefault();
+
+    // 제목, 내용, StyledSelect 중 하나라도 입력 안한 경우 함수 종료
+    if (
+      !title ||
+      title === '' ||
+      !content ||
+      content === '' ||
+      !productCategory ||
+      productCategory === ''
+    ) {
+      setValidInput(true);
+    }
 
     const formData = new FormData();
     formData.append('board_category', boardCategory);
@@ -232,6 +310,17 @@ function CommunityWrite({ inputData, onEditSubmit }) {
     formData.append('picture', picture);
 
     if (isEditMode) {
+      if (
+        !title ||
+        title === '' ||
+        !content ||
+        content === '' ||
+        !productCategory ||
+        productCategory === ''
+      ) {
+        setValidInput(true);
+        return;
+      }
       // 수정 모드인 경우, onEditSubmit 콜백 호출
       const userId = urlLocation.state.userId;
       const updatedFormData = new FormData();
@@ -302,10 +391,12 @@ function CommunityWrite({ inputData, onEditSubmit }) {
                 onChange={handleFileChange}
               />
             </ToolbarContainer>
-            <CustomizedSwitches
-              defaultValue={inputData ? inputData.isFound : false}
-              onChangeSwitch={handleSwitch}
-            />
+            {isEditMode && (
+              <CustomizedSwitches
+                defaultValue={inputData ? inputData.isFound : false}
+                onChangeSwitch={handleSwitch}
+              />
+            )}
             <ContentContainer>
               <Content
                 cols="50"
@@ -332,11 +423,16 @@ function CommunityWrite({ inputData, onEditSubmit }) {
           </>
         )}
         {isError && (
-          <ToastAlert icon="error" title='제목, 분실물종류, 내용은 필수 입력입니다.' />
-          // <ErrorBlock
-          //   title="글 등록을 실패했습니다."
-          //   message={error.info?.message || '잠시후 다시 작성 부탁드립니다.'}
-          // />
+          <ToastAlert
+            icon="error"
+            title="제목, 내용, 분실물 종류는 필수 입력입니다."
+          />
+        )}
+        {validInput && (
+          <ToastAlert
+            icon="error"
+            title="제목, 내용, 분실물 종류는 필수 입력입니다."
+          />
         )}
       </PostContainer>
     </Background>
