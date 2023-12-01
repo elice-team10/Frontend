@@ -40,6 +40,11 @@ const LostContainer = styled.div`
   @media (max-width: 64em) {
     grid-template-columns: repeat(2, 24.6rem);
   }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    grid-template-columns: repeat(1, 29.6rem);
+  }
 `;
 
 const FoundContainer = styled.div`
@@ -85,6 +90,9 @@ const LoadButton = styled.button`
   &:hover {
     opacity: 0.9;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  &:disabled {
+    visibility: hidden;
 `;
 
 function CommunityBoard() {

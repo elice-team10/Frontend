@@ -6,7 +6,6 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PhoneIcon from '@mui/icons-material/Phone';
 import SearchIcon from '@mui/icons-material/Search';
 import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
-import notfound from '../../assets/notfound.jpg';
 import axios from 'axios';
 import { Box, Modal, Chip } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
