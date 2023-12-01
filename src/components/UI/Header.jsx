@@ -43,7 +43,7 @@ const ContentContainer = styled.div`
   /* 768px / 16px = 48  */
   @media (max-width: 48em) {
     /* 가장 작은 사이즈 */
-    max-width: 68rem;
+    max-width: 50rem;
   }
 `;
 
