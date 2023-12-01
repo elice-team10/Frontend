@@ -69,10 +69,6 @@ export async function fetchRecentItems() {
       }
     }
 
-    console.log('Parsed Body:', results);
-    console.log(
-      `Num of Rows:${numOfRows}, Page No. : ${pageNo}, Total Count : ${totalCount}`,
-    );
     return results;
   } catch (error) {
     console.error('Error:', error);

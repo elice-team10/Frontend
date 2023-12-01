@@ -17,6 +17,12 @@ const InputContainer = styled.div`
   &:hover {
     border: 1px solid ${theme.colors.text};
   }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 20.8rem;
+    margin: 0px;
+  }
 `;
 const ImgInput = styled.input`
   border: none;

@@ -40,9 +40,19 @@ const ModalWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 4.8rem;
-  padding: 4.8rem 8rem !important;
+  padding: 3.6rem 6.4rem !important;
   border-radius: 12px;
   background-color: #eee;
+
+  /* 1024px / 16px = 64 */
+  @media (max-width: 64em) {
+    padding: 2.4rem 4rem !important;
+  }
+
+  /*768px / 16px = 48 */
+  @media (max-width: 48em) {
+    padding: 1.2rem 3.2rem !important;
+  }
 `;
 
 const MyBasicAvatar = styled(AccountCircleIcon)`
@@ -68,6 +78,12 @@ const MyBasicAvatar = styled(AccountCircleIcon)`
   @media (max-width: 64em) {
     width: 14rem !important;
     height: 14rem !important;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 10rem !important;
+    height: 10rem !important;
   }
 `;
 
@@ -102,6 +118,12 @@ const Image = styled.img`
   @media (max-width: 64em) {
     width: 12rem;
     height: 12rem;
+  }
+
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 8rem !important;
+    height: 8rem !important;
   }
 `;
 

@@ -7,6 +7,7 @@ import Chip from '@mui/material/Chip';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import WallpaperOutlinedIcon from '@mui/icons-material/WallpaperOutlined';
 import Comment from './Comment';
+import axios from 'axios';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { deleteEvent, fetchEvents, queryClient } from '../../api/http';
 import { useNavigate, useParams } from 'react-router';
@@ -330,13 +331,30 @@ function CommunityDetail() {
       navigate(`/chat/${response.data.roomId}?nickname=${opponentNickname}`);
       console.log('Response:', response.data);
     } catch (error) {
-      console.error('Error during the POST chat:', error);
-      alert('이미 대화중인 상대입니다.')
+      if (axios.isAxiosError(error)) {
+        // 에러가 Axios 에러인 경우
+        if (error.response) {
+          // 서버가 응답을 반환한 경우
+          const status = error.response.status;
+          if (status === 409) {
+            // 같은 상대에게 다시 건 경우
+            alert('이미 대화중인 상대입니다.');
+          } else {
+            // 다른 HTTP 에러 코드인 경우
+            alert('오류가 발생했습니다. 다시 시도해 주세요.');
+          }
+        } else {
+          // 요청이 서버에 도달하지 못한 경우
+          alert('네트워크 오류가 발생했습니다.');
+        }
+      } else {
+        // 로그인을 안 한 경우
+        alert('로그인을 먼저 해주세요.');
+      }
     }
   };
   /* --------------------챗방 추가-------------------- */
   let content;
-
   if (isPending) {
     content = <CircularProgress sx={{ color: '#ff6700' }} />;
   }

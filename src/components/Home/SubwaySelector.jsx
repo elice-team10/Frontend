@@ -113,7 +113,7 @@ const SubwaySelector = () => {
             vertical: 'top',
             horizontal: 'left',
           },
-          getContentAnchorEl: null, // This will make it expand downwards only
+          getcontentanchorel: null, // This will make it expand downwards only
           PaperProps: {
             style: {
               maxHeight: 150,
