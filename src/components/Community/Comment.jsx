@@ -212,13 +212,10 @@ function Comment({ postId }) {
   };
 
   const handleDeletComment = (commentId, userId) => {
-    console.log('commentid', commentId);
-    console.log('userid', userId);
     deleteMutate({ commentId, userId });
   };
 
   const handleEditComment = (commentId, userId, comment) => {
-    console.log('edit', commentId, userId, comment, commentRef);
     addMutate({ commentId, userId, content: String(comment) });
   };
 

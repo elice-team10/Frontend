@@ -296,18 +296,14 @@ function CommunityDetail() {
 
   // 삭제 질문 모달
   const handleStartDelete = () => {
-    console.log('Before setIsModal(true):', isModal);
     setIsModal(true);
-    console.log('After setIsModal(true):', isModal);
   };
 
   const handleStopDelete = () => {
     setIsModal(false);
-    console.log(isModal);
   };
 
   const handleDelete = () => {
-    console.log('handleDelete called');
     mutate({ postId: params.id, userId: data.userId._id });
     navigate('/community');
   };
@@ -328,7 +324,6 @@ function CommunityDetail() {
       const postingUserId = data.userId._id;
       const response = await axiosPrivate().post(`/chat/${postingUserId}`);
       navigate(`/chat/${response.data.roomId}`);
-      console.log('Response:', response.data);
     } catch (error) {
       console.error('Error during the POST chat:', error);
     }

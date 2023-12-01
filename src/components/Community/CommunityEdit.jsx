@@ -38,8 +38,6 @@ function CommunityEdit() {
   });
 
   const handleEditSubmit = (editData) => {
-    // const userId = urlLocation.state.userId;
-    console.log('editsubmit', userId.nickname);
     mutate({ postId: params.id, userId, eventData: editData });
     navigate('/community');
   };
