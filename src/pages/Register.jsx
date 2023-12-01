@@ -10,6 +10,7 @@ import { CheckLoggedIn } from '../utils/CheckLoggedIn';
 import AuthContainer from '../components/Auth/AuthContainer';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import ToastAlert from '../components/UI/ToastAlert';
+import useAuth from '../hooks/useAuth';
 
 const RegisterFormContainer = styled.div`
   position: relative;
@@ -52,9 +53,12 @@ const ErrorMessage = styled.span`
 `;
 
 const REGISTER_URL = '/user/join';
+const LOGIN_URL = '/user/login';
 
 const Register = () => {
   const navigate = useNavigate();
+
+  const { saveAuth } = useAuth();
 
   const [nickname, setNickname] = useState('');
   const [email, setEmail] = useState('');
@@ -108,10 +112,29 @@ const Register = () => {
       setErrMsg('');
 
       setSuccess(true);
-      // alert('가입해주셔서 감사합니다. 로그인 페이지로 이동합니다.');
 
-      setTimeout(() => {
-        navigate('/login');
+      setTimeout(async () => {
+        // 회원 가입 성공 시, 로그인 하도록 적용
+        const response = await api.post(
+          LOGIN_URL,
+          JSON.stringify({ email, password }),
+          {
+            headers: { 'Content-Type': 'application/json' },
+            withCredentials: true,
+          },
+        );
+
+        const nickname = response?.data?.nickname;
+        const accessToken = response?.data?.token;
+        const status = response?.data?.status;
+
+        saveAuth({ email, nickname, status, accessToken });
+
+        setEmail('');
+        setPassword('');
+
+        if (status === 0) navigate('/admin');
+        if (status === 1) navigate('/');
       }, 1500);
     } catch (err) {
       if (!err?.response) {
@@ -173,7 +196,7 @@ const Register = () => {
           {success && (
             <ToastAlert
               icon="success"
-              title="가입해주셔서 감사합니다. 로그인 페이지로 이동합니다."
+              title="가입해주셔서 감사합니다. 메인 페이지로 이동합니다."
             />
           )}
         </RegisterForm>

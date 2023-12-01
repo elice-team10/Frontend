@@ -150,7 +150,13 @@ const Login = () => {
         {/* <HeaderTitle style={{ color: '#ff5000' }}>Lost & Found</HeaderTitle> */}
         {/* <HeaderTitle>로그인</HeaderTitle> */}
         <HeaderTitle>
-          <TypingText strings={['찾았습니다.', '지금 로그인해주세요.']} />
+          <TypingText
+            strings={[
+              '당신이 잃어버린 소중한 물건을',
+              '찾을 수 있습니다!',
+              '지금 로그인해주세요!',
+            ]}
+          />
         </HeaderTitle>
         <LoginForm onSubmit={handleSubmit}>
           {/* <FormLabel htmlFor="email">이메일</FormLabel> */}
