@@ -33,6 +33,16 @@ padding: 3rem;
 background-color: white;
 border-radius: 1.2rem;
 box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+/* 1024px / 16px = 64 */
+@media (max-width: 64em) {
+  width: 46rem;
+}
+
+/* 768px / 16px = 48 */
+@media (max-width: 48em) {
+  width: 36rem;
+}
 `;
 
 const Background = styled.div`
@@ -55,6 +65,10 @@ const PhotoContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    display: block;
+  }
   img {
     width: 54rem;
     height: 23rem;
@@ -66,6 +80,10 @@ const PhotoContainer = styled.div`
       transform: scale(1.01);
       cursor: pointer;
     }
+  }
+  /* 768px / 16px = 48 */
+  @media (max-width: 48em) {
+    width: 36rem;
   }
 `;
 

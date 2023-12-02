@@ -101,13 +101,13 @@ const ToolbarContainer = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 29rem;
-  margin: 0.4rem 1.2rem 1.2rem;
+  height: 27rem;
+  margin-bottom: 4rem;
 `;
 const Content = styled.textarea`
   margin: auto;
   padding: 2rem;
-  width: 49rem;
+  width: 50rem;
   height: 24rem;
   border: 1px solid #ccc;
   border-radius: 1.2rem;

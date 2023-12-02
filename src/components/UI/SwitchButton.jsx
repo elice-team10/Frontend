@@ -3,6 +3,7 @@ import { styled } from '@mui/material/styles';
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
+import { useMediaQuery, useTheme } from '@mui/material';
 
 const IOSSwitch = styled((props) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
@@ -56,6 +57,8 @@ const IOSSwitch = styled((props) => (
 }));
 
 export default function CustomizedSwitches({onChangeSwitch, defaultValue}) {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [completed, setCompleted] = React.useState(defaultValue);
 
   const switchChangeHandle = () => {
@@ -68,7 +71,7 @@ export default function CustomizedSwitches({onChangeSwitch, defaultValue}) {
       <FormControlLabel
         control={<IOSSwitch sx={{ m: 1 }} checked={completed} onChange={switchChangeHandle} />}
         label={completed ? '완료' : '미완료'}
-        style={{ marginLeft: '1rem' }}
+        style={{ margin: isSmallScreen ? '4rem 3rem 0' : '0 2rem 1rem' }}
       />
     </FormGroup>
   );
