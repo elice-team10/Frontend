@@ -60,7 +60,7 @@ const Title = styled.input`
   margin-left: 1rem;
   // border-bottom: 1px solid ${theme.colors.border};
   &::placeholder {
-    color: ${theme.colors.textLightgray}
+    color: ${theme.colors.textLightgray};
     font-size: ${theme.fontSizes.title};
   }
   /* 1200px / 16px = 75 */
@@ -101,13 +101,13 @@ const ToolbarContainer = styled.div`
 const ContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  height: 29rem;
-  margin: 0.4rem 1.2rem 1.2rem;
+  height: 27rem;
+  margin-bottom: 4rem;
 `;
 const Content = styled.textarea`
   margin: auto;
   padding: 2rem;
-  width: 49rem;
+  width: 50rem;
   height: 24rem;
   border: 1px solid #ccc;
   border-radius: 1.2rem;
@@ -199,7 +199,7 @@ const CalInput = styled.input`
   /* 768px / 16px = 48 */
   @media (max-width: 48em) {
     width: 16.8rem;
-    padding: 1.4rem
+    padding: 1.4rem;
   }
 `;
 
