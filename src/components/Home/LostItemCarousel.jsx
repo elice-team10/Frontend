@@ -52,17 +52,18 @@ const CarouselContainer = styled.div`
 `;
 
 const CarouselWrapper = styled.div`
-  max-width: 105rem;
+  max-width: 120rem;
 `;
 
 const CarouselSlide = styled.div`
   display: flex;
+  gap: 1rem;
 `;
 
 const CardContainer = styled.div`  
   position: relative;
-  width: 20rem;
-  height 20rem;
+  width: 22rem;
+  height 22rem;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -72,20 +73,21 @@ const CardContainer = styled.div`
 
 const CardImage = styled.img`
   margin: 1rem 1rem 0rem 1rem;
-  cursor: ${({ isDisabled }) => (isDisabled ? 'not-allowed' : 'pointer')};
+  cursor: ${({ $isdisabled }) => ($isdisabled ? 'not-allowed' : 'pointer')};
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border: none;
-  width: 17rem;
-  height: 17rem;
+  border-radius: 8px;
+  width: 20rem;
+  height: 20rem;
   transition: transform 0.2s ease-in-out;
 
   &:hover {
-    transform: ${({ isDisabled }) => (isDisabled ? 'none' : 'scale(1.04)')};
+    transform: ${({ $isdisabled }) => ($isdisabled ? 'none' : 'scale(1.04)')};
     div {
-      display: ${({ isDisabled }) => (isDisabled ? 'none' : 'block')};
+      display: ${({ $isdisabled }) => ($isdisabled ? 'none' : 'block')};
     }
   }
 `;
@@ -107,12 +109,14 @@ const CardContent = styled.div`
   align-items: center !important;
   h3 {
     font-weight: 350;
+    font-size: 1.4rem;
     margin-bottom: 0;
   }
 
   p {
     color: grey;
-    margin-top: 0;
+    font-size: 1rem;
+    margin-top: 5px;
   }
 `;
 
@@ -243,7 +247,7 @@ const LostItemCarousel = () => {
                   src={card.imageUrl}
                   key={index}
                   onClick={() => handleClick()}
-                  isDisabled={loading}
+                  $isdisabled={loading}
                 />
                 <CardText>{card.location}</CardText>
                 <CardContent>

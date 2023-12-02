@@ -18,7 +18,6 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import ResultCard from './ResultCard';
 import { useSearch } from '../../context/SearchProvider';
 import { fetchSubwayItems, fetchLostItems } from '../Home/fetchItems';
-import ScrollTopButton from '../UI/ScrollTopButton';
 
 const Container = styled.div`
   min-height: 100vh;
@@ -251,7 +250,6 @@ function SearchResultBar() {
           <LoadButton onClick={handleLoadMore}>더보기</LoadButton>
         )}
       </LoadButtonContainer>
-      <ScrollTopButton />
     </Container>
   );
 }
