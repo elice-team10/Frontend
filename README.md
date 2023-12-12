@@ -69,7 +69,7 @@ LAF(Lost And Found) : 분실물 사이트
 ### 4. ERD(백엔드)
 ### 5. API 명세서(백엔드)
 ![유저](https://github.com/elice-team10/Frontend/assets/117796843/8791bc6b-6b23-47d1-b022-b6109a7a3271)
-![게시글](https://github.com/elice-team10/Frontend/assets/117796843/8636f4ba-6501-4f4f-b5d8-b9250825871b)
+![게시글](https://github.com/elice-team10/Frontend/assets/117796843/e0d62491-bd9c-4b6b-a5f1-59cff03d2554)
 ![댓글](https://github.com/elice-team10/Frontend/assets/117796843/c18810ca-d247-431d-9a23-a2f8b26ab612)
 ![chat](https://github.com/elice-team10/Backend/assets/117796843/36c7e785-a70d-450f-ba7b-30763c606bf4)
 ### 6. 아키텍처
