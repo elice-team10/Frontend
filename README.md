@@ -87,7 +87,17 @@ Front-end
 └── app.js
 ```
 Back-end(백엔드)
-```
+```bash
+├── src
+│   ├── db
+│   │    ├── models
+│   │    └── schemas
+│   ├── middlewares
+│   ├── routers
+│   └── services
+│   └── app.js
+└── errGenerator.js
+└── index.js
 ```
 
 ### 8. 협업 도구
