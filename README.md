@@ -73,21 +73,20 @@ LAF(Lost And Found) : 분실물 사이트
 ![댓글](https://github.com/elice-team10/Frontend/assets/117796843/c18810ca-d247-431d-9a23-a2f8b26ab612)
 ![chat](https://github.com/elice-team10/Backend/assets/117796843/36c7e785-a70d-450f-ba7b-30763c606bf4)
 ### 6. 아키텍처
-### 7. 폴더 구조(수정필요)
+### 7. 폴더 구조
 Front-end
 ```bash
-├── client
-│   ├── routers
-│   └── views
-├── server
-│   ├── routers
-│   ├── services
-│   ├── db
-│   ├── middlewares
-│   ├── passport
-│   ├── stripe
+├── public
+│   ├─assets
+├── src
+│   ├── api
+│   ├── components
+│   ├── config
+│   ├── context
+│   ├── hooks
+│   ├── pages
 │   └── utils
-└── app.js
+└── app.jsx
 ```
 Back-end(백엔드)
 ```bash
@@ -114,6 +113,6 @@ Back-end(백엔드)
 #### 오성현
 #### 이성민
 ----
-### Backend(백엔드)
+### Back-end(백엔드)
 #### 박원빈
 #### 정현진
