@@ -68,7 +68,7 @@ LAF(Lost And Found) : 분실물 사이트
 ### 3. 와이어 프레임
 ### 4. ERD(백엔드)
 ### 5. API 명세서(백엔드)
-
+![chat](https://github.com/elice-team10/Backend/assets/117796843/36c7e785-a70d-450f-ba7b-30763c606bf4)
 ### 6. 아키텍처
 ### 7. 폴더 구조(수정필요)
 Front-end
