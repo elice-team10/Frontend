@@ -125,6 +125,11 @@ Back-end(백엔드)
 ----
 ### Front-end
 #### 김성재
+* 관리자 페이지
+  ( REST API를 사용하여 회원, 게시글, 댓글 조회 및 삭제 )
+* 채팅방, 채팅목록
+  ( React-Query를 사용하여 polling하는 방식의 채팅기능 구현,
+    staleTime, cacheTime으로 데이터 신선도와 캐시를 관리 )
 #### 김상준
 #### 오성현
 * 게시판 메인 카드 Grid 및 반응형 UI 구현
