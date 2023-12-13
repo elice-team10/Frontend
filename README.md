@@ -78,7 +78,7 @@
 
 ### 4. ERD(백엔드)
 ### 5. API 명세서(백엔드)
-![유저](https://drive.google.com/file/d/1YzD0McRJXjufdtvHFRm5PuBdfstcq1dE/view?usp=drive_link)
+[유저](https://drive.google.com/file/d/1YzD0McRJXjufdtvHFRm5PuBdfstcq1dE/view?usp=sharing)
 ![게시글](https://github.com/elice-team10/Frontend/assets/117796843/e0d62491-bd9c-4b6b-a5f1-59cff03d2554)
 ![댓글](https://github.com/elice-team10/Frontend/assets/117796843/c18810ca-d247-431d-9a23-a2f8b26ab612)
 ![chat](https://github.com/elice-team10/Backend/assets/117796843/36c7e785-a70d-450f-ba7b-30763c606bf4)
