@@ -74,7 +74,7 @@
 <img src="https://github.com/elice-team10/Frontend/assets/90834728/2bb0af39-2051-4384-a957-7c32bbe3ec23" width="764px">
 
 ### 3. 와이어 프레임
-[와이어프레임.pdf](https://github.com/elice-team10/Frontend/files/13657123/default.pdf)
+[와이어프레임](https://drive.google.com/file/d/1GI0YM7ve7rn46S1TFnGgekYm6o_0yUrQ/view?usp=sharing)
 
 ### 4. ERD(백엔드)
 ### 5. API 명세서(백엔드)
