@@ -107,14 +107,21 @@ Back-end(백엔드)
 ```
 
 ### 8. 협업 도구
-[Notion](https://www.notion.so/Team10-2-d62a473dd76e42e98db6ee6aca9d2c31)
+* [Gitlab](https://kdt-gitlab.elice.io/sw_track/class_06/final_project/team10)
+  * 코드 관리 및 버전 관리를 하였으며, 동시에 컨벤션을 통일화하여 프로젝트의 일관성을 유지하였습니다.
+* [Notion](https://www.notion.so/Team10-2-d62a473dd76e42e98db6ee6aca9d2c31)
+   * 스크럼 회의록, API 명세서, 컨벤션을 문서화하여 기록하였습니다.
 
+     
 ✔️ 담당 기능
 ----
 ### Front-end
 #### 김성재
 #### 김상준
 #### 오성현
+* 게시판 메인 카드 Grid 및 반응형 구현
+* 게시글 CRUD 구현
+* 댓글 CRUD 구현
 #### 이성민
 * 메인페이지
   * 검색창 ui 구현
