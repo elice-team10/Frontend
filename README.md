@@ -59,9 +59,9 @@
 |**회원가입**|**로그인&비밀번호찾기**|
 |||
 |**게시판**|**게시글작성**|
-|<img src="https://github.com/elice-team10/Frontend/assets/90834728/2a3f2210-8fd6-4b4e-98b6-23dfccd76eb3" width="300px">|<img src="https://github.com/elice-team10/Frontend/assets/90834728/8f0a0eb4-4a06-4133-86fb-c79d97e9979a" width="300px">|
+|<img src="https://github.com/elice-team10/Frontend/assets/90834728/8f3a6201-63c0-4608-a301-4be91d29396c" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/90834728/c87a5c6f-8697-4c04-a92e-62a296eb8d83" width="480px">|
 |**게시글수정삭제**|**댓글**|
-|<img src="https://github.com/elice-team10/Frontend/assets/90834728/62be074c-0b12-4a65-8b2f-04c3643ed75a" width="300px">|<img src="https://github.com/elice-team10/Frontend/assets/90834728/dae7c954-fcfe-4dd6-b262-18c40b77f4fa" width="300px">|
+|<img src="https://github.com/elice-team10/Frontend/assets/90834728/06766ac1-72cc-465c-9ca8-bdee87576aa8" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/90834728/136d67d6-a3ca-461b-a12b-0aeb07863693" width="480px">|
 |****|****|
 |||
 
