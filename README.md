@@ -68,8 +68,14 @@
 ✔️ 기획
 ----
 ### 1. 페르소나
+![페르소나](https://github.com/elice-team10/Frontend/assets/90834728/dd9f7509-23ba-4d34-b529-389d301b8bbd)
+
 ### 2. 스토리보드
+<img src="https://github.com/elice-team10/Frontend/assets/90834728/2bb0af39-2051-4384-a957-7c32bbe3ec23" width="764px">
+
 ### 3. 와이어 프레임
+[와이어프레임.pdf](https://github.com/elice-team10/Frontend/files/13657123/default.pdf)
+
 ### 4. ERD(백엔드)
 ### 5. API 명세서(백엔드)
 ![유저](https://github.com/elice-team10/Frontend/assets/117796843/8791bc6b-6b23-47d1-b022-b6109a7a3271)
