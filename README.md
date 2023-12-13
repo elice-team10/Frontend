@@ -77,6 +77,8 @@
 [와이어프레임](https://drive.google.com/file/d/1GI0YM7ve7rn46S1TFnGgekYm6o_0yUrQ/view?usp=sharing)
 
 ### 4. ERD(백엔드)
+![erd](https://github.com/elice-team10/Frontend/assets/117796843/86a952c4-448d-4ae0-b73e-ebe10c673adf)
+
 ### 5. API 명세서(백엔드)
 [유저](https://drive.google.com/file/d/1YzD0McRJXjufdtvHFRm5PuBdfstcq1dE/view?usp=sharing)
 [게시글](https://drive.google.com/file/d/19bzxLBVDlbxSDhcrgVW-aTtOjJY4EL85/view?usp=sharing)
