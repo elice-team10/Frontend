@@ -58,10 +58,10 @@
 |||
 |**회원가입**|**로그인&비밀번호찾기**|
 |||
-|****|****|
-|||
-|****|****|
-|||
+|**게시판**|**게시글작성**|
+|<img src="https://github.com/elice-team10/Frontend/assets/90834728/2a3f2210-8fd6-4b4e-98b6-23dfccd76eb3" width="300px">|<img src="https://github.com/elice-team10/Frontend/assets/90834728/8f0a0eb4-4a06-4133-86fb-c79d97e9979a" width="300px">|
+|**게시글수정삭제**|**댓글**|
+|<img src="https://github.com/elice-team10/Frontend/assets/90834728/62be074c-0b12-4a65-8b2f-04c3643ed75a" width="300px">|<img src="https://github.com/elice-team10/Frontend/assets/90834728/dae7c954-fcfe-4dd6-b262-18c40b77f4fa" width="300px">|
 |****|****|
 |||
 
