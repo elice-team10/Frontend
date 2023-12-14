@@ -65,7 +65,7 @@
 |**채팅방**|**채팅목록**|
 |<img src="https://github.com/elice-team10/Frontend/assets/141702982/28e1add8-9aa3-4789-8a3d-bb9a6f01c5ea" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/141702982/e0156469-e05b-418b-89f3-768d45a6234e" width="480px">|
 |**관리자페이지**|**관리자페이지**|
-|<img src="https://github.com/elice-team10/Frontend/assets/141702982/8357013c-65c1-4cf8-9909-900ea21ff86e" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/141702982/e0156469-e05b-418b-89f3-768d45a6234e](https://github.com/elice-team10/Frontend/assets/141702982/d2cf5fc4-8e3d-4e03-ade9-604dd64f36e0" width="480px">|
+|<img src="https://github.com/elice-team10/Frontend/assets/141702982/8357013c-65c1-4cf8-9909-900ea21ff86e" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/141702982/d2cf5fc4-8e3d-4e03-ade9-604dd64f36e0" width="480px">|
 |||
 
 ✔️ 기획
