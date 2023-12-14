@@ -63,9 +63,7 @@
 |**게시글수정삭제**|**댓글**|
 |<img src="https://github.com/elice-team10/Frontend/assets/90834728/06766ac1-72cc-465c-9ca8-bdee87576aa8" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/90834728/136d67d6-a3ca-461b-a12b-0aeb07863693" width="480px">|
 |**채팅방**|**채팅목록**|
-|![채팅방](https://github.com/elice-team10/Frontend/assets/141702982/28e1add8-9aa3-4789-8a3d-bb9a6f01c5ea)
-|![채팅목록 gif](https://github.com/elice-team10/Frontend/assets/141702982/e0156469-e05b-418b-89f3-768d45a6234e)
-|
+|<img src="https://github.com/elice-team10/Frontend/assets/141702982/28e1add8-9aa3-4789-8a3d-bb9a6f01c5ea" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/141702982/e0156469-e05b-418b-89f3-768d45a6234e" width="480px">|
 |**관리자페이지**|**관리자페이지**|
 |||
 |||
