@@ -55,7 +55,7 @@
 |||
 |--------|-----|
 |**메인페이지**|**검색결과**|
-|||
+|<img src="https://github.com/elice-team10/Frontend/assets/107984193/27f7a0da-6439-4cf8-b638-fb04ee3893d9" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/107984193/51dc876a-0ca0-44af-b1c5-7f5bbbc6616a" width="480px">|
 |**회원가입**|**로그인&비밀번호찾기**|
 |||
 |**게시판**|**게시글작성**|
