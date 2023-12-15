@@ -58,10 +58,14 @@
 |<img src="https://github.com/elice-team10/Frontend/assets/107984193/27f7a0da-6439-4cf8-b638-fb04ee3893d9" width="480px">|
 |**검색결과**|
 |<img src="https://github.com/elice-team10/Frontend/assets/107984193/51dc876a-0ca0-44af-b1c5-7f5bbbc6616a" width="480px">|
-|**회원가입**|
-||
+|**회원가입&탈퇴**|
+|<img src="https://github.com/elice-team10/Frontend/assets/27044221/4bd4ab62-c1b8-482c-b1af-7daa56729211" width="480px">|
 |**로그인&비밀번호찾기**|
-||
+|<img src="https://github.com/elice-team10/Frontend/assets/27044221/80d38fed-a075-4d56-80c5-29ea5e4edd15" width="480px">|
+|**마이페이지&유저프로필변경&닉네임변경**|
+|<img src="https://github.com/elice-team10/Frontend/assets/27044221/a126b3c4-5089-484d-8003-61ac5d2bc8fc" width="480px">|
+|**비밀번호변경**|
+|<img src="https://github.com/elice-team10/Frontend/assets/27044221/70f2cbd7-8b73-4214-911b-25826857a1e5" width="480px">|
 |**게시판**|
 |<img src="https://github.com/elice-team10/Frontend/assets/90834728/cba4526c-359a-42c0-9c09-74326a719758" width="480px">|
 |**게시글작성**|
@@ -100,6 +104,7 @@
 [댓글](https://drive.google.com/file/d/1ApADbJYFvmCTF1TExmdmeMB8-UvIOlw2/view?usp=sharing)
 [chat](https://drive.google.com/file/d/1a1WohIxE9_DMvRJ7wXwLukkf-Q19FwQJ/view?usp=sharing)
 ### 6. 아키텍처
+![아키텍쳐](https://github.com/elice-team10/Frontend/assets/27044221/2a9c3b82-fad1-46eb-ba7c-0dfb82912a44)
 ### 7. 폴더 구조
 Front-end
 ```bash
@@ -145,7 +150,12 @@ Back-end(백엔드)
 * 채팅방, 채팅목록
     * React-Query를 사용하여 데이터를 polling하는 채팅기능 구현
     * staleTime, cacheTime으로 데이터 신선도와 캐시 관리
-#### 김상준
+#### 김상준 
+* 회원가입, 로그인, 이메일 찾기
+* 마이 페이지
+    * 닉네임 수정, 비밀번호 변경, 회원탈퇴
+    * 회원 게시글, 댓글 조회
+* 반응형 UI
 #### 오성현
 * 게시판 메인 카드 Grid 및 반응형 UI 구현
 * React-Query 활용하여 API 상태 관리
