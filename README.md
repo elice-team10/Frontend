@@ -52,21 +52,33 @@
 
 ✔️ 주요 기능(gif파일 추가해주세요)
 ----
-|||
-|--------|-----|
-|**메인페이지**|**검색결과**|
-|<img src="https://github.com/elice-team10/Frontend/assets/107984193/27f7a0da-6439-4cf8-b638-fb04ee3893d9" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/107984193/51dc876a-0ca0-44af-b1c5-7f5bbbc6616a" width="480px">|
-|**회원가입**|**로그인&비밀번호찾기**|
-|||
-|**게시판**|**게시글작성**|
-|<img src="https://github.com/elice-team10/Frontend/assets/90834728/cba4526c-359a-42c0-9c09-74326a719758" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/90834728/c87a5c6f-8697-4c04-a92e-62a296eb8d83" width="480px">|
-|**게시글수정삭제**|**댓글**|
-|<img src="https://github.com/elice-team10/Frontend/assets/90834728/06766ac1-72cc-465c-9ca8-bdee87576aa8" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/90834728/136d67d6-a3ca-461b-a12b-0aeb07863693" width="480px">|
-|**채팅방**|**채팅목록**|
-|<img src="https://github.com/elice-team10/Frontend/assets/141702982/28e1add8-9aa3-4789-8a3d-bb9a6f01c5ea" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/141702982/e0156469-e05b-418b-89f3-768d45a6234e" width="480px">|
-|**관리자페이지**|**관리자페이지**|
-|<img src="https://github.com/elice-team10/Frontend/assets/141702982/8357013c-65c1-4cf8-9909-900ea21ff86e" width="480px">|<img src="https://github.com/elice-team10/Frontend/assets/141702982/d2cf5fc4-8e3d-4e03-ade9-604dd64f36e0" width="480px">|
-|||
+||
+|--------|
+|**메인페이지**|
+|<img src="https://github.com/elice-team10/Frontend/assets/107984193/27f7a0da-6439-4cf8-b638-fb04ee3893d9" width="480px">|
+|**검색결과**|
+|<img src="https://github.com/elice-team10/Frontend/assets/107984193/51dc876a-0ca0-44af-b1c5-7f5bbbc6616a" width="480px">|
+|**회원가입**|
+||
+|**로그인&비밀번호찾기**|
+||
+|**게시판**|
+|<img src="https://github.com/elice-team10/Frontend/assets/90834728/cba4526c-359a-42c0-9c09-74326a719758" width="480px">|
+|**게시글작성**|
+|<img src="https://github.com/elice-team10/Frontend/assets/90834728/c87a5c6f-8697-4c04-a92e-62a296eb8d83" width="480px">|
+|**게시글수정삭제**|
+|<img src="https://github.com/elice-team10/Frontend/assets/90834728/06766ac1-72cc-465c-9ca8-bdee87576aa8" width="480px">|
+|**댓글**|
+|<img src="https://github.com/elice-team10/Frontend/assets/90834728/136d67d6-a3ca-461b-a12b-0aeb07863693" width="480px">|
+|**채팅방**|
+|<img src="https://github.com/elice-team10/Frontend/assets/141702982/28e1add8-9aa3-4789-8a3d-bb9a6f01c5ea" width="480px">|
+|**채팅목록**|
+|<img src="https://github.com/elice-team10/Frontend/assets/141702982/e0156469-e05b-418b-89f3-768d45a6234e" width="480px">|
+|**관리자페이지**|
+|<img src="https://github.com/elice-team10/Frontend/assets/141702982/8357013c-65c1-4cf8-9909-900ea21ff86e" width="480px">|
+|**관리자페이지**|
+|<img src="https://github.com/elice-team10/Frontend/assets/141702982/d2cf5fc4-8e3d-4e03-ade9-604dd64f36e0" width="480px">|
+||
 
 ✔️ 기획
 ----
