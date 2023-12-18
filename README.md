@@ -39,7 +39,7 @@
 
 <br/>
 
-⚙ 기술 스택
+⚙  기술 스택
 ----
 ### Programming language
 <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
@@ -60,7 +60,7 @@
 <br/>
 
 
-✔️ 주요 기능(gif파일 추가해주세요)
+✔️ 주요 기능
 ----
 ||
 |--------|
@@ -109,10 +109,10 @@
 ### 3. 와이어 프레임
 [와이어프레임](https://drive.google.com/file/d/1GI0YM7ve7rn46S1TFnGgekYm6o_0yUrQ/view?usp=sharing)
 
-### 4. ERD(백엔드)
+### 4. ERD
 ![erd](https://github.com/elice-team10/Frontend/assets/117796843/d3725507-26e7-4383-a72b-afeb5e5f9e9f)
 
-### 5. API 명세서(백엔드)
+### 5. API 명세서
 [유저](https://drive.google.com/file/d/1YzD0McRJXjufdtvHFRm5PuBdfstcq1dE/view?usp=sharing)
 [게시글](https://drive.google.com/file/d/19bzxLBVDlbxSDhcrgVW-aTtOjJY4EL85/view?usp=sharing)
 [댓글](https://drive.google.com/file/d/1ApADbJYFvmCTF1TExmdmeMB8-UvIOlw2/view?usp=sharing)
