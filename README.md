@@ -7,6 +7,7 @@
 [🍊 라프 방문하기](http://kdt-sw-6-team10.elicecoding.com/)
 
 
+<br/>
 
 ✔️ 팀원 소개
 ----
@@ -17,9 +18,13 @@
 |오성현| 
 |이성민| 
 
+<br/>
+
 ✔️ 프로젝트 기간
 ----
 📆  2023.11.13(월) ~ 2023.12.01(금)  **[3주]**
+
+<br/>
 
 ✔️ 프로젝트 개요
 ----
@@ -31,6 +36,8 @@
   
 ### 채팅 서비스
 - 1:1 채팅 기능을 통해 물건 주인과 주운 사람이 직접 상호작용할 수 있습니다.
+
+<br/>
 
 ⚙ 기술 스택
 ----
@@ -49,6 +56,9 @@
 <img src="https://img.shields.io/badge/passport-2fca6d?style=for-the-badge&logo=passport&logoColor=white">   <img src="https://img.shields.io/badge/stripe-008CDD?style=for-the-badge&logo=stripe&logoColor=white"> <img src="https://img.shields.io/badge/nginx-009639?style=for-the-badge&logo=NGINX&logoColor=white"> <img src="https://img.shields.io/badge/pm2-2B037A?style=for-the-badge&logo=pm2&logoColor=white">
 
 ### 
+
+<br/>
+
 
 ✔️ 주요 기능(gif파일 추가해주세요)
 ----
@@ -83,6 +93,10 @@
 |**관리자페이지**|
 |<img src="https://github.com/elice-team10/Frontend/assets/141702982/d2cf5fc4-8e3d-4e03-ade9-604dd64f36e0" width="480px">|
 ||
+
+
+<br/>
+
 
 ✔️ 기획
 ----
@@ -140,21 +154,23 @@ Back-end(백엔드)
 * [Notion](https://www.notion.so/Team10-2-d62a473dd76e42e98db6ee6aca9d2c31)
    * 스크럼 회의록, API 명세서, 컨벤션을 문서화하여 기록하였습니다.
 
-     
+
+<br/>
+
 ✔️ 담당 기능
 ----
 ### Front-end
 #### 김성재
 * 관리자 페이지
-    * REST API 활용하여 회원, 게시글, 댓글 조회 및 삭제
+* REST API 활용하여 회원, 게시글, 댓글 조회 및 삭제
 * 채팅방, 채팅목록
-    * React-Query를 사용하여 데이터를 polling하는 채팅기능 구현
-    * staleTime, cacheTime으로 데이터 신선도와 캐시 관리
+* React-Query를 사용하여 데이터를 polling하는 채팅기능 구현
+* staleTime, cacheTime으로 데이터 신선도와 캐시 관리
 #### 김상준 
 * 회원가입, 로그인, 이메일 찾기
 * 마이 페이지
-    * 닉네임 수정, 비밀번호 변경, 회원탈퇴
-    * 회원 게시글, 댓글 조회
+* 닉네임 수정, 비밀번호 변경, 회원탈퇴
+* 회원 게시글, 댓글 조회
 * 반응형 UI
 #### 오성현
 * 게시판 메인 카드 Grid 및 반응형 UI 구현
