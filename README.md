@@ -1,5 +1,8 @@
 🔍 LAF(Lost And Found) : 분실물을 찾아주는 사이트
 ====
+
+<br/>
+
 ![laf_logo](https://github.com/elice-team03/gazago/assets/90834728/ab99560f-c4c6-4e94-8453-a2041cd45a72)<br/>
 
 당신의 소중한 물건을 쉽고 빠르게 찾아드리는 라프(LAF) 프로젝트입니다.
@@ -190,7 +193,7 @@ Back-end(백엔드)
 
 
 ----
-### Back-end(백엔드)
+### Back-end
 #### 박원빈
 * 서버 & db 연결 및 관리
 * api 명세서 제작
